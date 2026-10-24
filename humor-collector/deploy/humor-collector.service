@@ -1,0 +1,14 @@
+# Collect recent popular posts. Install: see README "자동 실행".
+# Replace /opt/humor-collector and YOUR_USER with your paths.
+[Unit]
+Description=humor-collector: collect recent popular posts
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=YOUR_USER
+WorkingDirectory=/opt/humor-collector
+ExecStart=/opt/humor-collector/deploy/run_collect.sh
+TimeoutStartSec=2h
+Nice=10

@@ -1,0 +1,6 @@
+requests>=2.31          # HTTP (Apache-2.0)
+beautifulsoup4>=4.12    # HTML parsing (MIT)
+lxml>=5.0               # fast, tolerant parser backend for BeautifulSoup (BSD-3)
+protego>=0.3            # robots.txt with wildcards + Crawl-delay, from the Scrapy project (BSD-3)
+rapidfuzz>=3.0          # title similarity for re-upload detection (MIT)
+tomli>=2.0; python_version < "3.11"   # TOML config on Python 3.10 (stdlib tomllib on 3.11+)

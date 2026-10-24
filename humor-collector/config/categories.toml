@@ -1,0 +1,67 @@
+# Keyword rules for KeywordClassifier (processing/classifier.py).
+# Matching is case-insensitive substring matching on title and body.
+# A title hit counts `title_weight`, a body hit counts 1 (max 3 per keyword).
+# The category with the highest total becomes `content_category`; all categories with
+# hits are stored in `content_labels`. No hit -> "기타".
+# Avoid one-syllable keywords that are part of many words (e.g. "형", "술").
+
+title_weight = 2.0
+
+[categories."일상 공감"]
+keywords = ["공감", "현실", "국룰", "특징", "유형", "나만 그런", "다들", "인정", "ㅇㅈ", "습관",
+            "월요일", "주말", "알람", "자취", "택배", "출근길", "퇴근길", "지하철", "버스에서",
+            "편의점", "공감짤", "현실고증", "흔한", "특)", " 특"]
+
+[categories."직장·학교"]
+keywords = ["회사", "직장", "상사", "부장", "과장", "팀장", "대리님", "신입", "출근", "퇴근", "야근",
+            "월급", "연봉", "면접", "알바", "사원", "회식", "학교", "선생님", "교수", "학생", "수업",
+            "시험", "과제", "대학", "학원", "군대", "부대", "병장", "이병", "훈련소", "전역", "중대장"]
+
+[categories."연애·인간관계"]
+keywords = ["여친", "남친", "여자친구", "남자친구", "연애", "소개팅", "고백", "결혼", "이혼",
+            "와이프", "남편", "아내", "커플", "데이트", "짝사랑", "모쏠", "친구", "동창", "이웃", "썸타",
+            "girlfriend", "boyfriend", "wife", "husband", "dating"]
+
+[categories."가족"]
+keywords = ["엄마", "아빠", "어머니", "아버지", "부모", "할머니", "할아버지", "동생", "누나", "언니",
+            "오빠", "아들", "딸내미", "조카", "삼촌", "이모", "고모", "가족", "명절", "시댁", "처가",
+            "장모", "시어머니", "육아", "아기", "애기", "my mom", "my dad", "grandma", "kids"]
+
+[categories."음식·다이어트"]
+keywords = ["음식", "먹방", "먹는", "먹고", "먹었", "맛집", "맛있", "라면", "치킨", "피자", "떡볶이",
+            "김밥", "고기", "삼겹살", "국밥", "짜장", "짬뽕", "햄버거", "커피", "소주", "맥주", "막걸리",
+            "요리", "레시피", "반찬", "다이어트", "살빼", "몸무게", "칼로리", "배고", "야식", "디저트",
+            "케이크", "과자", "식당", "메뉴", "배달", "순대", "편의점 도시락", "밥 먹", "밥먹",
+            "food", "pizza", "burger", "diet", "cooking", "eating", "snack", "coffee"]
+
+[categories."황당한 사건"]
+keywords = ["황당", "어이없", "레전드", "사건", "사고", "경찰", "도둑", "실화", "충격", "역대급",
+            "ㄷㄷ", "소동", "난동", "해프닝", "미스터리", "이게 무슨", "어처구니"]
+
+[categories."반전 유머"]
+keywords = ["반전", "알고보니", "알고 보니", "결말", "예상과", "예상 못", "착각", "오해", "사실은",
+            "함정", "뒤통수", "엔딩", "twist", "plot twist"]
+
+[categories."대화형 유머"]
+keywords = ["카톡", "대화", "문자", "디엠", "톡방", "단톡", "말장난", "아재개그", "knock knock"]
+
+# Dialogue detection: lines like "엄마: ..." or "「...」" count as speaker lines.
+[dialogue]
+category = "대화형 유머"
+min_lines = 3
+keywords = ["대화", "카톡", "문자"]
+
+# Flags do not change the category; `top`/`export` exclude flagged posts by default
+# (see [output].exclude_flags in settings.toml). Keywords are deliberately conservative.
+[flags.politics]
+keywords = ["대통령", "국회", "국회의원", "민주당", "국민의힘", "국힘", "정당", "선거", "탄핵",
+            "여당", "야당", "정치", "장관", "총리", "윤석열", "이재명"]
+boards = ["정치/시사게시판", "정치유머"]
+
+[flags.nsfw]
+keywords = ["후방", "ㅇㅎ)", "19금", "야짤", "🔞", "nsfw"]
+boards = ["후방주의방", "성인게시판"]
+
+[flags.sensitive]
+keywords = ["혐오", "남혐", "여혐", "페미", "메갈", "워마드", "일베", "한남", "김치녀", "젠더",
+            "장애인", "자살", "살인", "사망", "시신", "폭행", "학대", "성폭", "성범죄", "마약", "테러", "참사"]

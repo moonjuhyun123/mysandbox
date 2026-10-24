@@ -1,0 +1,67 @@
+# humor-collector settings. Relative paths are relative to the project directory.
+
+[general]
+db_path = "data/humor.db"
+log_dir = "data/logs"
+export_dir = "data/exports"
+# Identify the bot honestly. Put a contact URL or e-mail here so operators can reach you.
+user_agent = "humor-collector/0.1 (personal research; respects robots.txt)"
+request_timeout = 20.0        # seconds per request
+max_retries = 3               # retries for timeouts / connection errors / 429 / 5xx
+backoff_base = 2.0            # 2s, 4s, 8s (+ jitter); Retry-After is honoured (capped at 120s)
+default_delay = 3.0           # minimum seconds between requests to the same host
+respect_robots = true         # robots.txt Disallow and Crawl-delay (protego)
+blocked_cooldown_hours = 12   # after a CAPTCHA/challenge the source pauses this long
+detail_max_attempts = 3       # retries of a failed post page across runs
+
+[output]
+# Posts with these flags are hidden from `top` and `export` unless --all is given.
+exclude_flags = ["off_topic", "nsfw", "politics", "sensitive"]
+
+[scoring]
+weights = { likes = 0.5, comments_count = 0.25, views = 0.25 }
+shrink_k = 10.0               # percentile shrinkage toward 0.5 for sources with few posts
+dislike_penalty = 0.15
+rank_weight = 0.15
+rank_horizon = 100
+cross_source_bonus = 0.05     # per extra community where the same post was found
+cross_source_bonus_max = 0.10
+
+[dedup]
+title_ratio = 90.0            # rapidfuzz ratio of normalized titles (0-100)
+body_jaccard = 0.6            # 3-gram Jaccard of bodies, together with title_ratio
+body_only_jaccard = 0.85      # bodies alone (both >= long_body_len chars)
+min_body_len = 30
+long_body_len = 150
+min_exact_title_len = 8       # image/list-only posts: identical normalized title of >= 8 chars
+window_days = 30
+
+# --------------------------------------------------------------------------- sources
+# Listing overrides: [sources.<name>.listings.<listing>] max_pages = N / enabled = false
+# `python main.py sources` shows every listing name.
+
+[sources.ruliweb]
+enabled = true
+delay = 3.0
+allowed_boards = ["300143"]   # 300143 = 유머 게시판; 힛갤 also contains game/hobby boards
+min_likes = 10                # 유머 BEST "now" list includes posts that just entered (few likes)
+
+[sources.bobaedream]
+enabled = true
+delay = 3.0
+allowed_categories = ["유머게시판", "신유머/이슈/움짤"]
+
+[sources.dogdrip]
+enabled = true
+delay = 10.0                  # robots.txt Crawl-delay: 10
+min_likes = 20
+
+[sources.lemmy]
+enabled = true
+instance = "https://lemmy.world"
+communities = ["funny@lemmy.world", "jokes@lemmy.world"]
+recent_sorts = ["TopDay", "TopWeek"]
+archive_sorts = ["TopAll"]
+page_size = 20
+max_pages = 1
+# lemmy.world robots.txt Crawl-delay: 60 -> one request per minute (applied automatically)

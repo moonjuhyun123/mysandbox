@@ -1,0 +1,7 @@
+# crontab -e   (adjust the path; logs also go to data/logs/collector.log)
+# recent popular posts every 3 hours
+17 */3 * * *  /opt/humor-collector/deploy/run_collect.sh >> /opt/humor-collector/data/logs/cron.log 2>&1
+# past popular posts once a day (continues where the previous run stopped)
+43 4 * * *    /opt/humor-collector/deploy/run_collect.sh --mode archive >> /opt/humor-collector/data/logs/cron.log 2>&1
+# refresh numbers of posts from the last 3 days that dropped off the lists
+29 5 * * *    cd /opt/humor-collector && .venv/bin/python main.py refresh --source ruliweb && .venv/bin/python main.py refresh --source bobaedream

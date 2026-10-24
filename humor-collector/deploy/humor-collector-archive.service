@@ -1,0 +1,13 @@
+# Walk older best-of pages (hall of fame, past pages) a few pages per day; resumes by cursor.
+[Unit]
+Description=humor-collector: collect past popular posts (archive mode)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=YOUR_USER
+WorkingDirectory=/opt/humor-collector
+ExecStart=/opt/humor-collector/deploy/run_collect.sh --mode archive
+TimeoutStartSec=3h
+Nice=10
