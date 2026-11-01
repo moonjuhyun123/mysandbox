@@ -100,3 +100,53 @@
 
 **결정**: 1차 구현 대상은 **루리웹**과 **보배드림**입니다. 추가로 **개드립(목록 전용)**과
 **Lemmy(공식 API, 해외)**를 같은 어댑터 구조로 붙였습니다.
+
+## 3단계: SNS·포털 추가 조사 (2026-11-01)
+
+YouTube, Instagram 등 SNS와 국내 포털을 같은 기준으로 확인했습니다.
+
+- 조사한 것: 공식 API, 인증·비용, "인기 목록"이 실제로 있는지, 약관·데이터 보관 제한.
+- 확인 방법: 플랫폼 묶음마다 1차 출처(공식 개발자 문서, 약관, 공지)를 조사하고, 공개 URL에 소량
+  요청을 보내 봤습니다. 이어서 다른 검증자가 핵심 주장을 1차 출처로 반박해 보는 단계를 한 번 더
+  거쳤습니다.
+- 검증 결과: 주장 111개 중 **확인 91**, **틀림·구버전 10**(아래 표에 수정 반영), **확인 불가 10**.
+  요청은 모두 이 클라우드 환경(미국 데이터센터 IP)에서 보냈습니다.
+
+| 플랫폼 | 계정 없이 | 공식 경로 | 인기 목록 | 핵심 제약 | 판단 |
+|---|---|---|---|---|---|
+| **YouTube** | ✕. API는 키 없이 403. 채널 RSS `/feeds/videos.xml`은 robots.txt가 차단. `/feed/trending`은 홈 화면만 반환 | Data API v3 + **무료 API 키**(소유자의 Google Cloud 프로젝트) | 인기 급상승 페이지 폐지(2025-07-21, API 개정 이력). `chart=mostPopular`는 음악·영화·게임 차트 기반. `search.list order=viewCount`(검색 하루 100회 별도 버킷) | 키 없이 받은 데이터는 **30일 안에 삭제 또는 갱신**(Developer Policies III.E.4). **조회·좋아요를 섞은 파생 점수 금지**(III.E.4.h). 출처 표시 의무. 스크래핑 금지. 댓글 작성자 식별정보 수집 금지(YouTube ToS) | 키를 받으면 가능. 인기 영상의 **베스트 댓글**(`commentThreads order=relevance`)이 가장 좋은 텍스트 소재. 우리 점수 체계와 보관 방식은 YouTube 전용으로 따로 처리해야 함 |
+| **Instagram** | ✕. robots.txt `User-agent: * Disallow: /`와 "자동 수집 금지" 문구. 약관 §4.2 | Graph API. 소유자의 **프로페셔널 계정 + Meta 앱 + FB 페이지** 필요 | 해시태그 `top_media`는 App Review(Public Content Access)와 Business Verification 필요. Business Discovery로 지정한 크리에이터 계정 글의 좋아요·댓글 수는 조회 가능 | 비공식 도구(instaloader, instagrapi)는 로그인이 필요하고 약관 위반 | **1차에서는 제외**. 경쟁 계정 벤치마크용 Business Discovery만 소유자가 동의하면 가능 |
+| **Threads** | ✕ (robots.txt 차단) | `keyword_search`(search_type=TOP). `threads_keyword_search` App Review 필요 | TOP 정렬은 있으나 **좋아요 수 없음** | 승인 없으면 본인 글만 검색. Access Verification은 2026-10-09 폐지됐지만 App Review와 Business Verification은 유지 | 보류 |
+| **Facebook** | ✕ | CrowdTangle 종료(2024-08-14). Meta Content Library는 비영리·학술 연구용만 | – | – | 제외 |
+| **TikTok** | ✕. 약관이 자동 수집 금지 | Research API: 비영리·학술 연구자만, 한국은 대상 지역 아님. Display API: 본인 영상만 | Creative Center는 JS 페이지만 있고 API 없음 | 비공식 도구는 브라우저 위장·서명 우회 방식 | 제외 |
+| **X** | ✕. robots.txt `Disallow: /`, 약관이 크롤링 금지(위반 시 배상 조항) | **Pay-Per-Use 유료**(게시물 조회 $0.005, 트렌드 $0.010) | 트렌드에 게시물 수 포함 | 유료라 소유자 승인 필요 | 제외 |
+| **Bluesky** | **○**. `public.api.bsky.app` robots.txt `Allow: /` | 공식 공개 API(AppView). 키 불필요 | 한국어 인기 피드 실재. 예: "한국어/한글 30 리포스트 이상 잼얘 모음" `at://did:plc:plqo3qfexrv2vwlbnxobff7c/app.bsky.feed.generator/aaaju46ivv6sg`, "하루치 밀린 블스 따라잡기". 좋아요·리포스트·댓글 수 제공 | 삭제 요청 처리 의무, `contentVisibilityDeclaration` 존중, `!no-unauthenticated` 작성자 제외(한국 피드 15명 중 8명). 성인 해시태그 섞임. 비로그인 `searchPosts`는 첫 페이지만 됨 | **계정 없이 추가할 수 있는 유일한 후보**. 양은 많지 않음 |
+| Mastodon(한국 인스턴스) | ○ | 공개 `/api/v1/trends/statuses` | 활발한 한국 인스턴스도 인기 글 0~1건, 유머 없음 | 서버마다 요청 한도가 다름 | 효용 낮음 |
+| Tumblr / Imgur / Pinterest | ✕(키 필요) | – | – | Tumblr는 3일 보관 제한, Imgur는 신규 등록 닫힘·약관 금지, Pinterest는 저장 금지 | 제외 |
+| 네이버 검색 API / 다음 검색 API | ✕(앱 등록 필요) | 블로그·카페·뉴스 검색 | **인기 지표 없음**(정확도·날짜 정렬만) | 네이버: 결과 저장 제한(24시간·21일 캐시), AI 활용 금지 특약(2026-09-07). 신규 키는 NCP 계정 필요. 다음: 캐시 금지 | 제외 |
+| 네이버 카페·블로그·뉴스 랭킹·웹툰 베스트댓글 | ✕ | 없음 | – | robots.txt 전면 차단, 약관이 자동 수집 금지 | 제외 |
+| 다음 카페 인기글 | robots는 일부 허용 | 없음 | 비공개 JS 엔드포인트로만 접근 | 약관이 사전 동의 없는 복제 금지 | 제외 |
+| 오늘의유머 | ✕ | – | – | robots.txt조차 Cloudflare 챌린지 | 제외 |
+
+**결론**
+
+- YouTube는 소유자가 무료 API 키를 발급하면 붙일 수 있습니다. 다만 30일 삭제·갱신 의무와 파생 점수
+  금지 때문에 YouTube 데이터는 별도로 저장하고 처리해야 합니다.
+- Instagram, TikTok, X, Facebook, 네이버·다음 인기글은 규칙을 지키면서 자동으로 수집할 방법이 없습니다.
+- 계정 없이 바로 추가할 수 있는 곳은 Bluesky뿐입니다.
+
+주요 1차 출처:
+
+- YouTube: [Developer Policies](https://developers.google.com/youtube/terms/developer-policies),
+  [API 개정 이력](https://developers.google.com/youtube/v3/revision_history),
+  [쿼터 비용](https://developers.google.com/youtube/v3/determine_quota_cost)
+- Meta: [Instagram 약관](https://www.facebook.com/help/581066165581870),
+  [Instagram Platform 변경 이력](https://developers.facebook.com/docs/instagram-platform/changelog),
+  [Threads 문서](https://developers.facebook.com/docs/threads),
+  [Access Verification 폐지](https://developers.facebook.com/blog/post/2026/10/09/retiring-access-verification-for-tech-provider-apps/)
+- TikTok: [Research API FAQ](https://developers.tiktok.com/doc/research-api-faq)
+- X: [Trends API](https://docs.x.com/x-api/trends/get-trends-by-woeid)
+- Bluesky: [Developer Guidelines](https://bsky.network/docs/developer-guidelines), [Labels](https://atproto.com/guides/labels)
+- Mastodon: [Rate limits](https://docs.joinmastodon.org/api/rate-limits/)
+- 네이버: [서비스 약관](https://policy.naver.com/rules/service.html),
+  [API HUB 개요](https://guide.ncloud-docs.com/docs/apihub-overview)

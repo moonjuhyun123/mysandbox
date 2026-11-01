@@ -85,6 +85,55 @@ UNSUPPORTED: dict[str, UnsupportedSource] = {
         "2026-10-24",
         "Needs your Reddit account/app approval - not done without your consent.",
     ),
+    "youtube": UnsupportedSource(
+        "YouTube",
+        "Data API v3 needs an API key (owner's Google Cloud project); keyless calls get 403, channel "
+        "RSS /feeds/videos.xml is disallowed by robots.txt and the Trending page was retired 2025-07-21. "
+        "API terms: delete/refresh data within 30 days, no derived score from views/likes.",
+        "2026-11-01",
+        "Possible with your free API key; YouTube data then needs its own retention and scoring rules.",
+    ),
+    "instagram": UnsupportedSource(
+        "Instagram",
+        "robots.txt 'User-agent: * Disallow: /' and Terms ban automated collection; Graph API needs your "
+        "professional account + Meta app; hashtag top media needs App Review and Business Verification.",
+        "2026-11-01",
+        "Only Business Discovery of chosen creator accounts, with your accounts and consent.",
+    ),
+    "threads": UnsupportedSource(
+        "Threads",
+        "robots.txt disallows; keyword_search (TOP) needs threads_keyword_search App Review and gives no "
+        "like counts.",
+        "2026-11-01",
+        "Only with a Meta app and App Review you approve.",
+    ),
+    "tiktok": UnsupportedSource(
+        "TikTok",
+        "Terms ban automated collection; Research API is for non-profit/academic researchers in eligible "
+        "regions (not Korea); Display API returns only your own videos.",
+        "2026-11-01",
+        "No compliant path for others' popular videos.",
+    ),
+    "x": UnsupportedSource(
+        "X (Twitter)",
+        "robots.txt disallows all and the Terms ban crawling; API reads are pay-per-use "
+        "($0.005 per post read).",
+        "2026-11-01",
+        "Only if you approve a paid developer account.",
+    ),
+    "naver": UnsupportedSource(
+        "네이버 (카페·블로그·뉴스·웹툰)",
+        "Cafe/blog/news-ranking/webtoon-comment pages are robots-disallowed and the Terms ban automated "
+        "collection; the Search API has no popularity metric and limits storage and AI use.",
+        "2026-11-01",
+        "No compliant path for popular posts.",
+    ),
+    "todayhumor": UnsupportedSource(
+        "오늘의유머",
+        "Even robots.txt is behind a Cloudflare challenge.",
+        "2026-11-01",
+        "Only if reachable without a challenge.",
+    ),
 }
 
 
