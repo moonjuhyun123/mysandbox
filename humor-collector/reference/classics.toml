@@ -135,11 +135,12 @@ use_when = "모임, 회식, MT처럼 둘러앉아 노는 장면이나 서로의 
 food_fit = "음식 캐릭터들이 둘러앉아 '냉장고에 일주일 넘게 있던 사람 접어', '유통기한 지난 사람 접어'처럼 서로의 약점을 공격하는 컷으로 쓸 수 있다."
 fame = 5
 fame_evidence = "텐아시아 2010년 12월 8일 기사는 이 게임이 홍보 없이 남녀노소에게 퍼졌고 소녀시대도 숙소에서 즐긴다고 전했다. 위키백과는 LG유플러스 U+5G 광고에 '손병호 게임'편이 있었다고 적고 있다."
-caution = "게임 이름에 실존 배우 손병호의 이름이 들어가므로 이름만 쓰고 얼굴이나 캐리커처는 쓰지 않는다. 해피투게더 방송 화면은 KBS 저작물이라 캡처를 넣지 않는다."
+caution = "게임 이름에 실존 배우 손병호의 이름이 들어가므로 이름만 쓰고 얼굴이나 캐리커처는 쓰지 않는다. 해피투게더 방송 화면은 KBS 저작물이라 캡처를 넣지 않는다. 이 게임은 방송 전부터 술자리에서 '이미지 게임' 같은 이름으로 하던 놀이였다는 '원조 논란'이 있었다(손병호 본인이 2018년 7월 SBS '동상이몽2'에서 해명함). 그러니 '손병호가 만든 게임'이라고 단정하는 문구는 쓰지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "발견자가 적은 'KBS 묻지마 사우나'는 텐아시아 표기이며, 위키백과는 이 게임을 해피투게더 시즌3 코너로 분류하고 사우나 코너명을 '웃지마, 사우나'로 적고 있어 코너명은 미확인이다. 텐아시아 기사는 URL과 달리 2010년 12월 8일 작성 기사다."
 sources = ["https://www.tenasia.co.kr/article/2020012200084", "https://ko.wikipedia.org/wiki/손병호", "https://ko.wikipedia.org/wiki/해피투게더_(텔레비전_프로그램)"]
+caution_sources = ["https://www.wikitree.co.kr/articles/358157"]
 
 [[classic]]
 name = "무한~도전!"
@@ -309,11 +310,12 @@ use_when = "냉장고를 열어 남은 재료를 공개하는 장면, 타이머�
 food_fit = "냉장고 속 음식 캐릭터들이 '오늘 내가 뽑힐까' 긴장하는 장면이나, 15분 타이머 앞에서 요리되는 상황으로 쓸 수 있어 음식 만화와 잘 맞는다."
 fame = 4.5
 fame_evidence = "위키백과에 따르면 2015 JTBC 어워즈에서 최고 프로그램상 등 3개 부문을 받았다. 2024년 시즌2로 돌아와 2026년 11월 1일 기준 95회까지 방영되었다."
-caution = "프로그램 제목·로고와 실제 방송 화면은 JTBC 저작물이므로 그대로 쓰지 않는다. 출연 셰프와 MC(김성주·안정환 등)의 얼굴도 그리지 않는다. 냉장고와 15분 타이머 같은 형식만 빌린다."
+caution = "프로그램 제목·로고와 실제 방송 화면은 JTBC 저작물이므로 그대로 쓰지 않는다. 출연 셰프와 MC(김성주·안정환 등)의 얼굴도 그리지 않는다. 냉장고와 15분 타이머 같은 형식만 빌린다. 시즌1 출연 셰프 정창욱은 2021년 지인 폭행과 흉기 협박으로 기소되어 2022년 9월 1심에서 징역 10개월을 받았고, 2023년 10월 2심에서 징역 4개월 실형으로 감형됐다(법정구속은 하지 않음). 2015년에는 맹기용 셰프가 자질 논란 끝에 자진 하차했다. 그러니 특정 출연 셰프의 요리, 말투, 에피소드를 떠올리게 하는 설정은 넣지 않는다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "시즌1 종영일(2019년 11월 25일)과 시즌2가 계속 방영 중이라는 점(95회)을 보강했다. 나머지는 위키백과와 일치한다."
 sources = ["https://ko.wikipedia.org/wiki/냉장고를_부탁해"]
+caution_sources = ["https://sports.khan.co.kr/article/202310271650003", "https://newstomato.com/ReadNews.aspx?no=1148564", "https://www.etoday.co.kr/news/view/1154307"]
 
 [[classic]]
 name = "MZ오피스 / 맑은 눈의 광인(맑눈광)"
@@ -676,28 +678,12 @@ use_when = "명절 에피소드에서 캐릭터들이 운동회나 체육대회�
 food_fit = "송편·전·식혜 캐릭터들이 명절 특집 '음식 육상 대회'를 열어 달리기와 양궁을 겨루는 배경 패러디로 쓸 수 있다."
 fame = 4
 fame_evidence = "한국어·영어 위키백과 모두 약칭 '아육대'를 싣고 있으며, 2010년부터 2025년 추석까지 명절 특집으로 이어졌다. 2016년 출연자 연쇄 부상이 기사화될 만큼 화제성이 컸다."
-caution = "MBC 프로그램명·로고와 방송 화면은 저작권 대상이므로 제목과 로고를 그대로 쓰지 말고 형식만 패러디한다. 실존 아이돌 얼굴이나 경기 장면을 쓰면 초상권 문제가 생기고, 2016년 부상 논란이 있었으니 부상을 웃음거리로 삼지 않는다."
+caution = "MBC 프로그램명·로고와 방송 화면은 저작권 대상이므로 제목과 로고를 그대로 쓰지 말고 형식만 패러디한다. 실존 아이돌 얼굴이나 경기 장면을 쓰면 초상권 문제가 생기고, 2016년 부상 논란이 있었으니 부상을 웃음거리로 삼지 않는다. 부상 문제는 2016년만이 아니다. 2014년 인피니트 우현, AOA 설현 등 2010년대 내내 부상이 이어졌고 일부 팬덤은 폐지 청원까지 냈다. 스태프가 이달의 소녀 츄의 머리채를 잡은 영상이 퍼진 적도 있다. 2022년에는 약 15시간 녹화 동안 방청객 퇴장과 취식을 막았다가, 소속사가 식사를 부담하는 '역조공' 논란이 일었다. 김희철은 출연을 거부하면 음악방송에서 불이익을 받을 수 있다고 말한 적이 있다. 그러니 부상뿐 아니라 밤샘 녹화, 혹사, 억지 출연, 팬 동원을 웃음 소재로 쓰지 않는다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "'매년 설과 추석'은 정확하지 않다. 코로나19로 2020년 추석과 2021년 설에는 특별판만 방송됐고, 이후에는 2022·2024·2025년 추석에 방송됐다. 첫 방송일은 영문 위키백과 기준 2010년 9월 25~26일로 보완했다."
 sources = ["https://ko.wikipedia.org/wiki/아이돌_스타_선수권_대회", "https://en.wikipedia.org/wiki/Idol_Star_Athletics_Championships"]
-
-[[classic]]
-name = "다나카 (김경욱 부캐)"
-aliases = ["다나카상", "다나카 유키오", "나몰라패밀리 다나카"]
-category = "예능"
-year = "미확인"
-origin = "나몰라패밀리 소속 개그맨 김경욱이 연기하는 일본인 부캐릭터로, 위키백과에는 이름이 '다나카 유키오'로 적혀 있다. 처음 나온 시기·매체와 인기를 얻은 계기는 미확인이다."
-meaning = "어눌한 한국어를 쓰는 일본인 캐릭터를 연기하는 부캐 코미디다. 세부 말투와 유행어는 미확인이다."
-use_when = "초밥이나 오니기리 같은 일본 음식 캐릭터가 등장하는 장면에서 쓸 수 있다. 다만 사용 전에 캐릭터 설정을 다시 확인해야 한다."
-food_fit = "일본 음식 캐릭터에 부캐 콘셉트를 입히는 정도로 쓸 수 있다. 말투를 흉내 내는 방식은 국적 희화화로 읽힐 위험이 있다."
-fame = 4
-fame_evidence = "위키백과 '김경욱 (희극인)' 문서에서 '다나카 유키오' 부캐 활동만 확인했다. 방송 출연, 음원, 공연 등 인기를 보여 주는 근거는 웹 검색 한도 소진과 나무위키 접근 차단으로 확인하지 못했다. 인지도 4점은 검증자의 추정이다."
-caution = "실존 연예인의 부캐라 외모와 의상을 그대로 그리면 초상권·퍼블리시티권 문제가 생길 수 있다. 일본인 말투 흉내는 국적 고정관념이나 희화화로 비칠 수 있으니 조심해야 한다. 캐릭터의 직업 설정 등 세부 콘셉트는 미확인이므로 쓰기 전에 직접 확인해야 한다."
-verified = "partial"
-risk_checked = false
-notes = "부캐 이름이 '다나카 유키오'임을 보충했다. 나몰라패밀리는 2006년 SBS '웃음을 찾는 사람들' 코너로 시작한 팀이지만, 다나카 캐릭터가 언제 처음 나왔는지는 미확인이다. 인기 근거는 출처로 확인하지 못했다."
-sources = ["https://ko.wikipedia.org/wiki/김경욱_(희극인)", "https://ko.wikipedia.org/wiki/나몰라패밀리"]
+caution_sources = ["https://nocutnews.co.kr/news/5801674", "https://www.bizhankook.com/bk/article/15254", "https://news.tf.co.kr/read/ogmeta/1772058.htm", "https://www.kukinews.com/article/view/kuk201601200156"]
 
 [[classic]]
 name = "유재석 '저런' 짤"
@@ -712,7 +698,7 @@ fame = 4
 fame_evidence = "헤럴드경제 2016.1.1 기사에서 '상대가 애처로울 때 사용하는 방송인 유재석의 저런 짤'로 대표 짤 20선에 들었다."
 caution = "실존 인물인 유재석의 초상권과 퍼블리시티권이 있다. 얼굴이나 특징을 닮게 그리지 않는다. 방송 캡처는 방송사 저작물이므로 쓰지 말고 '저런...'이라는 말과 표정 느낌만 빌린다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "기사에는 '방송인 유재석의 저런 짤'로만 나온다. 무한도전 출처, 회차, 시기는 확인하지 못했다."
 sources = ["https://biz.heraldcorp.com/article/794366"]
 
@@ -729,7 +715,7 @@ fame = 4
 fame_evidence = "2016년 여자친구, 2017년 워너원('나야 나'), 2018년 아이즈원('라비앙로즈') 등 컴백 아이돌의 2배속 도전이 꾸준히 기사화됐다."
 caution = "MBC에브리원 방송 화면과 '주간아이돌' 로고는 저작권·상표 문제가 있어 그대로 쓰지 않는다. 실존 아이돌의 얼굴이나 안무를 그대로 재현하지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "'랜덤플레이댄스'는 2배속 댄스와 별개 코너이므로 별칭에서 뺐다(2017년 MTN 기사에서 별도 미션으로 나온다). 형식이 다른 예능으로 퍼졌다는 보도와 코너 최초 시점은 확인하지 못했다."
 sources = ["https://www.tenasia.co.kr/article/2016071283514", "https://news.mtn.co.kr/news-detail/2017081009470967761", "https://twig24.com/news/entertainments/broadcasting/2018/10/30/20181030500096", "https://ko.wikipedia.org/wiki/주간_아이돌"]
 
@@ -744,11 +730,12 @@ use_when = "누가 꿈이나 목표를 거창하게 강요할 때, 또는 부담
 food_fit = "꿈을 묻는 어른 빵에게 다른 캐릭터가 '뭘 훌륭한 빵이 돼, 그냥 아무 빵이나 돼'라고 답하는 장면처럼 음식 이름만 바꿔 쓰기 쉽다."
 fame = 4
 fame_evidence = "방송 뒤 '이효리 명언'으로 널리 회자됐고, 2022년 텐아시아가 대표 명언으로 다뤘으며, 2026년 9월 사과 소식도 일간스포츠 등에서 기사화됐다."
-caution = "이효리, 이경규, 강호동은 실존 인물이라 얼굴을 그리지 않는다. 장면 속 아이는 일반인이므로 재현하지 않는다. JTBC 방송 화면도 쓰지 않는다."
+caution = "이효리, 이경규, 강호동은 실존 인물이라 얼굴을 그리지 않는다. 장면 속 아이는 일반인이므로 재현하지 않는다. JTBC 방송 화면도 쓰지 않는다. 장면 속 이경규는 2025년 6월 처방약(공황장애 약)을 먹고 운전한 혐의로 2025년 10월 벌금 200만 원에 약식기소됐고, 법원도 같은 액수의 약식명령을 내렸다. 그러니 '훌륭한 사람'과 대비되는 어른을 이경규처럼 그리거나, 약이나 운전 소재와 엮지 않는다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "방송 회차(42회)와 시기(2017년 8월), 아이가 하교하던 9살 아이였다는 점을 보충했다."
 sources = ["https://isplus.com/article/view/isp202609250043", "https://www.tenasia.co.kr/article/2022072470514"]
+caution_sources = ["https://www.wikitree.co.kr/articles/1089820", "https://economist.co.kr/article/view/ecn202511050056", "https://isplus.com/article/view/isp202609250043"]
 
 [[classic]]
 name = "트민남 (전현무)"
@@ -761,11 +748,12 @@ use_when = "유행 음식이나 핫플을 쫓아다니는 캐릭터, 그가 손�
 food_fit = "탕후루, 두쫀쿠 같은 유행 디저트를 섭렵하는 캐릭터나, 그 캐릭터가 언급하자마자 유행 음식들이 시드는 장면에 아주 잘 맞는다."
 fame = 4
 fame_evidence = "2024년 텐아시아, 2026년 인사이트와 엑스포츠뉴스가 모두 전현무의 대표 캐릭터로 소개했다."
-caution = "전현무는 실존 인물이라 얼굴을 그리지 않는다. 2026년 9월 '나 혼자 산다' 알마티 여행 편 조작 의혹 보도가 있어 당분간 그를 직접 떠올리게 하는 사용은 피하고, '트민남'이라는 일반 표현으로만 쓴다. MBC 프로그램 로고도 쓰지 않는다."
+caution = "전현무는 실존 인물이라 얼굴을 그리지 않는다. 2026년 9월 '나 혼자 산다' 알마티 여행 편 조작 의혹 보도가 있어 당분간 그를 직접 떠올리게 하는 사용은 피하고, '트민남'이라는 일반 표현으로만 쓴다. MBC 프로그램 로고도 쓰지 않는다. 전현무는 2025년 12월 2016년 '나 혼자 산다'의 차 안 수액 장면이 다시 알려져 의료법 위반 혐의로 고발됐고, 경찰이 수사에 착수했다. 대한의사협회는 의료기관 밖에서 주사를 맞는 것은 기본적으로 안 된다고 지적했다. 알마티 편 조작 의혹은 2026년 10월까지도 보도가 이어졌다(제작진은 스태프 항공권 사전 준비를 인정함). 그러니 주사, 링거, 피로 회복, '즉흥 여행' 소재와 '트민남'을 엮지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "최초 사용 시점은 확인하지 못했다. '트렌드 절단남'은 엑스포츠뉴스가 아니라 2026년 2월 인사이트 기사에서 확인했다. '트민녀' 별칭은 출처에서 확인되지 않아 뺐다."
 sources = ["https://www.insight.co.kr/news/541742", "https://www.tenasia.co.kr/article/2024071944884", "https://www.xportsnews.com/article/2190942"]
+caution_sources = ["https://www.heraldk.com/article/2025122500000060676", "https://sports.khan.co.kr/article/202512240354003", "https://www.mydaily.co.kr/page/view/2026090213424064608"]
 
 [[classic]]
 name = "리치언니 (박세리)"
@@ -778,11 +766,12 @@ use_when = "한 캐릭터가 장보기나 주문을 남들보다 몇 배로 크�
 food_fit = "치킨을 반반 대신 프라이드와 양념을 한 마리씩 시키는 캐릭터, 창고형 마트에서 박스째 사는 감자 캐릭터에게 '리치 언니 모드' 자막을 붙일 수 있다."
 fame = 4
 fame_evidence = "비즈한국 2021년 3월 9일 기사가 예능 속 박세리를 '리치 언니'로 소개했고, 아주경제 2021년 12월 인터뷰 제목과 2023년 4월 '개는 훌륭하다' MC 합류 기사 제목에도 이 별명이 수식어로 쓰였다."
-caution = "실존 인물이므로 박세리의 얼굴이나 이름을 캐릭터에 쓰지 말고 '리치 언니'라는 호칭과 대용량 콘셉트만 빌린다. 방송 화면은 MBC·E채널 저작물이다. 박세리는 인터뷰에서 '리치'를 재산이 아니라 나눔의 여유라는 뜻으로 받아들인다고 했으니 재산 과시로만 쓰지 않는다. 2024년 부친 관련 재단 고소 논란이 보도된 것으로 알고 있으나 이번 검증에서 출처는 미확인이며, 가족이나 돈 분쟁 소재와 엮지 않는다."
+caution = "실존 인물이므로 박세리의 얼굴이나 이름을 캐릭터에 쓰지 말고 '리치 언니'라는 호칭과 대용량 콘셉트만 빌린다. 방송 화면은 MBC·E채널 저작물이다. 박세리는 인터뷰에서 '리치'를 재산이 아니라 나눔의 여유라는 뜻으로 받아들인다고 했으니 재산 과시로만 쓰지 않는다. 2024년 부친 관련 재단 고소 논란이 보도된 것으로 알고 있으나 이번 검증에서 출처는 미확인이며, 가족이나 돈 분쟁 소재와 엮지 않는다. 기존 문구의 '출처 미확인'은 이제 확인됐다. 박세리희망재단은 2023년 9월 부친 박준철 씨를 사문서위조 혐의로 고소했고, 박세리는 2024년 6월 기자회견에서 부친의 채무 문제가 배경이라며 눈물을 보였다. 대전지법은 2025년 12월 박준철 씨에게 징역 10개월, 집행유예 2년을 선고했다(1심). 그러니 아버지, 빚, 도장, 재단 소재는 물론, 돈을 퍼 주는 사람이 손해를 보는 식의 개그와 '리치 언니'를 엮지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "카테고리를 '예능'으로 바꿨다. 아주경제 기사 날짜는 2021년 12월 6일이다. 출연 프로그램과 '나 혼자 산다' 첫 출연일(2020년 5월 22일)은 확인했으나 별명이 처음 붙은 회차는 확인하지 못했다. 이번 턴은 웹 검색 한도가 소진되었고 나무위키가 403으로 막혀 추가 확인을 하지 못했다."
 sources = ["http://bizhankook.com/articles/21521.html", "https://www.ajunews.com/view/20211201151338470", "https://ko.wikipedia.org/wiki/박세리", "https://en.wikipedia.org/wiki/Pak_Se-ri"]
+caution_sources = ["https://isplus.com/article/view/isp202512170121", "https://m.seoul.co.kr/news/2024/06/18/20240618500205", "https://www.segye.com/view/20240612501745"]
 
 [[classic]]
 name = "토토가 (토요일 토요일은 가수다)"
@@ -2649,11 +2638,12 @@ use_when = "바나나를 보고 흥분하는 장면, 정체불명의 언어로 �
 food_fit = "바나나 캐릭터가 '바나나~'를 외치며 미니언 흉내를 내는 장면처럼 바나나·노란 음식 캐릭터와 잘 맞는다. 다만 미니언 외형을 직접 그리는 것은 피해야 한다."
 fame = 4
 fame_evidence = "위키백과가 '2010년 인터넷 밈'으로 분류한다. 영문 위키백과는 페이스북 밈, 틱톡 #minionscult, 2022년 #gentleminions 유행을 소개한다. 한국 내 흥행 수치는 확인하지 못했다."
-caution = "유니버설·일루미네이션의 저작권·상표 캐릭터라 외형(노란 캡슐 몸체, 고글, 멜빵바지)을 그대로 그리면 침해 위험이 크다. 색감이나 '바나나~' 같은 대사만 빌려 오는 간접 패러디로 제한하는 것이 안전하다."
+caution = "유니버설·일루미네이션의 저작권·상표 캐릭터라 외형(노란 캡슐 몸체, 고글, 멜빵바지)을 그대로 그리면 침해 위험이 크다. 색감이나 '바나나~' 같은 대사만 빌려 오는 간접 패러디로 제한하는 것이 안전하다. 유니버설은 2025년 6월 디즈니와 함께 Midjourney를, 2025년 9월 MiniMax를 저작권 침해로 고소했다. 고소장에는 AI가 만들어 낸 미니언 이미지가 증거로 들어갔다. 그러니 이미지 생성 AI로 미니언을 닮은 그림(노란 캡슐형, 고글)을 만들지 않는다. AI 결과물에서 미니언 외형이 비치면 버린다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "후속작 목록에 '미니언즈 2'(2022)와 '슈퍼배드 4'(2024)를 보충했다. 영문 위키백과에서는 '바나나' 노래 장면을 확인하지 못했다(첫 편 DVD에 'Banana' 단편이 실려 있다는 서술만 있음). 한국 흥행과 인지도 수치는 미확인이다."
 sources = ["https://ko.wikipedia.org/wiki/미니언즈_(캐릭터)", "https://en.wikipedia.org/wiki/Minions_(Despicable_Me)"]
+caution_sources = ["https://the-decoder.com/disney-and-universal-sue-midjourney-over-ai-copies-of-trademarked-characters/?cmpscreencustom=1", "https://www.claimsjournal.com/news/national/2025/09/16/332991.htm", "https://www.techdirt.com/tag/minions/"]
 
 [[classic]]
 name = "제빵왕 김탁구"
@@ -2666,11 +2656,12 @@ use_when = "빵 캐릭터가 최고의 빵이 되겠다고 다짐하는 장면, 
 food_fit = "아주 좋다. '제빵왕 김소보로'처럼 제목을 바꾸거나, 반죽 앞에서 결의를 다지는 컷에 맞는다."
 fame = 4
 fame_evidence = "최종회(30회)가 TNmS 전국 50.8%, AGB 전국 49.3%를 기록했다. SPC그룹이 제빵을 자문하고 '김탁구빵'을 냈으며, 삼립식품도 관련 빵 7종을 출시했다(위키백과)."
-caution = "실존 배우(윤시윤·주원)를 닮게 그리지 않고, KBS 방송 화면과 로고는 쓰지 않는다. 제빵 자문사 SPC는 2022년 계열사 공장 노동자 사망 사고로 불매운동을 겪었으므로 실제 브랜드나 제품과 엮지 않는다."
+caution = "실존 배우(윤시윤·주원)를 닮게 그리지 않고, KBS 방송 화면과 로고는 쓰지 않는다. 제빵 자문사 SPC는 2022년 계열사 공장 노동자 사망 사고로 불매운동을 겪었으므로 실제 브랜드나 제품과 엮지 않는다. SPC는 2022년 사고 뒤에도 2025년 5월 19일 SPC삼립 시화공장에서 50대 노동자가 컨베이어에 끼여 숨지는 사고를 냈다. 이 사고로 '크보빵' 불매 등 불매운동이 다시 번졌고, 2022년부터 SPC 계열사 노동자 3명이 숨졌다는 비판이 나왔다. SPC그룹은 2010년 8월 파리바게뜨와 삼립을 통해 '김탁구빵' 시리즈 9종을 실제로 출시했고, 극중 김탁구는 허영인 SPC 회장을 모티브로 했다는 보도도 있다. 그러니 별칭 '김탁구빵'은 쓰지 않는다. 음식 캐릭터 만화에서 이 밈을 쓸 때는 빵집 프랜차이즈, 공장, 단팥빵·보리밥빵 같은 극중 상품을 떠올리게 하지 않도록 한다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "'KBS 미니시리즈 시청률 1위'라는 표현은 열람한 문서에서 확인하지 못했다. 파리바게뜨 제품명은 '배부른 보리밥빵'과 '주종봉단팥빵'이다. '제빵왕 OOO' 제목 패러디가 얼마나 유행했는지와 대표 대사 밈은 미확인이다."
 sources = ["https://ko.wikipedia.org/wiki/제빵왕_김탁구"]
+caution_sources = ["https://www.khan.co.kr/article/202505201525001", "https://weekly.khan.co.kr/article/202505261500001", "https://www.etoday.co.kr/news/view/351834", "https://sports.khan.co.kr/article/201008131940083"]
 
 [[classic]]
 name = "폭군의 셰프"
@@ -2683,11 +2674,12 @@ use_when = "까다로운 손님이나 상사가 음식을 맛보고 판정하는
 food_fit = "좋다. 왕관을 쓴 음식 캐릭터가 수라상을 맛보며 판정하고, 요리사 캐릭터가 떨며 기다리는 구도로 쓸 수 있다."
 fame = 4
 fame_evidence = "최종회가 닐슨코리아 기준 전국 17.107%, 수도권 17.407%를 기록했다. 영문 위키백과에 따르면 넷플릭스 글로벌 비영어 TV 부문에서 2주 연속 1위를 했다."
-caution = "실존 배우를 닮게 그리지 않고 tvN·넷플릭스의 화면과 로고는 쓰지 않는다. 남자 주인공으로 처음 논의된 박성훈이 SNS 게시물 논란으로 2025년 1월 하차했으므로 캐스팅 이야기는 다루지 않는다. 극중 왕은 연산군과 갑자사화에서 착안했으므로 처형 개그는 가볍게만 쓴다."
+caution = "실존 배우를 닮게 그리지 않고 tvN·넷플릭스의 화면과 로고는 쓰지 않는다. 남자 주인공으로 처음 논의된 박성훈이 SNS 게시물 논란으로 2025년 1월 하차했으므로 캐스팅 이야기는 다루지 않는다. 극중 왕은 연산군과 갑자사화에서 착안했으므로 처형 개그는 가볍게만 쓴다. 2025년 9월 극중 명나라 사신과 왕의 좌석 배치와 인사 장면을 두고 '역사 왜곡' 논란이 일었고, 원작자는 '국조오례의'를 근거로 반박했다. 같은 시기 명나라 요리사 역을 더빙한 중국 성우가 출연자를 비하하는 글을 올렸다가 지워, 한중 갈등으로 번졌다. 그러니 명나라 사신, 조선 대 중국 요리 대결, 중국어 대사 같은 요소는 빌리지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "임윤아의 배역은 연지영이다(영문 위키백과). 특정 대사나 짤 밈은 확인되지 않아 미확인이며, 방영 후 밈으로 자리 잡았는지는 판단하기 어렵다."
 sources = ["https://ko.wikipedia.org/wiki/폭군의_셰프", "https://en.wikipedia.org/wiki/Bon_Appétit,_Your_Majesty"]
+caution_sources = ["https://www.heraldk.com/article/2025092023165317423", "https://www.heraldk.com/article/2025091013552112659", "https://v.daum.net/v/20250918081747531"]
 
 [[classic]]
 name = "이 구역의 미친 X는 나야"
@@ -2702,7 +2694,7 @@ fame = 4
 fame_evidence = "원대사는 위키쿼트로 확인했다. 웹소설 제목 등 '이 구역의 ~는 나야' 틀의 패러디가 널리 쓰인다는 점은 찾는 사람의 메모와 검증자의 판단이며, 별도 출처로는 확인하지 못했다."
 caution = "원문에 여성 비하 비속어('미친년')가 들어 있으니 'X'로 가리거나 '매운 X', '대장' 같은 말로 바꾼다. 가십걸 장면과 배우 얼굴, 시크릿 가든 장면은 쓰지 말고 문장 틀만 빌린다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "원대사의 회차(시즌1 18화, 2008.5.19 방영)와 상대(조지나)를 보강했다. 정확한 원문은 'Haven't you heard? I'm the crazy bitch around here.'이다. 위키백과 시크릿 가든 문서로 방송 기간과 윤슬 역이 김사랑인 것은 확인했지만, 윤슬이 이 대사를 인용했다는 내용은 없어 미확인이다."
 sources = ["https://en.wikiquote.org/wiki/Gossip_Girl_(season_1)", "https://en.wikipedia.org/wiki/Gossip_Girl_season_1", "https://ko.wikipedia.org/wiki/시크릿_가든_(드라마)"]
 
@@ -2717,11 +2709,12 @@ use_when = "캐릭터가 무모한 도전에 뛰어들거나 높이 날아오르
 food_fit = "팝콘이 튀겨지며 솟구칠 때, 탄산 거품이 치솟을 때, 무한리필 고깃집에 입장하며 외치는 대사로 쓸 수 있다."
 fame = 4
 fame_evidence = "나무위키 버즈 문서가 버즈를 상징하는 대사로 소개하며, 웹툰 『삼국전투기』 패러디와 『주먹왕 랄프 2』 카메오 장면에서도 쓰였다고 정리한다. 2010년 3편, 2019년 4편 개봉으로 20~30대에게 친숙하다."
-caution = "디즈니·픽사 저작권 캐릭터이므로 버즈의 우주복과 외형을 그대로 그리지 말고 대사와 포즈만 빌려 쓴다."
+caution = "디즈니·픽사 저작권 캐릭터이므로 버즈의 우주복과 외형을 그대로 그리지 말고 대사와 포즈만 빌려 쓴다. 디즈니는 2025년 6월 Midjourney 저작권 소송에서 AI가 다시 만들어 낸 캐릭터로 버즈 라이트이어를 들었다. 그러니 이미지 생성 AI로 버즈를 닮은 우주복 캐릭터를 만들지 않는다. 대사와 손을 뻗는 포즈만 빌린다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "1편 후반에 우디가 같은 대사를 외친다는 점과 2편·4편의 변주는 이번에 연 자료에서 확인하지 못했다(미확인). 웹 검색 한도가 소진되어 추가 검색은 하지 못했다."
 sources = ["https://namu.moe/w/%EB%B2%84%EC%A6%88%20%EB%9D%BC%EC%9D%B4%ED%8A%B8%EC%9D%B4%EC%96%B4"]
+caution_sources = ["https://www.gamesradar.com/entertainment/animation-movies/disney-and-universal-call-ai-bottomless-pit-of-plagiarism-in-lawsuit-against-midjourney", "https://nerdbot.com/2025/06/11/disney-and-universal-file-first-hollywood-lawsuits-against-ai-image-generation/"]
 
 [[classic]]
 name = "내가 니 애비다"
@@ -2734,11 +2727,12 @@ use_when = "원조와 파생의 관계가 드러나는 반전 장면이나 숨�
 food_fit = "밀이 빵에게, 우유가 치즈에게, 콩이 두부에게 정체를 밝히는 원재료 반전 개그에 잘 맞는다."
 fame = 4
 fame_evidence = "나무위키는 이 대사가 웹툰에 인용되며 다시 알려졌다고 설명한다. 환경부 재활용 공익광고, 토이 스토리 2 더빙판, 2010년경 병맛 더빙 'Imma Yo Papa' 등 패러디 사례도 정리되어 있다."
-caution = "루카스필름(디즈니) 저작권 캐릭터이므로 다스 베이더의 헬멧과 광선검을 그대로 쓰지 않는다. '애비'는 비속하고 패드립처럼 들릴 수 있어 '내가 네 아버지다'로 순화하는 편이 안전하다."
+caution = "루카스필름(디즈니) 저작권 캐릭터이므로 다스 베이더의 헬멧과 광선검을 그대로 쓰지 않는다. '애비'는 비속하고 패드립처럼 들릴 수 있어 '내가 네 아버지다'로 순화하는 편이 안전하다. 루카스필름은 스타워즈 테마를 쓴 소규모 사업자에게도 상표 소송을 걸어 왔다(칠레 세차장 'Star Wash' 2023, 광선검 교습소 'Lightsaber Academy' 2016). 그러므로 '스타워즈'·'다스 베이더' 같은 이름을 제목·해시태그·캡션에 넣지 않고, '임페리얼 마치' 같은 테마 음악도 쓰지 않는다. 대사의 구도만 빌린다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "'루크의 손목을 자른 뒤'라는 장면 묘사는 이번 자료에서 확인하지 못했다. 국내 더빙 대사는 판본별로 세 가지가 있다. 국내 재유행 시기와 공익광고 연도는 미확인이다."
 sources = ["https://namu.moe/w/I'm%20Your%20Father"]
+caution_sources = ["https://newsweek.com/disney-car-wash-starwash-star-wars-lawsuit-suing-lucasfilm-chile-1858072", "https://www.businesslive.co.za/bd/life/motoring/2023-12-27-lucasfilm-turns-the-hoses-on-star-wars-car-washers-in-chile/", "https://ipwatchdog.com/2016/11/01/lucasfilm-trademark-suit-against-operator-lightsaber-training-academies/id=74255/"]
 
 [[classic]]
 name = "어디서 약을 팔아?"
@@ -2753,7 +2747,7 @@ fame = 4
 fame_evidence = "나무위키 아귀(타짜) 문서에 명대사로 실려 있고, 약장수 문서도 약장수가 사기꾼의 비유로 쓰인다고 설명한다. 일상 구어로 널리 쓰인다."
 caution = "원 대사에 욕설이 있으므로 '어디서 약을 팔아?'까지만 쓴다. 영화 장면과 배우 얼굴은 옮기지 않고, 실제 건강식품이나 의약품을 사기로 특정하지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "아귀의 대사 원문은 '이 새끼가 어디서 약을 팔어?'이다. 표현의 최초 유래, 영화 속 정확한 장면, 2010년 이후 재유행 근거는 미확인이다. 나무위키 단독 문서는 접근이 막혀(403/404) 열람하지 못했다."
 sources = ["https://namu.moe/w/%EC%95%BD%EC%9E%A5%EC%88%98", "https://namu.moe/w/%EC%95%84%EA%B7%80(%ED%83%80%EC%A7%9C)"]
 
@@ -2768,11 +2762,12 @@ use_when = "두 캐릭터가 높은 곳 끝에서 바람을 맞는 장면, 커�
 food_fit = "새우튀김 두 개가 우동 그릇 가장자리에서, 김밥이 젓가락 끝에서, 배 모양 그릇의 앞머리에서 포즈를 취하는 장면으로 쓸 수 있다."
 fame = 4
 fame_evidence = "2012년 SNL코리아2의 타이타닉 패러디가 마이데일리 등에 기사화되었다. 장면 자체는 국내에서 널리 알려진 영화 명장면이다."
-caution = "실제 해양 참사를 배경으로 한 영화이므로 침몰·조난 개그로 넓히지 않는다(국내 해양 참사 정서 고려). 영화 장면, 배우 얼굴, 주제가 'My Heart Will Go On' 음원은 저작권이 있으므로 포즈만 빌린다."
+caution = "실제 해양 참사를 배경으로 한 영화이므로 침몰·조난 개그로 넓히지 않는다(국내 해양 참사 정서 고려). 영화 장면, 배우 얼굴, 주제가 'My Heart Will Go On' 음원은 저작권이 있으므로 포즈만 빌린다. 2014년 4월 세월호 침몰 직후 한 라디오가 영화 '타이타닉' 주제가를 틀었다가 비판을 받았고, 영화채널들은 재난 영화 편성을 뺐다. 그러니 4월 전후나 해양 사고 보도가 있을 때는 게시를 피한다. 2023년 타이타닉 관광 잠수정(타이탄) 사고를 농담으로 쓴 미국 서브웨이 매장은 비판을 받고 간판을 내렸으므로 잠수정·심해 탐사 개그로도 넓히지 않는다. 박진영은 아내가 세월호 선사 실소유주로 지목된 유병언의 조카라는 이유로 2014년과 2018년에 구원파 연루 의혹을 받았다(본인은 부인). 따라서 SNL코리아 '타이타닉2' 패러디(박진영·민효린)를 떠올리게 하는 연출이나 언급은 하지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "기사는 '타이타닉2' 콩트와 리허설 사진에서 박진영이 민효린의 허리를 끌어안은 모습을 전할 뿐, 뱃머리 포즈를 재연했다고 명시하지는 않는다. 국내 예능의 다른 반복 패러디 사례와 'I'm flying' 대사는 추가로 확인하지 못했다(웹 검색 한도 소진)."
 sources = ["https://www.mydaily.co.kr/page/view/2012063011382301114", "https://www.mydaily.co.kr/page/view/2012063018123101118"]
+caution_sources = ["https://www.segye.com/newsView/20140418001172", "https://www.tenasia.co.kr/article/2014050839324", "https://www.thedailybeast.com/subway-slammed-for-sign-joking-about-fatal-titanic-sub-dive", "https://www.dailian.co.kr/news/view/435154/", "https://www.ajunews.com/view/20180502134540010"]
 
 [[classic]]
 name = "러브 액추얼리 스케치북 고백"
@@ -2785,11 +2780,12 @@ use_when = "문 앞에서 말없이 카드를 넘기며 고백하거나 부탁�
 food_fit = "김 캐릭터가 김을 한 장씩 넘기며 고백하는 컷으로 쓸 수 있다. 메뉴판이나 포스트잇을 넘기며 '오늘 야식은… 너로… 완벽해'라고 고백하는 컷도 가능하다."
 fame = 4
 fame_evidence = "비즈한국(2017.12.22)은 이 장면이 영화를 상징하는 장면이 되었다고 평가했고, 영화가 연말마다 재개봉한다고 썼다. 한국어 위키백과에는 2023년 12월 6일 국내 개봉 정보가 실려 있다."
-caution = "배우 얼굴과 영화 스틸은 쓰지 않는다. 카드를 넘기는 구도만 빌리고, 카드 문구는 새로 쓴다. 극중 고백 상대가 친구의 아내이므로 불륜을 미화하는 맥락으로 쓰지 않는다."
+caution = "배우 얼굴과 영화 스틸은 쓰지 않는다. 카드를 넘기는 구도만 빌리고, 카드 문구는 새로 쓴다. 극중 고백 상대가 친구의 아내이므로 불륜을 미화하는 맥락으로 쓰지 않는다. 이 장면은 '스토커 같다'는 비판을 오래 받아 왔다. 감독 리처드 커티스도 대본 메모와 인터뷰에서 장면에 대한 의구심을 밝혔고, 앤드루 링컨은 촬영 중 '소름 끼치는 스토커처럼 보이지 않겠느냐'고 걱정했으며, 키라 나이틀리도 장면이 꽤 섬뜩하다고 인정했다. 그러므로 상대가 원하지 않는 집 앞 방문이나 거절 뒤에도 이어지는 구애를 낭만으로 그리지 않는다. 서로 합의한 고백, 사과, 응원처럼 상대가 반기는 상황에만 쓴다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "비즈한국 기사는 인물을 '한 남자'로만 적었다. 마크가 줄리엣에게 큐카드로 고백했다는 사실은 영문 위키백과로 확인했다. 'TV 자료 화면에 자주 쓰인다'와 '희대의 명장면'이라는 표현은 열어본 기사에서 확인되지 않았다. 웹 검색 한도가 첫 검색에서 소진되어 국내 예능 패러디 사례는 찾지 못했다."
 sources = ["https://bizhankook.com/articles/14593.html", "https://en.wikipedia.org/wiki/Love_Actually", "https://ko.wikipedia.org/wiki/러브_액츄얼리"]
+caution_sources = ["https://www.slashfilm.com/1574475/classic-love-actually-scene-did-not-age-well", "https://www.gamesradar.com/love-actually-actor-defends-andrew-lincolns-controversial-cue-card-scene", "https://gamesradar.com/entertainment/romance-movies/keira-knightley-had-to-fix-her-reaction-in-love-actuallys-iconic-cue-card-scene-because-she-was-acting-too-creeped-out-but-it-is-quite-creepy", "https://news.yahoo.com/richards-curtis-makes-personal-confession-080100713.html"]
 
 [[classic]]
 name = "치키치키 차카차카 초코초코 초"
@@ -2802,11 +2798,12 @@ use_when = "캐릭터가 변신·각성하거나 출동하기 직전에 외치�
 food_fit = "초코 과자 캐릭터가 '초코초코 초!'를 외치며 변신하는 컷으로 쓸 수 있다. 김밥용 김이나 피자 도우를 슈퍼보드처럼 타고 날아오르는 컷도 가능하다."
 fame = 4
 fame_evidence = "노컷뉴스(2016.12.3)는 이 주제곡이 '대한민국 국민이라면 누구나 따라 부를 수 있을 정도로' 인기를 끌었다고 썼다. 인사이트(2018.11.22)는 리메이크 제작 소식을 전하며 이 구절을 전 세대가 아는 변신 주문으로 소개했다."
-caution = "손오공·저팔계·사오정의 외형과 슈퍼보드 디자인은 저작권이 있으므로 그리지 않는다. 주제가는 멜로디나 가사 전체를 옮기지 말고 짧은 구절만 쓴다. SNL 패러디를 떠올리게 하는 권혁수 성대모사나 분장은 피한다."
+caution = "손오공·저팔계·사오정의 외형과 슈퍼보드 디자인은 저작권이 있으므로 그리지 않는다. 주제가는 멜로디나 가사 전체를 옮기지 말고 짧은 구절만 쓴다. SNL 패러디를 떠올리게 하는 권혁수 성대모사나 분장은 피한다. SNL 패러디를 한 권혁수는 2019년 유튜버 구도쉘리와의 합동 방송에서 일어난 상의 탈의 사건을 두고 양측이 공개적으로 진실공방을 벌였다. 그러니 권혁수나 그 패러디를 연상시키는 요소는 더욱 쓰지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "방영 연도는 1990년으로 확인했다(위키백과·노컷뉴스). GQ 기사(2020.11.18)에는 날아라 슈퍼보드나 SNL 이야기가 없어 출처에서 뺐다. SNL 패러디는 노컷뉴스로 확인했다. 이 구절이 주제가 가사인지 극중 주문인지, 또는 둘 다인지는 출처마다 달라 확정하지 못했다."
 sources = ["https://www.nocutnews.co.kr/news/4695334", "https://www.insight.co.kr/news/192951", "https://ko.wikipedia.org/wiki/날아라_슈퍼보드"]
+caution_sources = ["https://www.ajunews.com/view/20191104163614841", "https://www.wikitree.co.kr/articles/470443"]
 
 [[classic]]
 name = "어떻게 사랑이 변하니"
@@ -2821,7 +2818,7 @@ fame = 4
 fame_evidence = "TV리포트(2026.6.22)는 이 대사를 '봄날은 간다'의 명대사 중 하나로 언급했다. 주간경향(2011.5.18)은 정치 칼럼에서 이 대사를 비유로 인용했다. 2010년 이후 밈으로 다시 유행한 시점을 보여 주는 자료는 찾지 못했다."
 caution = "유지태·이영애의 초상과 영화 스틸은 쓰지 않는다. 이영애는 2023년 기부 이후 정치 공방의 대상이 된 적이 있으므로, 배우를 떠올리게 하는 연출이나 정치 맥락과 엮지 않는다. 주간경향의 인용 사례도 정치 칼럼이므로 참고만 한다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "TV리포트 기사는 이 대사를 명대사 목록에만 올렸고, 장면이나 화자는 설명하지 않았다. 남자가 여자에게 하는 대사라는 점은 주간경향으로 확인했다. 주간경향은 어순을 바꾼 '사랑이 어떻게 변하니?'로 썼다. 2010년 이후 재유행했다는 근거가 약하므로, 최종 수록 전에 범위 기준에 맞는지 다시 판단하는 것이 좋다."
 sources = ["https://tvreport.co.kr/star/article/1055936/amp/", "https://weekly.khan.co.kr/article/201105181731461", "https://ko.wikipedia.org/wiki/봄날은_간다_(영화)"]
 
@@ -2838,7 +2835,7 @@ fame = 4
 fame_evidence = "2015년 기사에 대표 별명으로 실렸고, 2017년 '우블리' 우효광에게 별명을 뺏겨도 괜찮다는 마동석의 발언이 기사화될 만큼 널리 쓰였다."
 caution = "마동석은 실존 인물이라 얼굴이나 체형을 그대로 닮게 그리지 않는다. 영화 장면이나 포스터도 쓰지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "정확한 최초 사용 시점은 확인하지 못했다. 2015년 기사는 '베테랑' 카메오를 계기로 들었고, 2017년 기사는 병아리를 무서워하는 반전 매력을 언급했다."
 sources = ["https://www.tenasia.co.kr/article/2015100367554", "https://sports.khan.co.kr/article/201708301753003"]
 
@@ -3453,7 +3450,7 @@ fame = 4.5
 fame_evidence = "이번 조사에서는 유행 근거 기사를 열지 못했다. 조사자는 세븐틴 부석순 안무, 드라마·웹툰 패러디, 2021년 이후 해외 사용을 근거로 들었지만 확인하지 못했다."
 caution = "실존 배우 김하균을 닮게 그리지 않고 광고 화면은 쓰지 않는다. 옥시는 2001년 레킷벤키저에 매각된 뒤 가습기 살균제 사건으로 불매운동 대상이 되었고, 개비스콘은 그 한국 법인 RB코리아가 파는 제품이다. 그러므로 제품명과 포장은 쓰지 않고 '편-안/불-편' 표정과 글자만 빌린다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "나무위키가 403으로 막혀 광고 연도(2011), 재유행 시기(2016), 부석순 안무 패러디, 해외 사용을 확인하지 못했다. 김하균의 개비스콘 CF 출연은 위키백과로 확인했다. 개비스콘이 RB코리아 제품이라는 점은 위키백과 가습기 살균제 사건 문서의 각주 기사 제목으로 확인했다."
 sources = ["https://ko.wikipedia.org/wiki/김하균", "https://ko.wikipedia.org/wiki/가습기_살균제_사건"]
 
@@ -4199,11 +4196,12 @@ use_when = "개장 전부터 긴 줄을 서는 오픈런 장면, 가격표를 �
 food_fit = "치킨 캐릭터가 주인공일 때 가장 잘 맞는다. 마트 매대 앞 오픈런 줄을 배경 패러디로 넣거나, '반값' 가격표를 들고 당황하는 치킨을 그릴 수 있다."
 fame = 4
 fame_evidence = "위키백과에 따르면 당당치킨은 8월 10일까지 32만 마리가 팔렸고, 한정 판매 때 오픈런과 1시간 매진이 있었다. 통큰치킨은 출시 일주일 만에 중단되며 치킨값 거품 논란으로 이어졌다(조선일보·연합뉴스 등 각주)."
-caution = "'통큰치킨'·'당당치킨'은 롯데마트·홈플러스의 상품명이므로 로고와 포장 디자인은 피하고 '마트 반값 치킨' 정도로 바꿔 쓰는 것이 안전하다. 대형마트와 자영업자의 갈등이 얽힌 사안이라 어느 한쪽을 조롱하지 않도록 한다. 통큰치킨 때 정치인 비판 발언도 있었으므로 정치적 요소는 빼는 것이 좋다."
+caution = "'통큰치킨'·'당당치킨'은 롯데마트·홈플러스의 상품명이므로 로고와 포장 디자인은 피하고 '마트 반값 치킨' 정도로 바꿔 쓰는 것이 안전하다. 대형마트와 자영업자의 갈등이 얽힌 사안이라 어느 한쪽을 조롱하지 않도록 한다. 통큰치킨 때 정치인 비판 발언도 있었으므로 정치적 요소는 빼는 것이 좋다. 홈플러스는 2025년 3월 기업회생을 신청했다. 2026년 7월 3일 법원이 회생절차 폐지를 결정했고, 이후 전국 점포 임시휴업, 4~6월 임금 지연·미지급, 직원 1만여 명 실직 우려가 보도되었다. 7월 21일 폐지 결정은 취소되었고 9월 2일 회생계획이 인가되었지만 10월 국정감사 때까지 인수자는 정해지지 않았다. 직원·협력사·투자자 피해와 MBK파트너스 책임론이 아직 진행 중인 사안이다. 그러므로 '당당치킨'이나 홈플러스를 직접 떠올리게 하는 연출, 마트 폐점·경영난·파산을 소재로 한 개그는 피한다. 쓰더라도 특정 업체가 드러나지 않는 '마트 반값 치킨'으로만 쓴다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "통큰치킨의 중량(900g 안팎)과 중단 사유(주변 치킨점 영향 고려, 재고는 기부)를 보충했다. 당당치킨 두 마리 9,900원, 초복 4,990원·말복 5,990원 한정 판매 정보를 보충했다. 그 밖의 내용은 찾은 출처와 일치한다."
 sources = ["https://ko.wikipedia.org/wiki/통큰치킨", "https://ko.wikipedia.org/wiki/당당치킨"]
+caution_sources = ["https://www.ajunews.com/view/20250305192620246", "https://v.daum.net/v/20260703153612341", "https://www.kyeonggi.com/article/20260708580241", "https://www.mt.co.kr/living/2026/06/24/2026062416151062765", "https://www.hankyung.com/article/2026072176271", "https://www.ddaily.co.kr/page/view/2026090218193196162", "https://news.mtn.co.kr/news-detail/2026101219501493865/share-modal"]
 
 [[classic]]
 name = "버터떡 (상하이 버터떡)"
@@ -4443,11 +4441,12 @@ use_when = "메뉴나 멤버를 리듬감 있게 소개하는 장면, 모두 모
 food_fit = "'떡볶이 순대 튀김 어묵 김밥 라면 쫄면 만두'처럼 분식 이름을 같은 리듬으로 나열하며 음식 캐릭터들이 줄지어 행진하는 컷에 딱 맞는다. 마지막에 '우리는 모두 친구'로 단체 컷을 마무리하면 된다."
 fame = 5
 fame_evidence = "나무위키(미러) 주제가 문서는 첫 소절의 포켓몬 이름 나열이 가장 유명하고, 관동편까지 오래 쓰여 인지도가 매우 높으며 초등 5~6학년 음악 교과서에 실렸다고 쓴다. 8세대에서 나열된 포켓몬 대부분이 빠지며 다시 주목받았고, 2026년 8월 무렵 RESCENE 참여 음반 수록이 확정되었다고 적혀 있다."
-caution = "가사와 음원은 저작권 대상이므로 원곡 가사를 길게 싣지 말고 리듬만 빌린 음식 이름 개사로 쓴다. 포켓몬 캐릭터 외형은 그리지 않는다."
+caution = "가사와 음원은 저작권 대상이므로 원곡 가사를 길게 싣지 말고 리듬만 빌린 음식 이름 개사로 쓴다. 포켓몬 캐릭터 외형은 그리지 않는다. 포켓몬 컴퍼니는 IP를 적극적으로 지킨다. 2015년 미국 시애틀에서 2달러 입장료를 받은 팬 파티 전단에 캐릭터를 쓴 팬을 상대로 소송을 냈고, 2024년 중국 모방 게임 소송에서는 약 1,500만 달러 배상 판결을 받았다. 브랜드 계정이라면 포켓몬 이름(상표)과 '포켓몬'을 제목·해시태그·캡션에 쓰지 않는다. 원곡임을 바로 알아볼 수 있는 멜로디를 영상이나 음원으로 붙이지 않고, 이름을 나열하는 말장난 형식만 빌린다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "2017년 리메이크는 극장판 『너로 정했다!』 한국 개봉판 뮤직비디오용으로 방대식이 다시 불렀다고 확인했다. '20주년 기념 디지털 앨범'이라는 Bulbapedia 서술은 페이지가 403이라 확인하지 못했다. 가사의 포켓몬 이름 순서는 직접 확인하지 못했다."
 sources = ["https://namu.moe/w/%ED%8F%AC%EC%BC%93%EB%AA%AC%EC%8A%A4%ED%84%B0(1997%EB%85%84%20%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98)/%EC%A3%BC%EC%A0%9C%EA%B0%80", "https://namu.moe/w/%ED%8F%AC%EC%BC%93%EB%AA%AC%EC%8A%A4%ED%84%B0%20%EB%AC%B4%EC%9D%B8%ED%8E%B8"]
+caution_sources = ["https://www.digitaltrends.com/gaming/pokemon-company-sues-fan-over-party/", "https://nintendolife.com/news/2024/09/pokemon-wins-usd15-million-copyright-lawsuit-against-chinese-mobile-game-developers"]
 
 [[classic]]
 name = "개콘 엔딩곡 = 월요병 (Part Time Lover)"
@@ -5022,11 +5021,12 @@ use_when = "오래전 메뉴나 캐릭터가 뒤늦게 갑자기 뜨는 장면, 
 food_fit = "만두가 찜기 앞에서, 김밥이 도시락통 앞에서 '우리집'을 외치며 손짓하는 컷으로 쓸 수 있다. 5년 묵은 장아찌나 묵은지가 갑자기 인기 메뉴로 역주행하는 설정과도 맞는다."
 fame = 4
 fame_evidence = "SPOTV뉴스(2020.1.23)가 5년 만의 역주행과 댓글 급증을 보도했다. 톱스타뉴스(2020.1.28)는 SBS 공식 계정까지 '인기가요' 준호 영상을 올렸다고 보도했다. Korea Times(2021.6.28)는 이 곡이 여러 스트리밍 차트 상위권에 재진입했다고 적었다."
-caution = "실존 아이돌(준호 등)의 얼굴·춤을 그대로 그리면 초상권·퍼블리시티권 문제가 생길 수 있다. 무대 영상 캡처는 방송사 저작권, 가사와 음원은 음악 저작권에 걸리므로 제목 언급이나 손짓 포즈 정도로만 쓰는 편이 안전하다."
+caution = "실존 아이돌(준호 등)의 얼굴·춤을 그대로 그리면 초상권·퍼블리시티권 문제가 생길 수 있다. 무대 영상 캡처는 방송사 저작권, 가사와 음원은 음악 저작권에 걸리므로 제목 언급이나 손짓 포즈 정도로만 쓰는 편이 안전하다. 이준호는 2024년 9월 '살롱드립2'에서 '우리집'이 유명해진 뒤 사생팬이 실제로 집에 찾아와 새벽 3시에 초인종을 누르고 집 앞에서 기다렸다고 밝혔다. 그러므로 '준호네 집에 찾아가기'처럼 실존 아이돌의 집을 찾아가는 개그는 쓰지 않는다. 캐릭터 자신의 집에 초대하는 맥락으로만 쓴다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "역주행의 계기는 '직캠'이 아니라 2016년 9월 누리꾼이 무대·MV·안무 영상의 준호 파트를 모아 올린 편집 영상이었다(톱스타뉴스). 역주행 시점은 2020년 1월이다. 2020년 차트 순위는 확인하지 못해 미확인이다. 댄스 챌린지가 얼마나 퍼졌는지도 영문 위키백과 서술 외에는 확인하지 못했다."
 sources = ["https://en.wikipedia.org/wiki/My_House_(2PM_song)", "https://www.spotvnews.co.kr/news/articleView.html?idxno=341220", "http://www.topstarnews.net/news/articleView.html?idxno=724847", "https://www.koreatimes.co.kr/entertainment/k-pop/20210628/after-success-of-my-house-2pm-seeks-to-extend-winning-streak-with-must"]
+caution_sources = ["https://www.mydaily.co.kr/page/view/2024092419201378732", "https://www.sidae.com/article/2024092507433666806"]
 
 [[classic]]
 name = "MSG워너비"
@@ -5041,7 +5041,7 @@ fame = 4
 fame_evidence = "M.O.M의 '바라만 본다'가 써클 디지털 차트와 K-pop Hot 100에서 1위를 했다. 2021 멜론뮤직어워드 프로젝트 뮤직상과 2021 MBC 방송연예대상 베스트 팀워크상을 받았다."
 caution = "실존 연예인 8명을 닮게 그리지 않고, MBC 방송 화면·로고와 노래 가사를 길게 쓰지 않는다. 그룹 이름은 그대로 쓰지 말고 비튼 가상 이름으로 바꾸며, 실제 조미료 MSG를 비방하는 것처럼 보이지 않게 한다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "두 번째 유닛의 한국어 이름은 '정상동기'이고, JSDK는 영문 위키백과의 표기다. MMA의 정식 명칭은 멜론뮤직어워드다. 이름 유래(SG워너비 패러디, 조미료 MSG 말장난)는 공식 설명을 찾지 못해 미확인이다."
 sources = ["https://ko.wikipedia.org/wiki/MSG워너비", "https://en.wikipedia.org/wiki/MSG_Wannabe"]
 
@@ -5056,11 +5056,12 @@ use_when = "고백이나 응원, 다정한 인사를 하는 장면에서 '사랑
 food_fit = "가지, 고구마, 포도, 자색양파, 블루베리 같은 보라색 음식 캐릭터가 서로에게 고백하는 장면에 자연스럽다."
 fame = 4
 fame_evidence = "2019년 세계일보는 이 말이 네이버 오픈사전에 등록될 만큼 사랑받았다고 보도했고, 2022년 한국경제 우리말 칼럼은 규범을 깬 신조어 사례로 다뤘다. 다만 팬덤에서 나온 말이라 비팬의 인지도는 다소 낮을 수 있다."
-caution = "뷔(실존 인물)의 얼굴이나 BTS 로고, 공식 응원봉 디자인을 쓰지 않는다. 상표 문제가 있을 수 있어 상품명이나 브랜드명으로는 쓰지 않는다."
+caution = "뷔(실존 인물)의 얼굴이나 BTS 로고, 공식 응원봉 디자인을 쓰지 않는다. 상표 문제가 있을 수 있어 상품명이나 브랜드명으로는 쓰지 않는다. 네일 브랜드 라라리즈는 2020년 '보라해'를 상표로 출원했다가 팬들의 거센 반발과 특허청 민원 끝에 2021년 5월 출원을 철회했다. 하이브의 출원(2021.6)도 특허청이 신의성실 원칙 위반을 이유로 거절했다. 팬덤은 이 말을 상업적으로 쓰는 데 민감하므로, 브랜드 계정은 '보라해'를 상품 홍보 문구나 이벤트명으로 쓰지 않는다. 쓰더라도 팬 문화에 대한 존중이 드러나는 짧은 인사말 정도로 제한한다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "'응원봉을 보라색으로 감싸는 이벤트'는 확인하지 못했고, 세계일보는 팬들이 응원봉으로 보라색 물결을 만들었다고 썼다. 팬미팅인지 팬사인회인지 출처가 엇갈린다. 소속사 '보라해' 상표 출원 거절 보도는 확인하지 못했다(웹 검색 한도 소진)."
 sources = ["https://www.segye.com/newsView/20190111002303", "https://sgsg.hankyung.com/article/2022102808151"]
+caution_sources = ["https://asiaiplaw.com/section/news-analysis/korean-nail-company-withdraws-trademark-application-over-bts-term-borahae", "https://www.kpoppost.com/?p=6764", "https://bizhankook.com/articles/24588.html", "https://uproxx.com/pop/bts-v-borahae-trademark-hybe"]
 
 [[classic]]
 name = "스모크 챌린지"
@@ -5075,7 +5076,7 @@ fame = 4
 fame_evidence = "방탄소년단 뷔와 정국, 아이브 안유진, 강다니엘, 비, 태양 등이 참여했다. 틱톡 해시태그가 5억 뷰를 넘었다는 보도가 있고, 곡은 써클 디지털 차트 최고 2위에 올랐다(영문 위키 기준)."
 caution = "음원·가사와 안무는 저작물이라 그대로 옮기지 않고 포즈만 패러디한다. Mnet 로고, 방송 화면, 실존 댄서와 가수의 얼굴은 쓰지 않는다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "멜론 차트 2위는 확인하지 못했고, 대신 써클 디지털 차트 최고 2위를 확인했다. 곡은 리더 계급 미션곡이며 파디도 공동 프로듀서로 표기돼 있다."
 sources = ["https://v.daum.net/v/20231116111109886", "https://gogumafarm.kr/?p=18286", "https://en.wikipedia.org/wiki/Street_Woman_Fighter_2", "https://en.wikipedia.org/wiki/Lee_Young-ji"]
 
@@ -5090,11 +5091,12 @@ use_when = "신상품 출시, 새 옷이나 새 물건 자랑, 첫 등장 장면
 food_fit = "편의점이나 프랜차이즈 신메뉴 캐릭터가 '나 새삥이야'라며 등장하는 장면, 갓 구운 빵이 자기를 자랑하는 장면에 잘 맞는다."
 fame = 4
 fame_evidence = "멜론, 지니뮤직 등 국내 차트 1위에 올랐고, 강다니엘, 세븐틴 호시, NCT 멤버가 챌린지에 참여했다(CJ 뉴스룸). 리더 계급 댄스 영상은 2022년 11월 기준 815만 회 조회됐다."
-caution = "음원과 가사는 저작물이라 짧은 단어 인용에 그친다. Mnet 로고와 방송 화면, 지코와 출연 댄서의 얼굴은 쓰지 않는다."
+caution = "음원과 가사는 저작물이라 짧은 단어 인용에 그친다. Mnet 로고와 방송 화면, 지코와 출연 댄서의 얼굴은 쓰지 않는다. '새삥' 미션 안무(위댐보이즈 바타)는 2022년 10월, 오토바이를 타듯 발을 끄는 인트로 동작이 에이티즈 '세이 마이 네임' 안무와 닮았다는 표절 논란을 겪었다. 원작 안무가 측이 문제를 제기했고, 바타는 의도가 다르다고 반박했을 뿐 사과하지 않았다. 따라서 이 인트로 동작을 그대로 따라 하는 포즈는 피하고, '새삥'이라는 단어나 일반적인 뽐내기 포즈 정도로만 쓴다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "815만 회는 2022년 11월 국민일보 기준이고, 2022년 9월 말 CJ 보도 기준으로는 약 500만 회였다. NCT 멤버 참여를 추가했다."
 sources = ["https://cjnews.cj.net/mnet-%ec%8a%a4%ed%8a%b8%eb%a6%bf-%eb%a7%a8-%ed%8c%8c%ec%9d%b4%ed%84%b0-%ec%83%88%ec%82%a5-law-%eb%93%b1-%ed%99%94%ec%a0%9c%ec%9d%98-%ec%9d%8c/", "https://v.daum.net/v/20221102165608938"]
+caution_sources = ["https://www.etoday.co.kr/news/view/2181892", "https://www.tenasia.co.kr/article/2022101481534", "https://www.ytn.co.kr/_ln/0117_202211111131290669"]
 
 [[classic]]
 name = "숨 참고 Love Dive"
@@ -5109,7 +5111,7 @@ fame = 4
 fame_evidence = "써클차트 2022년 연간 디지털 1위, 음악방송 10회 1위, MMA·MAMA 2022 올해의 노래, 골든디스크 디지털 대상 수상 기록이 있다(영어 위키백과). 엑스포츠뉴스는 2022년 4월 5일 기사 제목에 이 구절을 썼다."
 caution = "가사는 짧은 구절로만 쓰고, 멤버의 얼굴·의상·안무를 그대로 따라 그리지 않는다. 음원과 뮤직비디오 화면은 쓰지 않는다. 곡명 'LOVE DIVE'를 상업적으로 쓸 때는 상표 문제에 주의한다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "곡 정보와 성적은 확인했다. 가사가 밈이나 챌린지로 퍼진 계기와 시점은 확인하지 못했다."
 sources = ["https://ko.wikipedia.org/wiki/LOVE_DIVE", "https://en.wikipedia.org/wiki/Love_Dive_(song)"]
 
@@ -5440,7 +5442,7 @@ fame = 5
 fame_evidence = "위키트리 '2015년 10대 짤방'(2015.12.23)에서 2위를 차지했다. MBC가 같은 제목의 예능을 2017년 파일럿, 2018년 정규로 방송했다."
 caution = "원본 강아지 사진의 촬영자와 저작권자가 미확인이므로 사진을 그대로 쓰지 말고 문구와 구도만 새로 그린다. MBC 동명 예능의 로고와 출연자 장면은 쓰지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "MBC 예능은 2017년 8~9월 파일럿 3부작이 먼저 방송된 뒤 2018년 4월 5일~7월 12일 정규 10부작으로 방송됐다. 프로그램 제목이 짤에서 왔다는 근거는 위키백과에도 없어 미확인으로 둔다. 위키트리는 이미지 출처를 '구글'로만 적었다."
 sources = ["https://www.wikitree.co.kr/articles/244087", "https://ko.wikipedia.org/wiki/이불_밖은_위험해"]
 
@@ -5457,7 +5459,7 @@ fame = 5
 fame_evidence = "영어 위키백과는 코로나19 시기 MBTI 검사가 한국 젊은 층의 유행이 되었고 2021년 12월 조사에서 인구의 절반 가까이가 검사를 받아 봤다고 적었다. 기업이 채용에서 MBTI를 묻는 일까지 생겼다."
 caution = "'MBTI'와 'Myers-Briggs'는 상표이므로 제목이나 로고처럼 쓰지 말고 네 글자 유형 놀이로만 쓴다. 특정 유형을 비하하거나 채용 차별을 정당화하는 내용은 피한다. 기존 항목 '너 T야?'와 겹치지 않게 쓴다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "한국어 위키백과에는 한국 내 유행 시기가 없고, 영어 위키백과에서 코로나19 시기 유행과 16Personalities 기원, 2021년 조사를 확인했다. 정확한 유행 시작 연도는 미확인이다."
 sources = ["https://ko.wikipedia.org/wiki/마이어스-브릭스_유형_지표", "https://en.wikipedia.org/wiki/Myers–Briggs_Type_Indicator"]
 
@@ -5474,7 +5476,7 @@ fame = 5
 fame_evidence = "고구마팜 2025년 밈 총결산(2025-12-17)이 룩삼의 이상형 월드컵 영상을 '이건 첫번째 레슨' 역주행의 계기로 소개했다. 형식 자체의 인지도는 판단에 따른 평가다."
 caution = "형식 자체는 자유롭게 쓸 수 있다. 다만 실존 연예인 사진으로 후보를 채우면 초상권 문제가 생기므로 자체 캐릭터로만 구성하고, 룩삼 영상과 'Thank U' 가사·영상은 직접 인용하지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "고구마팜 원문에 따르면 룩삼의 영상은 '스토리형 뮤직비디오 이상형 월드컵'이고, 그 영상에 나온 곡은 유노윤호 'Thank U'(2021)다. 영상 업로드 날짜와 놀이의 기원은 확인하지 못했으며, 2010년 이전에 시작되었을 수도 있다."
 sources = ["https://gogumafarm.kr/?p=48285"]
 
@@ -5526,7 +5528,7 @@ fame = 4.5
 fame_evidence = "헤럴드경제 2016년 1월 1일 기사 '이 중 10%만 알아도 모바일 맨'의 짤방 20선에 들었다. 기사는 이 짤이 사진 없이 대사만으로도 널리 쓰인다고 소개했다."
 caution = "원본 컷은 이현세 작가의 저작물이므로 그림을 따라 그리지 않는다. 대사와 놀란 포즈만 빌리고, 원작 인물을 닮게 그리지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "기사는 대사를 붙인 사람을 '한 네티즌'으로만 적었다. '최의민 작가가 쇼핑몰 메뉴용으로 만들었다'는 설명과 장면 속 인물이 엄지라는 점은 나무위키가 403으로 막혀 확인하지 못했다. 웹툰 패러디 사례도 미확인이다."
 sources = ["https://biz.heraldcorp.com/article/794366"]
 
@@ -5957,7 +5959,7 @@ fame = 4
 fame_evidence = "나무위키 열람이 차단되고 검색 한도가 소진되어 발견자의 근거(런닝맨 자막 등)는 확인하지 못했다. 2023년 1월 4일 국내 개봉한 '더 퍼스트 슬램덩크'가 약 381만 장이 팔리며 원작 인지도가 20~30대에 다시 높아진 것은 위키백과로 확인했다."
 caution = "안 감독 캐릭터와 원작 컷은 원작자와 출판사의 저작물이므로 그대로 그리거나 짤을 넣지 않고, 안경과 수염 같은 특징만 빌린 패러디로 처리한다."
 verified = "unverified"
-risk_checked = false
+risk_checked = true
 notes = "나무위키가 403으로 열리지 않고 검색 한도가 소진되어, 일본 아스키아트 유입설과 2015년 1월 11일 SBS 런닝맨 이서진 자막 사례는 모두 미확인이다."
 sources = ["https://ko.wikipedia.org/wiki/더_퍼스트_슬램덩크"]
 
@@ -5972,11 +5974,12 @@ use_when = "몰래 무언가를 하던 캐릭터가 딱 걸리는 장면에 맞�
 food_fit = "밤에 냉장고에서 몰래 야식을 꺼내던 음식 캐릭터에게 경찰 모자를 쓴 감자 캐릭터가 '잡았다 요놈!'을 외치는 컷이 어울린다. 다이어트 중 몰래 치킨을 먹다 걸리는 장면에도 쓸 수 있다."
 fame = 4
 fame_evidence = "헤럴드경제 2016.1.1 '[모바일 신인류 K세대] 짤방…이 중 10%만 알아도 당신은 모바일 맨' 기사에서 대표 짤 20선에 들었고, '잡았다, 이놈'과 함께 자주 쓰인다고 소개되었다."
-caution = "포돌이는 경찰청 공식 마스코트라 캐릭터 저작권과 상표가 있다. 닮게 그리지 말고 경찰 모자를 쓴 음식 캐릭터로 바꾼다. 경찰 로고나 제복 표장도 그대로 쓰지 않는다."
+caution = "포돌이는 경찰청 공식 마스코트라 캐릭터 저작권과 상표가 있다. 닮게 그리지 말고 경찰 모자를 쓴 음식 캐릭터로 바꾼다. 경찰 로고나 제복 표장도 그대로 쓰지 않는다. 경찰청은 '경찰관 상징 포돌이·포순이 관리규칙'을 두고 캐릭터를 관리한다. 경찰위원회는 2020년 7월 이 규칙의 개정안을 의결해 포순이 복장 등을 바꿨다. 경찰청 공식 페이스북이 '잡았다 요놈' 패러디를 직접 쓴 적이 있어 문구 자체의 부담은 낮다. 다만 '포돌이'라는 이름이나 그 외형을 연상시키는 상업적 사용은 하지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "2016년 기사의 문구는 '잡았다, 이놈'이며, '요놈' 표기는 확인하지 못했다. 손전등을 비추는 이미지라는 설명은 기사에 없어 미확인이다. 포돌이가 1999년 탄생했고 이현세가 디자인했다는 사실은 위키백과로 보강했다."
 sources = ["https://biz.heraldcorp.com/article/794366", "https://ko.wikipedia.org/wiki/포돌이"]
+caution_sources = ["https://www.khan.co.kr/article/202007071130001", "https://weekly.khan.co.kr/article/201304091103221"]
 
 [[classic]]
 name = "나만 없어 고양이"
@@ -5991,7 +5994,7 @@ fame = 4
 fame_evidence = "리디북스 도서 소개(2021.8.30 종이책 출간)는 이 말을 젊은 층에서 고양이 인기가 급증했음을 보여 주는 인터넷 유행어로 소개했다. 2019년 8월 22일에는 같은 제목의 영화(감독 복운석·신혜진)가 개봉했다."
 caution = "동명 영화(2019)의 포스터나 장면은 쓰지 않는다. 실제 반려묘 사진이나 유명 고양이를 따라 그리지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "영화 개봉일(2019.8.22)과 감독(복운석·신혜진)을 위키백과로 보강했다. 인사이트 기사에는 유행어 언급이 없다. 영화가 이 유행어에서 제목을 땄는지와 유행어가 처음 쓰인 시기는 미확인이다."
 sources = ["https://ridibooks.com/books/754032623", "https://www.insight.co.kr/news/241676", "https://ko.wikipedia.org/wiki/나만_없어_고양이"]
 
@@ -6006,11 +6009,12 @@ use_when = "다이어트 중 금지 음식이나 전 애인처럼 금기어를 �
 food_fit = "다이어트 중인 캐릭터가 치킨이나 야식을 '그분'이라 부르며 피하는 장면, 호불호 음식을 금기어로 취급하는 장면에 쓸 수 있다."
 fame = 4
 fame_evidence = "나무위키 볼드모트 문서의 '위 캐릭터에 빗댄 은어' 항목에 이 용법이 정리되어 있다. 해리 포터 시리즈는 20~30대 대부분이 아는 작품이다."
-caution = "워너브러더스와 원작자의 저작권 캐릭터이므로 외형을 그대로 그리지 않는다. 실존 인물을 암시하는 용도로 쓰지 말고 음식이나 사물에만 적용한다."
+caution = "워너브러더스와 원작자의 저작권 캐릭터이므로 외형을 그대로 그리지 않는다. 실존 인물을 암시하는 용도로 쓰지 말고 음식이나 사물에만 적용한다. 원작자 J.K. 롤링의 트랜스젠더 관련 발언을 둘러싸고 해리 포터 작품과 상품을 불매하자는 요구가 이어지고 있다. 이 요구는 2025년 HBO 드라마 제작과 오디오북 때까지 계속됐으므로, 20~30대 독자 일부에게는 해리 포터를 떠올리게 하는 것 자체가 부정적일 수 있다. 워너브러더스는 해리 포터 상표권을 적극적으로 행사해 왔다. 2025년 12월 영국 특허청은 워너의 이의를 받아들여, 해리 포터 연상을 노린 'Lumous' 상표 출원을 악의적 출원으로 보고 거절했다. 워너는 해리 포터 상품점 Whimsic Alley를 상대로 소송을 낸 뒤 합의하기도 했다. 그러므로 '볼드모트'는 제품명, 이벤트명, 해시태그 같은 상업적 표지로 쓰지 않고 대사 속 비유로만 쓴다. 국내 언론이 특정 정치인을 '볼드모트'에 빗댄 사례도 있어(데일리안 2020.7, 이상직 의원), 실존 인물을 떠올리게 하는 맥락에는 쓰지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "'봄드모트' 표기는 나무위키 문서에서 확인되지 않았다. 문서는 2010년대 말부터 '그 ○○' 같은 표현이 볼드모트를 대체했다고 서술하므로 현재 사용 빈도는 낮을 수 있다. 은어 유행이 시작된 시기는 미확인이다."
 sources = ["https://namu.moe/w/%EB%B3%BC%EB%93%9C%EB%AA%A8%ED%8A%B8", "https://namu.moe/w/%EC%9D%B4%EB%A6%84%EC%A1%B0%EC%B0%A8%20%EB%B6%88%EB%9F%AC%EC%84%A0%20%EC%95%88%EB%90%A0%20%EC%9E%90"]
+caution_sources = ["https://www.thepinknews.com/2025/04/11/what-has-jk-rowling-said-about-transgender-people-trans-views-tweets/", "https://faroutmagazine.co.uk/jk-rowling-clarifies-her-role-in-harry-potter-hbo-series-amid-proposed-boycott/", "https://www.law360.co.uk/articles/2421370", "https://file770.com/whimsic-alley-and-warner-bros-settle-lawsuit", "https://m.dailian.co.kr/news/view/902327"]
 
 [[classic]]
 name = "뭘 좋아하는지 몰라서 다 준비했어"
@@ -6023,11 +6027,12 @@ use_when = "한 상 가득 차린 장면, 선택지를 과하게 늘어놓는 �
 food_fit = "모둠 메뉴, 토핑을 전부 올린 피자, 뷔페, 반반 치킨과 바로 이어지며, 세 음식 캐릭터가 서로 다른 준비 방식을 보이는 패러디도 가능하다."
 fame = 4
 fame_evidence = "나무위키에 3대 기획사 풍자 짤, 오버워치 라인하르트 도전과제 이름, GS25 도시락 '뭘 좋아할지 몰라 다 넣었어'(문서 기준 2023년 5,700원) 등 활용 사례가 정리되어 있다."
-caution = "3대 기획사 버전은 실존 기업과 인물(박진영, 양현석)을 풍자하므로 회사명과 인물은 빼고 문장 구조만 쓴다. GS25 도시락 이름은 제품명이므로 그대로 쓰지 않는다."
+caution = "3대 기획사 버전은 실존 기업과 인물(박진영, 양현석)을 풍자하므로 회사명과 인물은 빼고 문장 구조만 쓴다. GS25 도시락 이름은 제품명이므로 그대로 쓰지 않는다. 3대 기획사 짤에 나오는 양현석 전 YG 총괄은 2025년 7월 18일 대법원에서 마약 수사 무마를 위한 면담강요 혐의 유죄(징역 6개월, 집행유예 1년)가 확정됐다. 박진영은 2025년 9월 대통령 직속 대중문화교류위원회 공동위원장(장관급)에 임명돼 정치적으로 읽힐 수 있다. 그러니 회사명과 인물을 빼는 것에 그치지 말고, 독자가 SM·YG·JYP를 떠올리는 3단 비교 구성('내가 좋아하는 걸 준비했다/내가 나왔다')도 쓰지 않는다. '뭘 좋아할지 몰라서 다 준비했어' 한 줄만 쓴다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "문서의 '2011~2016년'은 밈이 유행하던 당시 기획사 순위를 설명한 것이어서 짤의 정확한 유행 연도는 미확인이다. 『야망 4인조』 연재 연도도 미확인이다."
 sources = ["https://namu.moe/w/%EB%AD%98%20%EC%A2%8B%EC%95%84%ED%95%98%EB%8A%94%EC%A7%80%20%EB%AA%B0%EB%9D%BC%EC%84%9C"]
+caution_sources = ["https://www.wikitree.co.kr/articles/1066276", "https://www.lawtimes.co.kr/news/209848", "https://www.heraldk.com/article/2025090823382411909", "https://www.dailian.co.kr/news/view/1548446/"]
 
 [[classic]]
 name = "인생은 실전이야"
@@ -6042,7 +6047,7 @@ fame = 4
 fame_evidence = "나무위키는 2011년 무한도전 '별주부전' 특집에서 김태호 PD가 이 드립을 썼고, 배치기의 『甲中甲』 수록곡 '라디오' 가사에 들어갔으며, 2010년대 중반부터 악플·보이스피싱 대응 맥락에서 사용이 늘었다고 정리한다."
 caution = "원문에 욕설이 있으므로 '인생은 실전이야'까지만 쓰고 줄임말도 피한다. 남의 불행을 고소해하는 어감이 있어 약자를 조롱하는 구도는 피하고, 합성 짤의 애니메이션 컷은 저작권이 있어 쓰지 않는다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "원 댓글 문구는 '인생이란 건 실전이야 좆만아'이고 정확한 날짜는 미확인이다. 초성체 'ㅇㅅㅈ' 용례, 국밥집 할머니 유머의 게시 시기, 배치기 곡의 발매 연도는 확인하지 못했다."
 sources = ["https://namu.moe/w/%EC%9D%B8%EC%83%9D%EC%9D%80%20%EC%8B%A4%EC%A0%84%EC%9D%B4%EC%95%BC%20%EC%A2%86%EB%A7%8C%EC%95%84"]
 
@@ -6059,7 +6064,7 @@ fame = 4
 fame_evidence = "고구마팜 '트렌드가 바뀌어도 살아남은 고전 인기 밈 총정리'(2025-04-02)에 자기소개용 밈으로 실렸고, 예능 '도시어부'가 '나 덕화쓰, 71살인디'라는 클립 제목을 쓴 사례가 소개되었다."
 caution = "원본은 일반인 아이와 어른의 실제 문자 캡처이므로 캡처를 재현하거나 당사자를 특정하지 않고 말투 형식만 쓴다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "발견자 메모는 관계가 거꾸로였다. 고구마팜에 따르면 추석 인사를 잘못 보낸 쪽은 13살 아이이고, 이에 능숙하게 대응한 쪽이 30살 어른이다. 원문 문자 내용과 시점은 확인하지 못했다."
 sources = ["https://gogumafarm.kr/?p=37247"]
 
@@ -6269,11 +6274,12 @@ use_when = "누가 범인인지 다 같이 추리하고 회의하는 장면, 엉
 food_fit = "마지막 남은 치킨 조각을 누가 먹었는지 음식 캐릭터들이 긴급 회의를 열고 범인을 추방하는 구성이다. 젤리빈이나 강낭콩처럼 둥근 음식에 바이저를 그려 크루원 실루엣을 패러디할 수 있다."
 fame = 4
 fame_evidence = "위키백과에 2020년 여름부터 한국에서 인기가 뜨거워 '어몽어스 붐'이라는 말이 나왔다고 적혀 있다. 동시 접속자는 150만 명을 거쳐 2020년 9월 말 380만 명으로 정점을 찍었다."
-caution = "크루원 디자인과 'Among Us'는 이너슬로스의 저작물이자 상표이므로 그대로 복제하지 말고 실루엣 패러디 정도로만 쓴다."
+caution = "크루원 디자인과 'Among Us'는 이너슬로스의 저작물이자 상표이므로 그대로 복제하지 말고 실루엣 패러디 정도로만 쓴다. 이너슬로스 팬 창작 정책은 Among Us IP(캐릭터 이미지와 게임 내용 포함)를 마케팅 자료에 넣는 것, 제3자 IP와 함께 쓰는 것, 공식 제휴처럼 보이게 하는 것을 금지한다. 브랜드형 계정의 음식 캐릭터 만화는 이 세 가지에 모두 해당할 수 있다. 크루원 실루엣(우주복과 바이저 모양), 'Among Us/어몽어스', '임포스터/크루원', 'sus/아모구스' 같은 고유 표현과 배경 연출은 쓰지 않는다. '우리 중에 배신자가 있다', '회의해서 범인을 지목한다' 같은 일반적인 상황만 빌린다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "동시 접속자 380만 명은 문서에 국가가 명시되어 있지 않아 한국만의 수치로 보기 어렵다. 사회적 거리두기가 인기 요인이었다는 점과 '아모구스' 별칭의 국내 사용은 미확인이다."
 sources = ["https://ko.wikipedia.org/wiki/어몽_어스"]
+caution_sources = ["https://innersloth.com/fanpolicy.php", "https://automaton-media.com/articles/newsjp/20210622-166282/"]
 
 [[classic]]
 name = "쿠키런 (마녀의 오븐 탈출)"
@@ -6288,7 +6294,7 @@ fame = 4
 fame_evidence = "위키백과에 따르면 쿠키런은 1억 1,400만 회 이상 다운로드됐고, 2013년 카카오에서 일일 이용자 290만 명을 기록했다. 2021년 '쿠키런: 킹덤'에서도 용감한 쿠키가 마녀의 오븐을 탈출하는 설정이 이어졌다."
 caution = "용감한 쿠키 같은 캐릭터 디자인과 '쿠키런' 명칭·로고는 데브시스터즈의 저작물이자 상표다. 민담 '진저브레드 맨'의 오븐 탈출 구도만 빌리고, 쿠키 모양과 이름은 새로 만든다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "'2025년 기준 글로벌 이용자 2억 명 이상'은 열람한 위키백과 문서에서 확인하지 못했다. 하트 요청 같은 구체적 밈은 여전히 미확인이며, 밈이라기보다 게임 설정을 빌리는 참고 항목이다."
 sources = ["https://ko.wikipedia.org/wiki/쿠키런", "https://ko.wikipedia.org/wiki/쿠키런:_오븐브레이크", "https://ko.wikipedia.org/wiki/쿠키런:_킹덤"]
 
@@ -6374,11 +6380,12 @@ use_when = "한 캐릭터가 SNS에 올린 글이나 사진 때문에 곤란해�
 food_fit = "사진 찍고 업로드하느라 음식이 다 식거나 녹아버린 캐릭터, 혹은 맛집 리뷰를 올렸다가 악플을 받은 캐릭터에게 다른 음식이 'SNS는 인생의 낭비'라고 말하면 된다."
 fame = 5
 fame_evidence = "위키인용집에 2011년 5월 발언이 원문과 함께 실려 있다. 국내 인지도는 기사로 확인하지 못했고, 연예인 SNS 논란 때마다 인용되는 관용구라는 판단에 근거한 평가이다."
-caution = "실존 인물(퍼거슨)의 얼굴과 이름을 쓰면 초상권·퍼블리시티권 문제가 생길 수 있어 대사만 차용하는 편이 안전하다. 맨유 엠블럼 같은 구단 상표는 쓰지 않는다."
+caution = "실존 인물(퍼거슨)의 얼굴과 이름을 쓰면 초상권·퍼블리시티권 문제가 생길 수 있어 대사만 차용하는 편이 안전하다. 맨유 엠블럼 같은 구단 상표는 쓰지 않는다. 퍼거슨은 2026년 5월 올드 트래퍼드에서 몸이 안 좋아 병원으로 옮겨졌고, 8월에는 보호 부츠를 신고 지팡이를 짚은 채 경기장에 나타났다는 보도가 있었다. 그를 떠올리게 하는 고령·건강 관련 농담(노인 캐릭터가 쓰러지는 연출 등)은 피한다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "원문은 '인생의 낭비'가 아니라 '시간 낭비(waste of time)'이다. 한국어 위키백과 퍼거슨 문서에는 이 발언과 밈에 관한 언급이 없다. 국내 확산 경로는 검색 한도 소진으로 확인하지 못했다."
 sources = ["https://ko.wikiquote.org/wiki/알렉스_퍼거슨", "https://ko.wikipedia.org/wiki/알렉스_퍼거슨"]
+caution_sources = ["https://www.1news.co.nz/2026/05/04/man-united-great-sir-alex-ferguson-taken-to-hospital-after-feeling-unwell/", "https://gbnews.com/sport/football/sir-alex-ferguson-hospital-manchester-united-liverpool", "https://www.3music.tv/section/news/article/sir-alex-ferguson-attends-manchester-united-match-in-protective-boot-2026-08-31"]
 
 [[classic]]
 name = "찰칵 세리머니 (손흥민)"
@@ -6513,11 +6520,12 @@ use_when = "두 선택지 중 하나를 골라야 하는데 결정을 못 해 �
 food_fit = "문어 캐릭터(타코야키, 문어숙회)가 '짜장 상자'와 '짬뽕 상자' 중 하나를 골라 오늘 메뉴를 예언하는 장면으로 자연스럽게 쓸 수 있다."
 fame = 4
 fame_evidence = "위키백과에 8경기 전부 적중(확률 1/256), 스페인 명예시민 위촉, 중국의 '문어대제' 상품, 구글 두들 등장 같은 세계적 화제가 적혀 있다. 각주에 경향신문, 서울신문, 한겨레, 노컷뉴스 기사가 인용되어 국내에서도 크게 보도되었음을 알 수 있다."
-caution = "실존했던 동물이고 2010년에 죽었으므로 문어 요리 캐릭터와 엮어 '파울을 먹는다'는 식의 농담은 피한다. 실제 국가 국기 대신 가상 깃발이나 메뉴 이름을 쓰는 편이 무난하다."
+caution = "실존했던 동물이고 2010년에 죽었으므로 문어 요리 캐릭터와 엮어 '파울을 먹는다'는 식의 농담은 피한다. 실제 국가 국기 대신 가상 깃발이나 메뉴 이름을 쓰는 편이 무난하다. 2010년 7월 파울이 살던 수족관의 운영사 Sea Life Deutschland GmbH가 독일 상표 2건을 출원했고, 다른 출원인들도 'Polpo Octopus Paul'(EU 상표), 'Paul das Orakel', 'Paul die Krake' 등을 출원했다(등록 여부는 미확인). 문어 캐릭터에 '파울', 'Paul', '문어 파울' 같은 이름을 그대로 붙이지 말고 새 이름을 쓴다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "8경기 전부 적중과 사망일(2010.10.26)은 확인했다. '독일전 7경기와 결승전'이라는 세부 구성은 이번에 연 문서에서 따로 확인하지 못했다. 문서에 한국전 예측은 없다."
 sources = ["https://ko.wikipedia.org/wiki/파울_(문어)"]
+caution_sources = ["https://ipkitten.blogspot.com/2010/08/marketing-of-octopus-paul.html", "https://www.econoblog.com.ar/8909/pulpo-paul-sera-una-marca"]
 
 [[classic]]
 name = "수아레스 핵이빨"
@@ -6530,11 +6538,12 @@ use_when = "한 캐릭터가 다른 캐릭터를 몰래 한 입 베어 물고 �
 food_fit = "음식 캐릭터끼리 서로 한 입 베어 무는 장면에 잘 맞는다. 떡이나 소시지 캐릭터가 옆 캐릭터 어깨를 앙 물고, 물린 쪽에 이빨 자국이 남는 식이다."
 fame = 4
 fame_evidence = "영문 위키백과에 세 차례 깨물기와 FIFA·CAS 징계가 실려 있다. 수아레스는 2010 월드컵 16강 한국전에서 두 골을 넣어 국내에 원래 잘 알려진 선수였다. '핵이빨'이라는 별명이 얼마나 퍼졌는지는 기사로 확인하지 못했다."
-caution = "실존 선수의 실명과 얼굴은 쓰지 말고 깨무는 동작만 차용한다. 폭력 행위를 미화하는 투는 피하고, FIFA와 월드컵 상표는 쓰지 않는다."
+caution = "실존 선수의 실명과 얼굴은 쓰지 말고 깨무는 동작만 차용한다. 폭력 행위를 미화하는 투는 피하고, FIFA와 월드컵 상표는 쓰지 않는다. 수아레스는 깨물기 말고도 2011년 12월 잉글랜드축구협회(FA)에서 파트리스 에브라를 인종차별적으로 모욕했다는 판정을 받아 8경기 출전 정지와 벌금 4만 파운드 징계를 받았다. 2025년 8월 31일 리그스컵 결승 뒤에는 시애틀 사운더스 직원에게 침을 뱉어 리그스컵 6경기와 MLS 3경기 출전 정지를 받았다. 이렇게 비위 전력이 거듭된 실존 인물을 바로 떠올리게 하는 '핵이빨', '수아레스' 같은 말은 제목과 캡션에 쓰지 않는다. 음식을 깨무는 일반적인 개그로만 쓰고, 우루과이·이탈리아를 떠올리게 하는 유니폼 색이나 국기도 넣지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "사건 날짜(2014.6.24)와 CAS 결과(활동 금지만 해제, 9경기 출전 정지는 유지)를 보완했다. '핵이빨' 별명의 기원과 국내 확산 정도는 검색 한도 소진으로 확인하지 못했다."
 sources = ["https://en.wikipedia.org/wiki/Luis_Suárez_(footballer,_born_1987)"]
+caution_sources = ["https://www.aljazeera.com/sport/football/2011/12/20111220212136925789.html", "https://www.irishtimes.com/sport/suarez-banned-for-eight-games-1.14110", "https://guardian.ng/sport/football/suarez-gets-six-match-ban-for-spitting-on-official/", "https://bleacherreport.com/articles/25245262-luis-suarez-suspended-spitting-sounders-staffer-after-miamis-leagues-cup-loss", "https://thescore.com/mls/news/3341154"]
 
 [[classic]]
 name = "빛현우 (조현우)"
@@ -6549,7 +6558,7 @@ fame = 4
 fame_evidence = "인사이트(2018.7.3)는 누리꾼들이 붙인 별명이라고 전하며, 조현우의 SNS 글 '오늘 처음으로 와이프가 빛현우라 그랬다'를 소개했다. YTN(2020.2.5)은 기사 제목에 '빛현우'를 썼다. SBS(2018.7.2)가 보도한 '까방권' 투표에서도 그가 1위를 했다."
 caution = "현역 선수인 실존 인물이다. 이름이나 얼굴, 노란 머리 스타일로 그를 특정하지 말고 '빛' 후광 연출만 빌린다. 대표팀 엠블럼과 FIFA·월드컵 로고는 쓰지 않는다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "인사이트 기사는 별명이 붙은 경기를 특정하지 않았다. 독일전 최우수선수 수상은 위키백과로 확인했다. 2020년 발언은 노란 머리로 다시 염색해 별명을 이어 가고 싶다는 취지였다."
 sources = ["https://www.insight.co.kr/news/164136", "https://www.ytn.co.kr/_ln/0107_202002051843326118", "https://ko.wikipedia.org/wiki/대한민국_대_독일_(2018년_FIFA_월드컵)", "https://news.sbs.co.kr/news/endPage.do?news_id=N1004828969"]
 
@@ -6564,11 +6573,12 @@ use_when = "계속 지거나 손해를 보면서도 웃으며 '나는 행복합�
 food_fit = "매번 마지막까지 남는 반찬이나 늘 탈락하는 메뉴 캐릭터가 응원봉을 들고 '나는 행복합니다~'를 부르는 컷으로 쓸 수 있다."
 fame = 4
 fame_evidence = "OSEN(2018.4.21)은 이 응원가의 유래를 소개하며 '보살팬'을 언급했다. 엘르(2025.10.27)는 '나~는~ 행복합니다~'를 제목에 넣어, 한화가 19년 만에 한국시리즈에 오르자 조인성·박보영 등 연예인들이 SNS로 응원한 소식을 전했다."
-caution = "원곡(윤항기)의 가사와 멜로디는 저작권이 있으므로 짧은 구절만 쓴다. 한화 이글스 구단명·로고·유니폼, 응원단장과 연예인의 초상은 쓰지 않는다. 특정 구단의 부진을 조롱하는 연출은 팬덤의 반감을 살 수 있으니 피한다."
+caution = "원곡(윤항기)의 가사와 멜로디는 저작권이 있으므로 짧은 구절만 쓴다. 한화 이글스 구단명·로고·유니폼, 응원단장과 연예인의 초상은 쓰지 않는다. 특정 구단의 부진을 조롱하는 연출은 팬덤의 반감을 살 수 있으니 피한다. 프로야구 응원가는 저작인격권 분쟁이 실제로 있었던 분야다. 작사·작곡가 21명이 삼성 라이온즈를 상대로 저작인격권 침해 소송(서울중앙지법 2018가합516867)을 냈고, 항소심(서울고법 2021.10.21 선고 2019나2016985)에서는 응원가에 작곡가 이름을 표시하지 않은 것이 성명표시권 침해로 판단됐다는 해설이 있다. 2017년에는 작곡가들이 kt wiz에 동일성유지권 침해를 이유로 내용증명을 보냈다는 보도도 있다. 원곡 가사를 바꿔 부르는 개사 패러디나 멜로디 편곡은 피하고, 제목 수준의 짧은 구절만 쓴다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "'항복합니다'라는 변형은 열어본 출처에서 확인되지 않아 별칭에서 뺐다. 엘르 기사는 박보영이 응원 노래를 언급했다고만 썼고, 이 문구를 그대로 올렸는지는 미확인이다. 뉴스토마토(2020.6.19)는 보살팬과 이 노래를 언급하지만 응원단장과 시작 연도는 다루지 않았다."
 sources = ["https://osen.co.kr/article/G1110885035", "https://www.elle.co.kr/article/1890246", "https://newstomato.com/ReadNews.aspx?no=978982"]
+caution_sources = ["https://www.dailian.co.kr/news/view/1106704/", "https://maily.so/allculture/posts/2nzne0j4zp5", "https://db.koreascholar.com/Article/Detail/413138", "https://isplus.com/article/view/isp202207150013"]
 
 [[classic]]
 name = "양궁은 국가대표 선발전이 올림픽보다 어렵다"
@@ -6583,7 +6593,7 @@ fame = 4
 fame_evidence = "2008년 경향신문, 2018년 데일리안(기보배 탈락), 2026년 3월 노컷뉴스(임시현 탈락)가 모두 이 표현을 썼다. 대회와 선발전 때마다 반복 회자되는 상식형 문구다."
 caution = "기보배·임시현 등 실존 선수를 그리거나 탈락을 조롱하지 않는다. 올림픽 오륜기와 대한양궁협회 로고 등 상표는 쓰지 않는다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "도쿄 올림픽 선수들이 '선발전이 더 긴장된다'고 말했다는 보도는 확인하지 못했다(웹 검색 한도 소진). 표현 자체는 2010년 이전 기원이지만 2010년 이후에도 계속 재회자돼 범위 안으로 판단했다."
 sources = ["https://www.khan.co.kr/article/200804101357542", "https://www.dailian.co.kr/news/view/702048/", "https://nocutnews.co.kr/news/6488621"]
 
@@ -6911,7 +6921,7 @@ fame = 5
 fame_evidence = "머니투데이(2021.6.20)가 국내 약 220개 매장과 해외 진출을 보도했다. 위키백과는 보통 4,000원대 가격으로 학생들이 부담 없이 이용한다고 적고 있다."
 caution = "'인생네컷'은 엘케이벤쳐스의 브랜드명이다. 로고나 프레임 디자인을 그대로 쓰지 말고, 일반 명칭인 '네컷사진'과 일반적인 프레임으로 표현하는 것이 안전하다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "운영사(엘케이벤쳐스)와 시작 연도(2017)를 확인해 보충했다. '하루필름'은 인생네컷의 별칭이 아니라 별도 브랜드로 보여 별칭에서 뺐다(별도 확인은 하지 못함). 업계 전체의 확산 시기는 미확인이다."
 sources = ["https://ko.wikipedia.org/wiki/인생네컷", "https://www.mt.co.kr/tech/2021/06/20/2021062011281410324"]
 
@@ -6997,11 +7007,12 @@ use_when = "연차를 몰아 쓰는 장면, 월급날이나 할인일까지 참�
 food_fit = "주먹밥이나 경단 캐릭터가 두 팔을 들어 위에 커다란 밥알 공을 모으는 포즈로 쓰기 좋다. 다이어트 중 모은 치팅데이를 원기옥처럼 머리 위에 띄워 던지는 연출도 가능하다."
 fame = 4
 fame_evidence = "나무위키(미러)에 군 말년휴가, 회사 연차, 가챠 게임 재화, KIA 타이거즈와 원태인 선수 관련 야구 팬 표현 등 일상 용례가 정리되어 있다."
-caution = "손오공 캐릭터 외형과 원작 컷은 저작권 대상이므로 두 팔을 들어 기를 모으는 포즈만 음식 캐릭터로 바꿔 쓴다. 야구 용례의 실제 선수 이름은 쓰지 않는 편이 안전하다."
+caution = "손오공 캐릭터 외형과 원작 컷은 저작권 대상이므로 두 팔을 들어 기를 모으는 포즈만 음식 캐릭터로 바꿔 쓴다. 야구 용례의 실제 선수 이름은 쓰지 않는 편이 안전하다. 원작자 토리야마 아키라는 2024년 3월 1일 급성 경막하혈종으로 별세했다(향년 68세). 원작자나 그의 죽음을 소재로 한 농담과 추모 패러디는 피한다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "원작 화수와 연도, 관용 표현이 퍼진 시기는 확인하지 못했다. 원태인은 삼성 라이온즈 선수로, KIA 용례와 별개다. 카테고리는 애니·만화라서 '기타'로 분류했다."
 sources = ["https://namu.moe/w/%EC%9B%90%EA%B8%B0%EC%98%A5"]
+caution_sources = ["https://sports.khan.co.kr/article/202403081539003", "https://malaysia.news.yahoo.com/akira-toriyama-japanese-creator-iconic-070358842.html"]
 
 [[classic]]
 name = "~라고 물으신다면 대답해 드리는 게 인지상정 (로켓단 등장 구호)"
@@ -7014,11 +7025,12 @@ use_when = "악역 트리오가 거창하게 등장하는 장면, 누가 묻지�
 food_fit = "라면, 김밥, 떡볶이 같은 분식 트리오가 번갈아 대사를 치며 등장하는 연출에 잘 맞는다. 마지막 컷은 고양이 대신 단무지 같은 조연이 '~다옹'으로 마무리하면 된다."
 fame = 4
 fame_evidence = "나무위키(미러)는 이 대사 덕분에 사자성어 '인지상정'까지 유명해졌다고 설명한다. 드라마 「킬미, 힐미」에서 황정음과 박서준이 이 구호로 추억 놀이를 하는 장면도 소개되어 있다."
-caution = "포켓몬과 로켓단 캐릭터는 닌텐도·포켓몬 측 저작권과 상표권 대상이므로 캐릭터 외형이나 R 로고를 그대로 쓰지 않는다. 구호의 짧은 패러디만 쓰고 전문 인용은 피한다."
+caution = "포켓몬과 로켓단 캐릭터는 닌텐도·포켓몬 측 저작권과 상표권 대상이므로 캐릭터 외형이나 R 로고를 그대로 쓰지 않는다. 구호의 짧은 패러디만 쓰고 전문 인용은 피한다. 포켓몬 컴퍼니는 작은 팬 활동에도 법적 대응을 한다. 2015년에는 팬 파티 포스터와 페이스북 게시물에 피카츄 등을 넣은 주최자를 저작권 침해로 제소했다. 2025년 9월 미 국토안보부, 2026년 3월 백악관이 포켓몬 이미지를 정치 밈에 쓰자, 허가한 적 없으며 정치와 무관하다고 공개 반박했다. 따라서 브랜드 계정 게시물의 캡션과 해시태그에는 '포켓몬', '로켓단', 캐릭터 이름을 넣지 않고, 정치나 시사 풍자에도 이 구호를 쓰지 않는다. 한국판 로이 성우 김일 씨가 2018년 별세했으므로 더빙 음성을 흉내 내거나 성우를 언급하는 연출도 피한다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "한국 방영 시작은 1999년 7월 14일 SBS로 확인했다. '로이 하면 인지상정'이라는 로이 문서 문구는 원본(namu.wiki 403)을 열지 못해 확인하지 못했다. 「킬미, 힐미」 방영 연도는 출처에서 확인하지 못했다."
 sources = ["https://namu.moe/w/%EB%A1%9C%EC%BC%93%EB%8B%A8%20%EC%82%BC%EC%9D%B8%EB%B0%A9/%EB%93%B1%EC%9E%A5%20%EB%8C%80%EC%82%AC", "https://namu.moe/w/%ED%8F%AC%EC%BC%93%EB%AA%AC%EC%8A%A4%ED%84%B0%20%EB%AC%B4%EC%9D%B8%ED%8E%B8"]
+caution_sources = ["https://animenewsnetwork.com/news/2015-08-28/the-pokemon-company-sues-organizers-of-pokemon-themed-party-for-copyright-infringement/.92213", "https://www.geekwire.com/2015/superfan-who-threw-pokemon-themed-party-needs-to-raise-4k-to-cover-pokemon-trademark-lawsuit", "https://www.pcgamer.com/gaming-industry/the-pokemon-company-criticises-trump-administrations-use-of-its-imagery-in-political-memes-says-pokemon-is-apolitical-trump-spokesman-uses-decade-old-clinton-post-to-accuse-them-of-bias", "https://nintendowire.com/news/2026/03/06/the-pokemon-company-responds-to-white-house-pokopia-meme-denies-involvement/", "https://www.pcgamer.com/games/pokemon-company-says-homeland-securitys-use-of-its-property-in-disturbing-promotional-video-was-unauthorized-but-dhs-doesnt-seem-to-care-to-arrest-them-is-our-real-test-to-deport-them-is-our-cause", "https://www.kukinews.com/article/view/kuk201811190048"]
 
 [[classic]]
 name = "정의의 이름으로 널 용서하지 않겠다 (세일러문)"
@@ -7033,7 +7045,7 @@ fame = 4
 fame_evidence = "나무위키(미러) 츠키노 우사기 문서는 이 대사가 가장 유명하며 지금도 회자되고 패러디가 수없이 나온다고 쓰고, 예능에서 세일러 문 코스프레를 하면 반드시 언급되며 졸라맨도 패러디했다고 적는다. TWICE가 SNL 더빙극장에서 KBS판 오프닝을 패러디한 일도 소개된다."
 caution = "세일러 문 캐릭터 디자인과 의상, 변신 장면은 원작 저작권 대상이므로 포즈와 대사만 패러디한다. KBS판이나 재더빙판 영상과 음원은 직접 쓰지 않는다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "한국판 결정 대사는 '사랑과 정의의 이름으로'가 아니라 '정의의 이름으로 널 용서하지 않겠다!'이다. '한국 20대라면 다 알 만한'이라는 문구는 문서에서 찾지 못했다. 재더빙은 2012년부터 대원방송이다. TWICE SNL 패러디 연도는 미확인이다."
 sources = ["https://namu.moe/w/%EC%B8%A0%ED%82%A4%EB%85%B8%20%EC%9A%B0%EC%82%AC%EA%B8%B0", "https://namu.moe/w/%EC%84%B8%EC%9D%BC%EB%9F%AC%20%EB%AC%B8"]
 
@@ -7050,7 +7062,7 @@ fame = 4
 fame_evidence = "나무위키(미러) 키노모토 사쿠라 문서에 '한때 국내에서는 여기저기에서 저 봉인 해제의 키워드가 유행하기도 했고'라는 서술이 있다. 2018년 클리어 카드 편 국내 방영 확정 뒤 구작도 재더빙되었다."
 caution = "카드캡터 사쿠라 캐릭터, 지팡이, 마법진 디자인은 원작 저작권 대상이므로 그대로 그리지 않는다. 주문 전문 대신 '봉인해제!' 한마디와 동작만 패러디한다. 인지도는 여성 독자 쪽이 더 높을 수 있다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "'봉인 해제 장면 BGM이 유명하다'는 서술은 확인하지 못했고, 문서에는 테마곡이 '사쿠라 하면 딱 떠오르는 마성의 BGM'이라고만 나온다. 일상 유행은 '한때 국내에서 유행'이라는 서술로만 확인했다. 한국 첫 방영 연도는 미확인이다."
 sources = ["https://namu.moe/w/%EC%A7%80%ED%8C%A1%EC%9D%B4(%EC%B9%B4%EB%93%9C%EC%BA%A1%ED%84%B0%20%EC%82%AC%EC%BF%A0%EB%9D%BC)", "https://namu.moe/w/%ED%82%A4%EB%85%B8%EB%AA%A8%ED%86%A0%20%EC%82%AC%EC%BF%A0%EB%9D%BC", "https://namu.moe/w/%EC%B9%B4%EB%93%9C%EC%BA%A1%ED%84%B0%20%EC%B2%B4%EB%A6%AC"]
 
@@ -7065,11 +7077,12 @@ use_when = "메뉴판 앞에서 오래 고민하다 하나를 고르는 장면, 
 food_fit = "배달 앱 앞에서 고민하던 캐릭터가 치킨을 가리키며 '치킨, 너로 정했다!'를 외치는 컷에 딱 맞다. 도시락 통을 볼처럼 던져 반찬 캐릭터를 내보내는 연출도 가능하다."
 fame = 4
 fame_evidence = "극장판은 한국에서 누적 509,555명, 누적 매출 약 38억 원(2018년 2월 25일 기준)을 기록했다. 한지우 문서에 전용 대사로 정리되어 있다."
-caution = "몬스터볼 디자인, 피카츄, 지우 외형은 상표권과 저작권 대상이므로 쓰지 않고, 대사와 던지는 동작만 빌린다."
+caution = "몬스터볼 디자인, 피카츄, 지우 외형은 상표권과 저작권 대상이므로 쓰지 않고, 대사와 던지는 동작만 빌린다. 포켓몬 컴퍼니는 2015년 팬 파티 포스터에 피카츄를 넣은 주최자를 저작권 침해로 제소했다. 2025년 9월 미 국토안보부와 2026년 3월 백악관의 포켓몬 정치 밈에는 허가한 적 없으며 정치와 무관하다고 공개 반박했다. 브랜드 계정 게시물의 캡션과 해시태그에 '포켓몬', '피카츄', '지우'를 넣지 않는다. '○○, 너로 정했다'로 정치인이나 정당, 시사 이슈를 지목하는 풍자에도 쓰지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "'나무위키에 국내에서도 쓰인다고 명시'라는 주장은 한지우 문서와 극장판 문서 어디에서도 확인하지 못했다. 509,555명이 포켓몬 극장판 중 처음 50만을 넘긴 기록이라는 주장도 확인하지 못했다. 첫 등장 화수는 미확인이다."
 sources = ["https://namu.moe/w/%ED%95%9C%EC%A7%80%EC%9A%B0", "https://namu.moe/w/%EB%84%88%EB%A1%9C%20%EC%A0%95%ED%96%88%EB%8B%A4"]
+caution_sources = ["https://animenewsnetwork.com/news/2015-08-28/the-pokemon-company-sues-organizers-of-pokemon-themed-party-for-copyright-infringement/.92213", "https://www.digitaltrends.com/gaming/pokemon-company-sues-fan-over-party/", "https://www.pcgamer.com/gaming-industry/the-pokemon-company-criticises-trump-administrations-use-of-its-imagery-in-political-memes-says-pokemon-is-apolitical-trump-spokesman-uses-decade-old-clinton-post-to-accuse-them-of-bias", "https://nintendowire.com/news/2026/03/06/the-pokemon-company-responds-to-white-house-pokopia-meme-denies-involvement/"]
 
 [[classic]]
 name = "너 내 동료가 돼라"
@@ -7082,11 +7095,12 @@ use_when = "새 멤버를 영입하는 장면, 맛있는 것을 발견하고 내
 food_fit = "라면 캐릭터가 달걀이나 김치에게 손을 내밀며 '너 내 동료가 돼라'를 외치고, 토핑이 하나씩 합류하는 구성에 잘 맞다. 밀짚모자 대신 냄비 뚜껑을 쓰는 식으로 바꿀 수 있다."
 fame = 4
 fame_evidence = "나무위키(미러)에 단독 문서가 있고, 김성현의 스타크래프트 중계 패러디와 SNL 코리아 '두덕리 온라인 2' 스케치 패러디가 정리되어 있다. 김채원의 '도도도독'은 빠르게 퍼져 별명이 될 정도였다."
-caution = "루피, 밀짚모자 해적단 디자인은 원작 저작권 대상이다. '도도도독' 파생 밈은 실존 아이돌 김채원의 실수 장면에서 나왔으므로 본인을 그리거나 조롱하는 식으로 쓰지 말고, 콘서트 영상과 음원도 쓰지 않는다."
+caution = "루피, 밀짚모자 해적단 디자인은 원작 저작권 대상이다. '도도도독' 파생 밈은 실존 아이돌 김채원의 실수 장면에서 나왔으므로 본인을 그리거나 조롱하는 식으로 쓰지 말고, 콘서트 영상과 음원도 쓰지 않는다. 2025년 7~10월 『원피스』의 밀짚모자 해적단 해골 깃발이 인도네시아, 네팔, 필리핀, 마다가스카르, 페루 등에서 Z세대 반정부 시위의 상징으로 쓰였다. 국내에서도 2025년 10월 3일 광화문 방면 보수단체 집회에서 이 깃발이 보도되었다. 그러므로 이 대사와 함께 해적 깃발, 밀짚모자 해골 마크, 깃발을 드는 연출을 쓰지 않고, 시위나 정치 맥락과 엮지 않는다. 김채원 '도도도독' 장면에 대해서는 본인이 사과나 사용 중단을 요청했다는 보도는 찾지 못했다. 다만 실수 장면을 놀리는 연출은 계속 피한다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "파생 밈 시기는 2023년 8월 13일 FLAME RISES 일요일 콘서트로 확인했다. 원작 첫 등장 화수와 정규 1집 발매일은 출처에서 확인하지 못했다."
 sources = ["https://namu.moe/w/%EB%84%88%20%EB%82%B4%20%EB%8F%99%EB%A3%8C%EA%B0%80%20%EB%8F%BC%EB%9D%BC"]
+caution_sources = ["https://en.wikipedia.org/wiki/Straw_Hat_Pirates%27_Jolly_Roger", "https://www.cbc.ca/1.7640717", "https://fortune.com/2025/09/24/gen-z-revolution-protest-one-piece-pirate-flag-jolly-roger/", "https://www.inews24.com/view/1893744", "https://www.khan.co.kr/article/202510201717001/", "https://maily.so/trendaword/posts/e9o0k605z8w"]
 
 [[classic]]
 name = "영역전개"
@@ -7101,7 +7115,7 @@ fame = 4
 fame_evidence = "트렌드 뉴스레터 Trend A Word #558(2026년 6월 8일)이 '료이키텐카이 트렌드 소환술'로 이 챌린지를 소개했다. 극장판 『주술회전 0』은 한국 누적 730,239명(2025년 1월 21일 기준)을 기록했고, TVA 3기는 2026년 1분기 한일 동시 방영되었다."
 caution = "고죠 사토루 등 캐릭터 외형과 OST 음원은 저작권 대상이므로 쓰지 않는다. 손동작과 '영역전개'라는 말만 빌린다. 애니를 보지 않는 30대 독자에게는 인지도가 낮을 수 있다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "Maily 글은 챌린지가 유행한다고만 전할 뿐 시작 시기, 최초 게시자, 규모를 밝히지 않았다. 'Delirious'가 2기 OST라는 점은 Maily 서술로만 확인했다. 나무위키 영역전개 문서에는 '주술회전/밈' 분류 태그만 있고 구체적 밈 용례는 없었다. 검색 한도가 소진되어 추가 확인은 하지 못했다."
 sources = ["https://maily.so/trendaword/posts/1gz2e13dz3q", "https://namu.moe/w/%EC%98%81%EC%97%AD%EC%A0%84%EA%B0%9C", "https://namu.moe/w/%EA%B7%B9%EC%9E%A5%ED%8C%90%20%EC%A3%BC%EC%88%A0%ED%9A%8C%EC%A0%84%200", "https://namu.moe/w/%EC%A3%BC%EC%88%A0%ED%9A%8C%EC%A0%84%203%EA%B8%B0"]
 
@@ -7258,11 +7272,12 @@ use_when = "뭔가 이상하거나 애매한 분위기를 감지하는 장면이
 food_fit = "셰프 캐릭터가 국물을 맛보고 '뭔가 2% 부족한 느낌적인 느낌'이라고 평가하는 시식 장면으로 쓸 수 있다."
 fame = 4
 fame_evidence = "위키백과 유상무 문서에 개그콘서트 유행어로 실려 있고 EBS1 '로봇파워'에서도 쓰였다고 적혀 있다. 지금도 일상에서 쓰인다는 판단과 2014년 페이스북 페이지 사례는 확인하지 못했다."
-caution = "말 자체가 일상 표현이 되었으므로 실존 개그맨의 이름이나 얼굴과 연결하지 않고 표현만 쓴다. 개그콘서트 방송 화면은 KBS 저작물이다."
+caution = "말 자체가 일상 표현이 되었으므로 실존 개그맨의 이름이나 얼굴과 연결하지 않고 표현만 쓴다. 개그콘서트 방송 화면은 KBS 저작물이다. 원조로 알려진 개그맨 유상무는 2016년 강간미수 혐의로 경찰이 기소의견으로 검찰에 송치했다. 검찰은 2016년 12월 불기소(혐의없음) 처분을 내렸다. 그러니 이 표현을 유상무나 개그콘서트 코너와 연결하는 설명, 해시태그, 캡션은 붙이지 않는다. 이번 검색에서도 개그콘서트가 원조라는 근거는 확인되지 않았다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "유상무와 '돌아보지마' 코너는 위키백과로 확인했으나 방영 연도는 미확인이며, 원 장면은 2010년 이전일 수 있다. '2010년 초반부터 서서히 퍼졌다'는 설명과 2014년 페이스북 페이지 사례는 미확인이다."
 sources = ["https://ko.wikipedia.org/wiki/유상무"]
+caution_sources = ["https://www.hankyung.com/amp/201612089086H", "https://www.tenasia.co.kr/article/2016121974764"]
 
 [[slang]]
 name = "미친 존재감 (미존개오)"
@@ -7500,7 +7515,7 @@ fame = 5
 fame_evidence = "위키백과 '대한민국의 인터넷 신조어 목록'에 중앙일보 2017년 칼럼을 출처로 실려 있다. 파생어 '가심비'가 생길 만큼 일상어로 자리 잡았다."
 caution = "이미 일상어여서 밈으로서 웃음을 주는 힘은 약하다. 실제 브랜드나 가게 이름을 넣어 비교하면 비방 소지가 있다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "뜻은 정확하다. 파생어 '가심비'(2018)를 추가했다. 밈이라기보다 일상어에 가깝다. 중앙일보 원문은 접속이 막혀 직접 확인하지 못했다. 카테고리를 '기타'로 고쳤다. 동아일보 원문과 '트렌드 코리아 2018' 관련설은 페이지 접근이 막히고 검색 한도가 소진되어 확인하지 못했다."
 sources = ["https://ko.wikipedia.org/wiki/대한민국의_인터넷_신조어_목록", "https://www.donga.com/news/article/all/20180104/88018182/1", "https://opendict.korean.go.kr/search/searchResult?query=가심비"]
 
@@ -7653,7 +7668,7 @@ fame = 5
 fame_evidence = "영어·한국어 위키낱말사전 모두 속어로 올라 있다. 결산 기사 근거는 이번에도 확보하지 못해, 점수는 일상 사용 빈도를 바탕으로 한 판단이다."
 caution = "일반 어휘라 특별한 민감성은 없다. 상표 등록 여부는 미확인이므로 특정 브랜드 로고처럼 꾸미지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "분류 '신조어'는 허용 목록에 없어 '인터넷·커뮤니티'로 바꿨다. 한국어 위키낱말사전은 '매우 유용한 정보', 표준어 미등재 명사로 적고 있다. 최초 사용 시점은 이번에도 확인하지 못했다(웹검색 한도 소진)."
 sources = ["https://en.wiktionary.org/wiki/꿀팁", "https://ko.wiktionary.org/wiki/꿀팁"]
 
@@ -7668,11 +7683,12 @@ use_when = "한 번의 실수로 이미지가 무너지는 장면, 잘나가던 
 food_fit = "유행이 끝난 디저트 캐릭터가 진열대에서 밀려나며 '나락 갔다'고 말하는 컷이 어울린다. 아이스크림 캐릭터가 녹아 바닥으로 흘러내리는 모습을 '나락'으로 표현할 수도 있다."
 fame = 5
 fame_evidence = "원래 있던 관용구가 인터넷 유행어로 굳었고, 인기 유튜브 채널(피식대학)의 정기 코너 이름이 될 만큼 일반화되었다. 20~30대가 일상적으로 쓰는 표현이라는 점은 검증자의 판단이다."
-caution = "위키백과에 따르면 감스트가 2019년 결성한 크루 '나락즈'는 성희롱 사건을 일으켰다. 그러니 유래 인물이나 방송은 언급하지 말고 일반 표현으로만 쓴다. 피식대학 '나락퀴즈쇼'의 이름과 포맷은 그대로 쓰지 않으며, 실존 연예인의 논란을 '나락' 소재로 삼지 않는다."
+caution = "위키백과에 따르면 감스트가 2019년 결성한 크루 '나락즈'는 성희롱 사건을 일으켰다. 그러니 유래 인물이나 방송은 언급하지 말고 일반 표현으로만 쓴다. 피식대학 '나락퀴즈쇼'의 이름과 포맷은 그대로 쓰지 않으며, 실존 연예인의 논란을 '나락' 소재로 삼지 않는다. 피식대학은 2024년 3월 '나락퀴즈쇼'에서 세븐틴을 폄하하는 질문으로 비판받았다(텐아시아 2024.3.22). 2024년 5월에는 경북 영양군 편 영상에서 \"할매 맛이다\", \"공무원이고 여기 발령 받으면…\" 같은 지역 비하 발언으로 논란이 됐다(스포츠경향 2024.5.16). 그러니 '나락' 밈을 피식대학 출연자의 말투나 콘텐츠 형식과 엮지 않는다. 특정 지역, 직군, 연령을 깎아내리는 소재로도 쓰지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "'2021년 5월 감스트 방송 발언이 나락송으로 밈화'는 확인하지 못했다. 위키백과 감스트 문서에는 2019년 크루 '나락즈'와 2021.3.16 손흥민 부상 관련 욕설 논란만 있고, '나락송'은 나오지 않는다. 나락퀴즈쇼가 피식대학 정기 콘텐츠인 것은 확인했지만, 시작 시기와 '더 널리 알렸다'는 평가는 미확인이다."
 sources = ["https://ko.wiktionary.org/wiki/나락", "https://opendict.korean.go.kr/search/searchResult?query=나락", "https://ko.wikipedia.org/wiki/감스트", "https://ko.wikipedia.org/wiki/피식대학"]
+caution_sources = ["https://www.tenasia.co.kr/article/2024032295174", "https://sports.khan.co.kr/article/202405161438003", "https://www.fnnews.com/news/202405201529011560"]
 
 [[slang]]
 name = "남사친 / 여사친"
@@ -7739,7 +7755,7 @@ fame = 5
 fame_evidence = "우리말샘에 '아프리카의 날씨처럼 지나치게 더운 여름철 대구를 비유적으로 이르는 말'이라는 일반어로 올라 있다. 영문 위키백과 Daegu 문서에도 언론·방송에서 쓰인 신조어로 나온다."
 caution = "특정 지역을 소재로 하므로 대구를 깎아내리는 투로 쓰지 않는다. 아프리카를 더위의 대명사로 쓰는 표현이라 고정관념으로 느끼는 독자가 있을 수 있다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "한국어 위키백과의 '대프리카'는 대구광역시 문서로 넘어가는 넘겨주기만 확인했고, 본문 설명과 '대한민국의 신조어' 분류는 확인하지 못했다. 영문 위키백과에는 온라인 커뮤니티에서 처음 생겼다는 내용이 추가로 있다."
 sources = ["https://en.wikipedia.org/wiki/Daegu", "https://opendict.korean.go.kr/search/searchResult?query=대프리카", "https://ko.wikipedia.org/wiki/대프리카"]
 
@@ -7825,11 +7841,12 @@ use_when = "식당, 지하철, 회사에 민폐 캐릭터나 집착 캐릭터가
 food_fit = "우리말샘에 오른 '국밥 빌런'(모든 것을 국밥값으로 환산하는 사람)처럼 음식 이름이 그대로 수식어가 된다. 민트초코 빌런, 부먹 빌런처럼 음식 취향 갈등 소재와 잘 맞는다."
 fame = 5
 fame_evidence = "우리말샘에 '빌런', '국밥 빌런', '오피스 빌런'이 표제어로 올라 있고 2018~2021년 여러 언론 용례가 있다. 국립국어원이 2024년 순화어를 정할 만큼 일상어가 됐다."
-caution = "'지하철 빌런'처럼 실존 일반인을 찍은 원본 게시물을 재현하면 초상권과 사생활 문제가 생길 수 있으므로 가상의 캐릭터로만 쓴다. 단어 자체에는 저작권이나 상표 문제가 없다."
+caution = "'지하철 빌런'처럼 실존 일반인을 찍은 원본 게시물을 재현하면 초상권과 사생활 문제가 생길 수 있으므로 가상의 캐릭터로만 쓴다. 단어 자체에는 저작권이나 상표 문제가 없다. 하홍규의 논문 「정신장애와 공존의 사회학: '지하철 빌런'과 지하철 같이 타기」(횡단인문학 21호, 2025.10)는 '지하철 빌런'이라 불린 사건들에서 대중과 언론이 정신 문제가 있다고 여겨지는 사람에게 낙인을 찍는다고 비판했다. 그러니 이상 행동, 정신질환, 노인을 떠올리게 하는 인물은 '빌런'으로 그리지 않는다. 음식 캐릭터의 사소한 집착을 다루는 가벼운 용법(예: 국밥 빌런)에만 쓴다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "속어 뜻이 퍼진 시점을 중앙일보 2018년 9월 용례로 보강했다. 2017년 3월 용례는 영화 속 악당이라는 본래 뜻이다. 처음 쓰인 곳은 확인하지 못했다. 국밥 빌런과 2024년 순화어 정보를 더했다."
 sources = ["https://en.wiktionary.org/wiki/빌런", "https://opendict.korean.go.kr/search/searchResult?focus_name_top=query&query=빌런", "https://opendict.korean.go.kr/dictionary/view?sense_no=1390249&viewType=confirm", "https://opendict.korean.go.kr/dictionary/view?sense_no=1525599&viewType=confirm"]
+caution_sources = ["https://scholarworks.sookmyung.ac.kr/item/9a5ae95a-2f3d-4fff-a635-0c8ddc20effe"]
 
 [[slang]]
 name = "손발이 오그라든다 / 오글거리다"
@@ -7913,7 +7930,7 @@ fame = 5
 fame_evidence = "우리말샘에 비유적 뜻이 실려 있고 2010년부터 2020년까지 언론 용례가 이어진다. 같은 제목의 대중가요(브로맨스, 2016)도 나와 2010년 이후에도 널리 쓰였음을 보여 준다."
 caution = "'어장녀', '어장남'처럼 성별을 묶어 비난하면 젠더 갈등 소재로 번질 수 있으므로 피한다. 실존 인물을 지목하지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "뜻과 2010~2020년 언론 용례를 우리말샘으로 확인했다. 2010년 이전에 생겼는지는 확인하지 못했지만, 2010년 이후에도 널리 쓰여 범위 조건은 충족한다고 판단했다. 한국어 위키백과 '어장관리' 문서는 말뜻이 아니라 브로맨스의 2016년 싱글을 다룬다."
 sources = ["https://en.wiktionary.org/wiki/어장관리", "https://opendict.korean.go.kr/search/searchResult?focus_name_top=query&query=어장관리", "https://opendict.korean.go.kr/dictionary/view?sense_no=770614&viewType=confirm", "https://ko.wikipedia.org/wiki/어장관리"]
 
@@ -8034,7 +8051,7 @@ fame = 5
 fame_evidence = "표준 뜻풀이 외에 우리말샘에 '주작러(做作←er): 없는 사실을 꾸며 만드는 사람', '주작되다' 같은 파생어가 따로 올라 있어 일상어로 자리 잡았음을 보여준다."
 caution = "실존 방송, 유튜버, 업체를 주작이라고 지목하면 명예훼손 소지가 있어 가상의 상황에만 쓴다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "위키낱말사전에는 인터넷 은어 용법이 실려 있지 않고, 주작(朱雀)과 주작(做作) 두 뜻만 있다. 은어 용법의 근거는 우리말샘의 '주작러' 항목으로 바꾸었다. 기원 시기와 처음 쓰인 곳은 여전히 미확인이며 2010년 이후 범위인지도 확정하지 못했다."
 sources = ["https://ko.wiktionary.org/wiki/주작", "https://opendict.korean.go.kr/search/searchResult?query=주작"]
 
@@ -8084,11 +8101,12 @@ use_when = "새치기나 반칙을 한 캐릭터가 당하는 사이다 결말, 
 food_fit = "새치기한 음식 캐릭터가 청양고추의 매운맛에 혼쭐나거나, 편식하는 아이를 채소 캐릭터가 맛으로 혼내주는 결말로 쓸 수 있다."
 fame = 5
 fame_evidence = "영어 위키낱말사전에 속어 뜻이 올라 있다. 같은 제목의 네이버 웹툰(채용택·한가람)이 넷플릭스 드라마로 만들어져 2026년 6월 공개됐을 만큼 말 자체가 대중적이다."
-caution = "전교조 구호에서 온 말이라 정치적 연상이 생길 수 있으니 교사·노조와 엮지 않는다. 동명 웹툰과 넷플릭스 드라마의 로고·장면은 저작권 대상이며, 폭력을 미화하지 않도록 응징은 가볍게 그린다."
+caution = "전교조 구호에서 온 말이라 정치적 연상이 생길 수 있으니 교사·노조와 엮지 않는다. 동명 웹툰과 넷플릭스 드라마의 로고·장면은 저작권 대상이며, 폭력을 미화하지 않도록 응징은 가볍게 그린다. 2026년 6월 5일 공개된 넷플릭스 시리즈 '참교육'은 원작 웹툰의 체벌·폭력 미화와 인종차별·혐오 표현 문제로 제작 단계부터 논란이 됐고, 전교조는 \"폭력은 참교육이 아니다\"라며 제작 중단을 요구했다. 공개 뒤에는 3화의 '가짜 미투' 설정이 미투 운동을 폄훼한다는 비판도 받았다. 지금 이 말은 해당 드라마와 그 논란을 바로 떠올리게 하므로 교사가 학생을 응징하는 구도, 성범죄 무고, 여성 인플루언서 응징 같은 설정은 쓰지 않는다. 드라마 화제에 편승하는 인상도 주지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "원뜻의 배경으로 전교조(1989년 결성)가 '참교육'을 이념으로 주창했다는 점과 동명 웹툰·드라마(2026.6 공개, 김무열 등 출연)가 있다는 점을 추가했다. 속어 의미의 최초 확산처는 확인하지 못했다."
 sources = ["https://en.wiktionary.org/wiki/참교육", "https://ko.wikipedia.org/wiki/전국교직원노동조합", "https://ko.wikipedia.org/wiki/참교육"]
+caution_sources = ["https://www.starnewskorea.com/movie/2026/06/05/2026060511525774251", "https://v.daum.net/v/5zCFfccn56", "https://enews.imbc.com/News/ViewAmp/503938"]
 
 [[slang]]
 name = "츤데레"
@@ -8188,7 +8206,7 @@ fame = 4.5
 fame_evidence = "위키백과 '대한민국의 인터넷 신조어'에 표제어로 있고, 2011년 전자신문 '인터넷 이디엄' 연재가 출처로 달려 있다. '가성비 갑'은 지금도 일상적으로 쓰인다."
 caution = "갑을 관계의 '갑질'과 뜻이 다르므로 혼동되지 않게 써야 한다. 유래 이야기에 나오는 KIA 타이거즈 로고나 실제 팬 사진은 쓰지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "위키백과는 뜻을 '최고'가 아니라 '제일가는 사람이나 사물, 현상'으로 적고 있다. 원 출처인 전자신문 기사(네이버 뉴스 링크)는 열리지 않아 직접 확인하지 못했다. 이번 실행에서는 웹 검색 한도가 다 차서 추가 검색을 하지 못했다."
 sources = ["https://ko.wikipedia.org/wiki/대한민국의_인터넷_신조어"]
 
@@ -8220,11 +8238,12 @@ use_when = "음식이 나오자마자 수저보다 휴대폰을 먼저 드는 �
 food_fit = "아주 좋다. 음식 캐릭터가 촬영용 포즈를 잡거나, 찍히기만 하고 먹히지 않아 서운해하는 컷으로 쓸 수 있다."
 fame = 4.5
 fame_evidence = "영어 위키낱말사전에 'foodstagram'이라는 뜻의 한국어 단어로 올라 있다. 그 밖의 사용량이나 설문 근거는 확인하지 못했다."
-caution = "인스타그램 명칭, 로고, 화면 구성은 메타의 상표이므로 가상의 SNS 화면으로 바꿔 그린다. 실존 음식점 이름이나 실제 계정이 보이지 않게 한다."
+caution = "인스타그램 명칭, 로고, 화면 구성은 메타의 상표이므로 가상의 SNS 화면으로 바꿔 그린다. 실존 음식점 이름이나 실제 계정이 보이지 않게 한다. 인스타그램은 2013년 8월 브랜드 가이드라인을 바꿔, 연동 앱 이름에 'Insta'나 'Gram'을 쓰는 것을 금지했다. 2016년에는 마이크로소프트의 'Actiongram' 상표 출원에 '-gram' 접미사를 이유로 이의를 제기했다가 나중에 철회했다. '-gram'을 실제로 단속한 전례가 있으므로 브랜드 계정은 '먹스타그램'을 해시태그나 대사 안에서만 쓴다. 코너명, 시리즈명, 상품명, 계정명처럼 쓰지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "사전은 존맛탱과 먹방을 제외하지 않고 '신조어·유행어' 묶음에 넣었다. 먹스타그램도 특정 장면이 없는 신조어이므로 개그·밈이 아니라 그 묶음에 넣는 것이 맞다. 어원 말고 최초 사용처와 시기는 미확인이다."
 sources = ["https://en.wiktionary.org/wiki/먹스타그램"]
+caution_sources = ["https://techcrunch.com/2013/08/19/instagram-cracks-down-on-connected-apps-using-insta-and-gram/amp/", "https://www.ipwatchdog.com/2016/12/09/instagram-challenges-microsoft-trademark-application-gram-suffix/id=75450/"]
 
 [[slang]]
 name = "0개 국어"
@@ -8239,7 +8258,7 @@ fame = 4
 fame_evidence = "영어 위키낱말사전에 유머 성격의 한국어 신조어로 올라 있다. 그 밖의 근거는 확보하지 못해 4점 경계선으로 판단한다."
 caution = "다문화 가정이나 귀국 자녀 등 실제 집단을 놀리는 연출은 피하고, 캐릭터 스스로 자조하는 형태로만 쓴다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "분류를 '신조어'에서 '인터넷·커뮤니티'로 바꿨다. 기원과 시점, 결산 기사 근거는 이번에도 확인하지 못했고(웹검색 한도 소진), 명성 근거가 사전 등재 하나뿐이라 약하다."
 sources = ["https://en.wiktionary.org/wiki/0개_국어"]
 
@@ -8390,7 +8409,7 @@ fame = 4
 fame_evidence = "우리말샘에 '금사빠'와 '금사빠녀'가 표제어로 올라 있고 2016년 연예 기사 용례가 있다. 영어 위키낱말사전에도 한국어 속어로 실려 있다."
 caution = "실존 인물과 관련된 말이 아니어서 위험이 낮다. '금사빠녀'처럼 성별 꼬리표를 붙이면 비하로 읽힐 수 있으므로 피한다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "뜻과 2016년 언론 용례를 우리말샘으로 확인했다. 처음 쓰인 시점과 처음 쓴 사람은 확인하지 못했다. 웹검색 한도 소진으로 결산 기사는 찾지 못했다."
 sources = ["https://en.wiktionary.org/wiki/금사빠", "https://opendict.korean.go.kr/search/searchResult?focus_name_top=query&query=금사빠", "https://opendict.korean.go.kr/dictionary/view?sense_no=1368605"]
 
@@ -8407,7 +8426,7 @@ fame = 4
 fame_evidence = "영어 위키낱말사전 '급발진' 항목에 'sudden anger'라는 속어 뜻이 실려 있다. 기원 관련 자료는 확인하지 못했다."
 caution = "실제 급발진 사고는 피해자와 소송이 얽힌 민감한 사안이므로 자동차 사고 장면이나 차량 이미지는 쓰지 않고 감정 폭발의 뜻으로만 쓴다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "속어 뜻만 확인되었고 기원과 유행 시점은 확인하지 못했다. 이번 작업에서는 웹 검색 한도가 소진되고 나무위키 접속이 403으로 막혀 추가 검증을 하지 못했다."
 sources = ["https://en.wiktionary.org/wiki/급발진"]
 
@@ -8424,7 +8443,7 @@ fame = 4
 fame_evidence = "매일신문(2018.7.2)은 '젊은층은 아는데 기성세대는 잘 몰라'라는 제목 아래 '젊은층에게는 익숙한 단어'라고 소개했다. SBS(2018.7.2)는 디시인사이드의 '까방권을 주고 싶은 월드컵 스타' 투표에서 조현우가 1위를 했다고 보도했다."
 caution = "실존 선수의 이름이나 얼굴과 함께 쓰지 않는다. '까다'는 비난한다는 뜻의 속어이므로 실존 인물을 겨냥하지 않도록 주의한다. 일반 신조어라 상표 문제는 없다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "아시아경제 기사 입력일은 2010년 2월 9일이다. 이영표 해설위원 발언은 매일신문이 아니라 SBS 기사에서 확인했다. 처음 쓰인 정확한 시점은 미확인이다."
 sources = ["https://www.asiae.co.kr/article/2010020813132898706", "https://www.imaeil.com/page/view/2018070218073493874", "https://news.sbs.co.kr/news/endPage.do?news_id=N1004828969"]
 
@@ -8441,7 +8460,7 @@ fame = 4
 fame_evidence = "영어 위키낱말사전 '깨알' 항목에 속어 뜻이 따로 실려 있으나 뜻풀이는 비어 있다. 한국어 위키낱말사전에는 본뜻만 있다."
 caution = "일반 어휘라 초상권이나 저작권 문제는 없다. 다만 2010년 이후에 유행했는지는 확인하지 못했다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "속어 뜻이 있다는 사실만 확인했고, 그 뜻풀이와 유행 시점, 2010년 이후 유행 여부는 확인하지 못했다. 이번 작업에서는 웹 검색 한도가 소진되어 추가 검증을 하지 못했다."
 sources = ["https://en.wiktionary.org/wiki/깨알", "https://ko.wiktionary.org/wiki/깨알"]
 
@@ -8492,7 +8511,7 @@ fame = 4
 fame_evidence = "국립국어원 우리말샘에 표제어로 올라 있고 2020~2021년 인터넷 매체 용례가 있다. 영어 위키낱말사전도 한국어 속어로 싣고 조별과제 무임승차를 예문으로 든다."
 caution = "특정 인물과 엮인 말이 아니어서 초상권이나 저작권 문제는 없다. 게임 커뮤니티의 비난조 어감이 있으므로 실존 인물을 겨냥하지 말고 캐릭터끼리의 장난으로만 쓴다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "뜻은 우리말샘으로 확인했고, 주로 게임에서 쓰인다는 풀이를 더했다. 줄임말이 처음 쓰인 시점은 확인하지 못했다. 웹검색 한도가 소진되고 나무위키가 403으로 막혀 우리말샘과 위키낱말사전만 확인했다."
 sources = ["https://en.wiktionary.org/wiki/날먹", "https://opendict.korean.go.kr/search/searchResult?focus_name_top=query&query=날먹", "https://opendict.korean.go.kr/dictionary/view?sense_no=1527866&viewType=confirm"]
 
@@ -8509,7 +8528,7 @@ fame = 4
 fame_evidence = "위키백과에 따르면 소나무가 2016년 6월 29일 미니앨범 '넘나 좋은 것'을 냈고, 우리말샘에 '넘나'가 '너무나'의 구어 준말로 실려 있다."
 caution = "노래 제목과 같은 짧은 말투 인용은 부담이 적지만 음원이나 뮤직비디오 장면은 쓰지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "소나무 곡의 발매일(2016년 6월 29일)은 확인했으나 2015년 하반기 SNS 유행 시작 시점, 글자 수 제한설, 도티 사용 사례는 미확인이다."
 sources = ["https://ko.wikipedia.org/wiki/소나무_(음악_그룹)", "https://opendict.korean.go.kr/search/searchResult?focus_name=query&query=넘나"]
 
@@ -8594,7 +8613,7 @@ fame = 4
 fame_evidence = "캐릿 '될놈될부터 원영적 사고까지 밈으로 보는 Z세대의 가치관'(2024-09-03)이 이 말을 10년 전 대표 유행어로 다루었고, 2025년 밈 트렌드 기사(캐릿 1756)도 이 기사를 다시 언급했다."
 caution = "일반 어휘라 초상권이나 저작권 문제는 없다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "발견자가 든 캐릿 1756은 링크 제목에서만 이 말을 언급하므로, 실제 설명이 있는 캐릿 1456을 근거로 보강했다. 처음 쓴 곳과 정확한 연도는 확인하지 못했다."
 sources = ["https://www.careet.net/1456", "https://www.careet.net/1756"]
 
@@ -8611,7 +8630,7 @@ fame = 4
 fame_evidence = "영어 위키낱말사전에 야구 은어와 인터넷 은어 두 뜻으로 실려 있다. 그 밖의 인지도 자료는 이번 검증에서 확인하지 못했다."
 caution = "특별한 민감 요소는 없다. 야구 중계 화면이나 구단 로고를 배경으로 쓰면 저작권과 상표 문제가 생기므로 쓰지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "영어 위키낱말사전은 '포'를 捕로 적었다. 홈런을 '포'로 부르는 말이라 砲일 가능성이 높아 보이지만 한자는 미확인이다. 야구 용어가 처음 쓰인 시점과 인터넷으로 퍼진 시점도 미확인이어서 2010년 이후 유행 여부를 확인하지 못했다."
 sources = ["https://en.wiktionary.org/wiki/뜬금포", "https://en.wiktionary.org/wiki/Category:Korean_internet_slang"]
 
@@ -8645,7 +8664,7 @@ fame = 4
 fame_evidence = "영어 위키낱말사전에 한국어 인터넷 은어로 실려 있고 반대말 '마해자'까지 등재돼 있다. 그 밖의 인지도 자료는 이번 검증에서 확인하지 못했다."
 caution = "외모 평가 농담이므로 실존 인물 사진이나 독자의 얼굴에 붙이지 말고 음식의 포장과 실물 대비로만 쓴다. 코로나19 피해나 마스크 착용 자체를 조롱하지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "뜻과 반대말 '마해자'는 확인했다. 최초 사용 시점은 미확인이며 코로나19 시기 유행이라는 점도 출처로 확인하지 못했다."
 sources = ["https://en.wiktionary.org/wiki/마기꾼", "https://en.wiktionary.org/wiki/Category:Korean_internet_slang"]
 
@@ -8713,7 +8732,7 @@ fame = 4
 fame_evidence = "국립국어원 우리말샘에 '문송하다'가 '취직이 어려운 문과생들이 스스로를 자조적으로 이르는 말'로 등재되어 있다. 방송과 일간지 사용 사례는 확인하지 못했다."
 caution = "'센송합니다' 파생설은 민족 비하 표현과 얽혀 있으므로 유래로 언급하지 않는다. 정치인 발언 사례는 인용하지 않고, 특정 전공 비하가 아닌 자조 톤을 유지한다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "뜻은 우리말샘으로 확인했으나, 2015년 SNS 기원, '센송합니다' 파생설, 2018년 유시민 방송 사용 사례는 미확인이다. 별칭 '이송합니다'는 확인하지 못해 '문송하다'로 바꿨다."
 sources = ["https://opendict.korean.go.kr/search/searchResult?focus_name=query&query=문송하다"]
 
@@ -8730,7 +8749,7 @@ fame = 4
 fame_evidence = "2021년 9월 30일 트렌드 뉴스레터가 인터넷에서 자주 쓰이는 회피 표현으로 소개했다. 2024년 6월 클리앙 글에서 이 표현의 무례함을 두고 조회 3만여 건, 댓글 100개의 논쟁이 이어졌다."
 caution = "상대를 무시하는 말로 받아들이는 사람도 있으므로 독자와 실제 논쟁하는 공지나 댓글에서는 쓰지 말고 캐릭터 대사로만 쓴다. 커뮤니티에 있던 비속어 변형('반박 시 고자' 등)은 쓰지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "클리앙 글은 2024년 6월 18일 글이다. 댓글에는 디시인사이드, 루리웹, 웃대 기원설과 '반박시 골룸' 같은 앞선 표현의 순화형이라는 설이 있으나 모두 미확인이다. 최초 출처와 시점도 미확인이다."
 sources = ["https://maily.so/trendaword/posts/4wdr98l9olx", "https://www.clien.net/service/board/park/18748242"]
 
@@ -8747,7 +8766,7 @@ fame = 4
 fame_evidence = "영어 위키낱말사전에 한국어 인터넷 은어로 실려 있다(2021년 6월 편집). 그 밖의 인지도 자료는 이번 검증에서 확인하지 못했다."
 caution = "특정 네티즌이나 실제 댓글 작성자를 지목하는 용도로 쓰지 않는다. 여포는 역사 인물이라 초상권 문제는 없다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "뜻과 구성은 확인했다. 최초 사용 시점은 미확인이어서 2010년 이후 유행 여부도 확인하지 못했다."
 sources = ["https://en.wiktionary.org/wiki/방구석_여포", "https://en.wiktionary.org/wiki/Category:Korean_internet_slang"]
 
@@ -8764,7 +8783,7 @@ fame = 4
 fame_evidence = "우리말샘에 일반어로 실려 있고, 위키백과 '대한민국의 인터넷 신조어'에 표제어로 있다. 확산 시기를 보여 주는 기사는 확인하지 못했다."
 caution = "특별한 권리 문제는 없다. 교통카드 브랜드 로고는 쓰지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "우리말샘에 '버스 카드 충전을 줄여 이르는 말'로 실려 있음을 새로 확인했다. 유래와 시기는 여전히 미확인이다. 웹 검색 한도가 다 찼고 나무위키 접속이 막혀 추가 확인을 하지 못했다."
 sources = ["https://ko.wikipedia.org/wiki/대한민국의_인터넷_신조어", "https://opendict.korean.go.kr/search/searchResult?query=버카충"]
 
@@ -8832,7 +8851,7 @@ fame = 4
 fame_evidence = "한국어 위키백과 '잡종견' 문서에 이 표현의 유래 설명이 실려 있다. 영어 위키낱말사전에도 '똥개'의 유머 동의어로 등재되어 있다. 언론 기사로 인지도를 확인하지는 못했고, 인지도 점수는 검증자의 판단이다."
 caution = "실존 인물이나 상표와 관련된 문제는 적다. 다만 '잡종'이라는 표현이 믹스견 비하로 읽힐 수 있으므로, 애정 어린 맥락에서 쓰는 것이 좋다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "위키백과의 '진돗개 미국 진출' 유래설에는 각주가 없어 사실로 확정할 수 없다. 처음 쓰인 곳과 시기는 끝내 미확인이다. 웹 검색 한도가 소진되어 뉴스 기사로 교차 확인하지 못했다."
 sources = ["https://ko.wikipedia.org/wiki/잡종견", "https://en.wiktionary.org/wiki/시고르자브종"]
 
@@ -8849,7 +8868,7 @@ fame = 4
 fame_evidence = "우리말샘에 '시가를 속되게 이르는 말'로 실려 있고, 위키백과에 독립 문서가 있다. 우리말샘에 '처월드'는 없다."
 caution = "고부 갈등과 명절 성 역할 문제와 이어져 댓글에서 성별 갈등으로 번지기 쉽다. 한쪽 집안이나 한쪽 성별을 탓하지 않는 가벼운 긴장감 정도로만 쓴다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "처음 쓰인 시기와 출처는 위키백과와 우리말샘 어디에도 없어 미확인으로 두었다. 나무위키는 접속이 막혀 확인하지 못했고, 웹 검색 한도가 다 차서 추가 검색도 하지 못했다."
 sources = ["https://ko.wikipedia.org/wiki/시월드", "https://opendict.korean.go.kr/search/searchResult?query=시월드"]
 
@@ -8864,11 +8883,12 @@ use_when = "부탁이나 도전을 받은 캐릭터가 자신만만하게 엄지
 food_fit = "'곱빼기 가능?'이라는 질문에 짜장면 캐릭터가 '쌉가능'이라고 답하거나, 라면이 '야식 한 그릇 더 쌉가능'이라고 외치는 컷으로 쓸 수 있다."
 fame = 4
 fame_evidence = "2019년 대기업 채용 문자에 쓰여 기사화될 만큼 퍼져 있었고, 이투데이 2020년 8월 12일 기사가 이 사례를 다시 다뤘다. 2026년 9월 브라보마이라이프 '요즘말' 기사에도 일상 표현으로 소개됐다."
-caution = "'쌉'이 비속어에서 왔다는 설이 있어 기업 협찬이나 공식 문구에서는 불쾌감 논란이 생길 수 있다(2019년 LG CNS 사례). 캐릭터 대사로만 쓴다."
+caution = "'쌉'이 비속어에서 왔다는 설이 있어 기업 협찬이나 공식 문구에서는 불쾌감 논란이 생길 수 있다(2019년 LG CNS 사례). 캐릭터 대사로만 쓴다. 2020년 8월 LG유플러스가 배너 광고에 '샵가능!'이라고 썼다가 '쌉가능'을 연상시킨다는 비판을 받았다. 국립국어원 관계자도 기업 문구에서는 비속어에 가까운 신조어를 조심해야 한다고 말했다. 브랜드 계정의 게시물은 만화라도 회사 문구로 읽힐 수 있으므로 게시물 제목, 캡션, 해시태그, 프로모션 문구에는 쓰지 않고 말풍선 대사로만 쓴다. 발음이 비슷한 말장난(예: '샵가능')도 피한다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "논란이 된 것은 2020년 채용 공고가 아니라 2019년 9월 17일 LG CNS 채용 안내 문자다. 2020년 8월 이투데이 기사는 이 사례를 LG유플러스 '샵가능' 광고 문구와 비교한 기사다. '쌉'의 어원과 최초 사용 시점은 미확인이다."
 sources = ["https://www.etoday.co.kr/news/view/1928809", "https://bravo.etoday.co.kr/view/atc_view/19953"]
+caution_sources = ["https://www.etoday.co.kr/news/view/1928809"]
 
 [[slang]]
 name = "안물안궁"
@@ -8952,7 +8972,7 @@ fame = 4
 fame_evidence = "우리말샘에 '엄격, 근엄, 진지를 아울러 이르는 말'로 등재되어 있어 일반 어휘로 자리 잡았음을 보여 준다. 널리 쓰인다는 판단은 이 등재 사실과 검증자의 판단에 근거한다."
 caution = "특정 인물이나 방송과 연결되지 않은 일반어라 위험 요소가 적다. 유래가 확인되지 않았으니 특정 커뮤니티에서 나왔다고 단정해 쓰지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "뜻은 우리말샘으로 확인했다. 디시인사이드 유래설, 처음 쓰인 시기, '엄근진 빨고' 같은 변형은 나무위키가 열리지 않고(403) 검색 한도가 소진되어 확인하지 못했다."
 sources = ["https://opendict.korean.go.kr/search/searchResult?query=엄근진"]
 
@@ -9051,11 +9071,12 @@ use_when = "한 캐릭터가 자신만만하게 묻거나 착각할 때 다른 �
 food_fit = "'오늘은 다이어트하지?'라는 물음에 치킨이 '응 아니야'로 답하거나, 자기가 제일 인기 있다는 반찬에게 다른 반찬이 받아치는 장면에 쓸 수 있다."
 fame = 4
 fame_evidence = "영어 위키낱말사전에 비꼬는 부정 대답 속어로 올라 있고 약어 'ㅇㅇㄴㅇ'도 함께 적혀 있다. 결산 기사 근거는 확보하지 못했다."
-caution = "비꼬는 말투이므로 실존 인물을 겨냥하지 말고 캐릭터끼리 가볍게 주고받는 장면에만 쓴다."
+caution = "비꼬는 말투이므로 실존 인물을 겨냥하지 말고 캐릭터끼리 가볍게 주고받는 장면에만 쓴다. 인터넷 말투에 익숙하지 않은 사람에게는 상대를 무시하는 말로 읽혀 꽤 불쾌하게 느껴질 수 있다는 설명이 있다. 그러니 브랜드 계정이 독자 댓글에 답하거나 DM·공지에서 독자에게 직접 쓰는 일은 하지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "영어 위키낱말사전은 이 말이 영어 'yeah, no'를 옮긴 말이 아니라고 적고 있으며, 약어 'ㅇㅇㄴㅇ'를 별칭으로 추가했다. 기원과 시점은 이번에도 확인하지 못했다(웹검색 한도 소진)."
 sources = ["https://en.wiktionary.org/wiki/응_아니야"]
+caution_sources = ["https://namu.wiki/w/%EC%9D%91%20%EC%95%84%EB%8B%88%EC%95%BC?uuid=2875b6e9-b365-487e-9def-307c50d7b4a0", "https://ko.hinative.com/questions/20004775"]
 
 [[slang]]
 name = "의문의 1승"
@@ -9121,7 +9142,7 @@ fame = 4
 fame_evidence = "영어 위키낱말사전에 한국어 신조어이자 유머러스한 인터넷 은어로 실려 있다. 그 밖의 대중 인지도 자료는 이번 검증에서 확인하지 못했다."
 caution = "특정 실존 인물이나 업체를 '자낳괴'로 지목하지 말고 캐릭터의 자기 풍자로 쓴다. '괴물'이라는 비하가 담겨 있어 독자를 향해 쓰지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "뜻과 어원은 확인했다. 최초 사용처와 유행 시기는 미확인이다. 웹 검색 한도가 소진되고 나무위키가 403으로 막혀 추가 확인을 하지 못했다."
 sources = ["https://en.wiktionary.org/wiki/자낳괴", "https://en.wiktionary.org/wiki/Category:Korean_internet_slang"]
 
@@ -9156,7 +9177,7 @@ fame = 4
 fame_evidence = "우리말샘에 새 뜻이 별도 표제어로 올라 있고 2019년, 2022년 언론 용례가 있다. 영어 위키낱말사전에도 '과장된 팬질'이라는 속어 뜻이 있다."
 caution = "'주접스럽다', '주접떨다'의 본래 뜻은 염치없는 행동을 낮잡는 말이어서 맥락 없이 쓰면 비하로 읽힐 수 있다. 실존 연예인 팬 댓글 원문은 그대로 옮기지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "새 뜻과 2019년 언론 용례를 우리말샘으로 확인했다. 처음 퍼진 곳과 시점은 확인하지 못했다. 고구마팜 글에서 '주접'은 개별 밈이 아니라 분류 표현으로만 나온다."
 sources = ["https://en.wiktionary.org/wiki/주접", "https://opendict.korean.go.kr/search/searchResult?focus_name_top=query&query=주접", "https://opendict.korean.go.kr/dictionary/view?sense_no=1626107&viewType=confirm"]
 
@@ -9222,11 +9243,12 @@ use_when = "캐릭터가 딱 원하던 것을 보고 심장에 화살을 맞은 
 food_fit = "신메뉴나 토핑 조합을 본 음식 캐릭터가 '완전 취저'라며 반하는 장면이나, 과녁 위에 음식이 꽂히는 연출에 쓰기 좋다."
 fame = 4
 fame_evidence = "한국어 위키백과에 따르면 iKON '취향저격'은 음원차트에서 장기간 1위를 했고, 2015년 9월 음악중심과 인기가요에서 1위를 했다. 말 자체의 확산 근거는 따로 확인하지 못했다."
-caution = "일반 어휘로 쓰면 문제는 없다. iKON 곡의 가사나 안무, 멤버 초상은 인용하지 않는다."
+caution = "일반 어휘로 쓰면 문제는 없다. iKON 곡의 가사나 안무, 멤버 초상은 인용하지 않는다. iKON '취향저격'을 작사·작곡한 당시 리더 비아이(B.I)는 2019년 마약 의혹으로 팀을 탈퇴했고, 2021년 9월 마약류관리법 위반으로 1심에서 징역 3년, 집행유예 4년을 선고받았다. 일반 어휘로만 쓰고, 곡 제목 로고나 'iKON'·'사랑을 했다' 같은 곡·그룹 연상 연출은 하지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "곡 정보는 확인했다. 위키백과 문서에는 유행어로서의 유래가 없어 말의 기원은 확인하지 못했다."
 sources = ["https://ko.wikipedia.org/wiki/취향저격"]
+caution_sources = ["https://www.segye.com/newsView/20210910512756", "https://nocutnews.co.kr/news/5166036", "https://isplus.com/article/view/isp202311080112"]
 
 [[slang]]
 name = "카공족"
@@ -9324,11 +9346,12 @@ use_when = "캐릭터가 아주 사소한 일에 하나하나 트집을 잡는 �
 food_fit = "붕어빵에 붕어가 없다며 불평하는 식의, 음식에 대한 사소하고 무해한 트집에 맞는다. 부먹·찍먹처럼 취향 논쟁에서 캐릭터 스스로 불편러를 자처하는 연출이 자연스럽다."
 fame = 4
 fame_evidence = "우리말샘에 표제어로 올라 있고 2016년 언론 용례가 있다. 영어 위키낱말사전이 'social justice warrior'에 대응하는 속어로 실을 만큼 널리 쓰인다."
-caution = "정당한 문제 제기를 깎아내리는 말로 쓰여 왔고 사회 논쟁에 자주 등장하므로, 실존 인물이나 특정 집단의 비판을 겨냥하면 반발을 살 수 있다. 무해한 음식 취향 소재와 자조형 대사로만 쓴다."
+caution = "정당한 문제 제기를 깎아내리는 말로 쓰여 왔고 사회 논쟁에 자주 등장하므로, 실존 인물이나 특정 집단의 비판을 겨냥하면 반발을 살 수 있다. 무해한 음식 취향 소재와 자조형 대사로만 쓴다. 2021년 GS25 포스터 논란 때 '2030대 남성들도 프로불편러가 되면 상황을 바꿀 수 있다'는 발언이 보도되는 등, 이 말은 젠더 갈등 공방에서 쓰였다. 같은 시기 유통업계가 젠더 논란을 우려해 광고 자기검열을 강화했다는 보도도 있다. 따라서 브랜드 계정에서는 항의 댓글이나 비판하는 독자를 '불편러'로 부르는 연출(항의 댓글 패러디 등)을 하지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "뜻과 2016년 7월 언론 용례를 우리말샘으로 확인했다. 처음 쓰인 시점은 확인하지 못했다. 그 자체로 혐오 표현은 아니어서 유지했지만, 사회 논쟁 맥락이 있어 쓰임을 제한하라는 주의를 달았다."
 sources = ["https://en.wiktionary.org/wiki/프로불편러", "https://opendict.korean.go.kr/search/searchResult?focus_name_top=query&query=프로불편러", "https://opendict.korean.go.kr/dictionary/view?sense_no=1369915&viewType=confirm"]
+caution_sources = ["https://www.fnnews.com/news/202105061509456153", "https://www.dailian.co.kr/news/view/989162/"]
 
 [[slang]]
 name = "할많하않"
@@ -9360,7 +9383,7 @@ fame = 4
 fame_evidence = "위키백과 '대한민국의 인터넷 신조어' 문서에 서울신문 나우뉴스 2018.5.29 기사를 근거로 실려 있다. 영어 위키낱말사전에도 올라 있다."
 caution = "실존 대학인 홍익대학교와 홍대 상권 이름이 들어가므로 학교나 지역을 비하하는 연출은 피한다. 특정 취향을 조롱하기보다 가볍게 자조하는 톤이 안전하다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "위키백과 각주 기사는 서울신문 나우뉴스 '[김현회의 러시아 워] 홍대병과 문선민병'(2018.5.29)이다. 영어 위키낱말사전의 '2016년부터'에는 인용 근거가 없다. 분류는 '신조어'에서 '인터넷·커뮤니티'로 바꿨다."
 sources = ["https://ko.wikipedia.org/wiki/대한민국의_인터넷_신조어", "https://nownews.seoul.co.kr/news/newsView.php?id=20180529601004", "https://en.wiktionary.org/wiki/홍대병"]
 
@@ -9443,7 +9466,7 @@ fame = 4
 fame_evidence = "고구마팜 '고전 인기 밈 총정리'(2025.4.2)에 실렸고 하나카드 트래블GO 카드와 왓챠 광고 활용 사례가 소개됐다. 우리말샘에도 표제어로 올라 있다."
 caution = "메시, 조던 같은 실존 선수의 얼굴이나 이름은 쓰지 않는다. 일반 영어 약어라 상표 위험은 낮지만, 하나카드 광고의 염소 연출을 그대로 베끼지는 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "고구마팜이 설명한 1990년대 무하마드 알리 유래를 더하고, 우리말샘의 2016년 언론 용례로 국내 사용 시점을 보강했다. 알리 유래는 고구마팜의 설명이며 원출처는 확인하지 못했다. 카테고리를 스포츠로 정리했다."
 sources = ["https://gogumafarm.kr/?p=37247", "https://opendict.korean.go.kr/search/searchResult?focus_name_top=query&query=고트", "https://opendict.korean.go.kr/dictionary/view?sense_no=1499756&viewType=confirm"]
 
@@ -9458,11 +9481,12 @@ use_when = "한 캐릭터가 눈치 없이 팩트를 날려 상대가 충격받�
 food_fit = "감자나 주먹밥 같은 둥근 음식 캐릭터가 투구 자세로 말풍선을 던지고, 맞은 캐릭터가 휘청거리는 연출로 쓸 수 있다."
 fame = 4
 fame_evidence = "우리말샘에 야구 뜻과 '직설적인 말'이라는 비유 뜻, 파생어 '돌직구남·돌직구녀'가 모두 올라 있다. 위키낱말사전에도 일상적인 뜻으로 실려 있다."
-caution = "실존 인물인 오승환의 얼굴이나 등번호, 구단 유니폼과 로고를 그대로 쓰지 않는다. 말 자체는 일반명사라 큰 문제가 없다."
+caution = "실존 인물인 오승환의 얼굴이나 등번호, 구단 유니폼과 로고를 그대로 쓰지 않는다. 말 자체는 일반명사라 큰 문제가 없다. 유래 인물인 오승환은 2014년 11월 마카오 카지노 원정도박으로 2016년 1월 벌금 1000만원 약식명령을 받았고, KBO는 국내 복귀 시 시즌 경기 수의 50% 출장정지 징계를 내렸다. 캡션이나 해설에서 '오승환의 돌직구'처럼 유래를 밝히거나 기리지 말고, 카지노·도박을 연상시키는 소품과 함께 쓰지 않는다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "'2011 무렵'이라는 시점을 뒷받침하는 자료를 찾지 못해 미확인으로 바꾸었다. 이번 실행에서는 웹 검색 한도가 다 차서 확산 시기를 추가로 확인하지 못했다."
 sources = ["https://ko.wikipedia.org/wiki/오승환", "https://ko.wiktionary.org/wiki/돌직구", "https://opendict.korean.go.kr/search/searchResult?query=돌직구"]
+caution_sources = ["https://www.kukinews.com/article/view/kuk201601160001", "https://newstomato.com/ReadNews.aspx?no=612472", "https://www.dailian.co.kr/news/view/550391/"]
 
 [[slang]]
 name = "빠던 (빠따 던지기)"
@@ -9477,7 +9501,7 @@ fame = 4
 fame_evidence = "노컷뉴스(2020.6.10)는 ESPN이 130개국에 KBO 경기를 중계하면서 '이 주의 빠던'을 선정한다고 보도했다. The World(2016.10.6)는 한국의 배트 플립 문화를 미국 독자에게 소개했다. 야구 팬이 아닌 20~30대에게 얼마나 알려졌는지 보여 주는 자료는 확인하지 못했다."
 caution = "실존 선수의 이름과 얼굴, 구단 로고와 유니폼은 쓰지 않는다. 방망이를 던지는 방향이 사람이나 캐릭터를 향하지 않게 그린다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "MLB.com 두 페이지가 406 오류로 열리지 않아, '2015년 5월 롯데 정훈 빠던 영상'이 소개됐다는 내용은 확인하지 못했다. The World 기사는 홍성흔·이용규 등을 다뤘지만 '빠던'이라는 한국어 표현은 쓰지 않았다. 국내에서 '빠던'이 쓰이기 시작한 시점은 미확인이다. 인지도는 판단이 갈릴 수 있는 경계선(fame 4)으로 보았다."
 sources = ["https://www.nocutnews.co.kr/news/5358468", "https://theworld.org/stories/2016/10/06/korean-bat-flips-are-what-country-needs"]
 
@@ -9494,7 +9518,7 @@ fame = 4
 fame_evidence = "영어 위키낱말사전에 축구 용어와 별도로 '대화가 잘 오간다'는 속어 뜻이 올라 있다. 한국어 위키백과에는 축구 뜻만 있고, 결산 기사 근거는 확보하지 못했다."
 caution = "실존 축구 선수나 구단 엠블럼, 경기 영상은 쓰지 않는다. 일반 어휘라 그 밖의 민감성은 낮다."
 verified = "partial"
-risk_checked = false
+risk_checked = true
 notes = "분류를 '신조어'에서 '스포츠'로 바꿨다. 한국어 위키백과에서 어원(탁구공이 오가는 모양)과 스페인의 2010 월드컵 우승을 확인했으나, 일상어로 번진 시점은 이번에도 확인하지 못했다."
 sources = ["https://en.wiktionary.org/wiki/티키타카", "https://ko.wikipedia.org/wiki/티키타카"]
 
@@ -9768,11 +9792,12 @@ use_when = "말도 안 되는 보수로 일을 시키는 상사나 사장, '경�
 food_fit = "빵집 사장 캐릭터가 신입 반죽 캐릭터에게 월급 봉투 대신 '열정' 스티커를 붙여 주는 장면으로 쓸 수 있다."
 fame = 4.5
 fame_evidence = "위키백과에 독립 문서가 있다. 2015년 고용노동부 특별감독, 추적 60분 방영, 서울패션위크 항의 등 사회적 반향이 기록되어 있다."
-caution = "위키백과에 실명으로 나오는 디자이너나 업체, 연예인 가게 사례를 직접 암시하지 않는다. 노동 착취를 풍자하는 쪽으로만 쓰고 피해 청년을 웃음거리로 삼지 않는다."
+caution = "위키백과에 실명으로 나오는 디자이너나 업체, 연예인 가게 사례를 직접 암시하지 않는다. 노동 착취를 풍자하는 쪽으로만 쓰고 피해 청년을 웃음거리로 삼지 않는다. 이 말은 최근에도 실제 인물의 사건에 붙어 쓰였다. 2023년 5월 문재인 전 대통령의 평산책방이 무급 자원봉사자 모집 공고로 '열정페이' 논란을 겪다 모집을 철회했고, 국민의힘 대변인이 이를 공개 비판했다. 2026년 5월에는 가수 우즈(WOODZ)가 해외 투어 무급 스태프 모집 논란으로 사과했다. 책방·정치인·공연 팬 스태프처럼 이 사건들을 떠올리게 하는 설정은 피해 정치적·팬덤 논쟁에 휘말리지 않게 한다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "날짜를 보강했다(2015년 1월 14일 디자이너 사과, 2015년 3월 7일 추적 60분 방영, 2015 F/W 서울패션위크 기간 항의). 항의 기자회견의 정확한 날짜는 미확인이다."
 sources = ["https://ko.wikipedia.org/wiki/열정페이"]
+caution_sources = ["https://www.etoday.co.kr/news/view/2246978", "https://www.ytn.co.kr/_ln/0101_202305080900046566", "https://www.dailian.co.kr/news/view/1231501/", "https://www.asiae.co.kr/en/article/2026050814115353272"]
 
 [[slang]]
 name = "급식체"
@@ -9875,7 +9900,7 @@ fame = 4
 fame_evidence = "영어 위키백과에 독립 문서(Sampo generation)가 있고, 이 말이 여러 매체와 인터넷으로 빠르게 퍼진 뒤 정치권에서도 쓰였다고 적혀 있다. 한국어 위키백과에도 문서가 있다."
 caution = "청년 빈곤과 저출생이라는 실제 사회 문제를 다룬 말이므로 당사자를 비웃는 방향은 피한다. 정치 구호처럼 쓰이지 않게 자조 유머 선에서만 쓴다."
 verified = "verified"
-risk_checked = false
+risk_checked = true
 notes = "처음 쓰인 기사를 「과부하 걸린 한국의 가족」(2011년 5월 11일 입력, 5월 18일 수정)으로 좁혔다. 이 기사 부제에 '연애·결혼·출산 포기 삼포세대'라는 표현이 있다. 영어 위키백과는 날짜를 5월 18일로 적었는데, 이는 수정일이다."
 sources = ["https://en.wikipedia.org/wiki/Sampo_generation", "https://ko.wikipedia.org/wiki/삼포세대", "https://www.khan.co.kr/article/201105112139085"]
 
@@ -10158,6 +10183,10 @@ reason = "실존 연예인(정준하)을 겨냥한 악플 유행어로 퍼졌고
 [[excluded]]
 name = "미미 오답 레전드 (지구오락실2)"
 reason = "지구오락실 팬층 중심의 개별 장면들이라 20-30대 전반의 인지도가 4에 못 미친다. 가장 유명한 '당당당'은 원본이 실제 정당 이름이라 정치색이 섞일 위험도 있다."
+
+[[excluded]]
+name = "다나카 (김경욱 부캐)"
+reason = "위험 점검에서 제외: 다나카는 일본인 '호스트(유흥업소 종사자)' 콘셉트의 부캐다. 2024년 2월 CBS노컷뉴스는 받침 발음이 어색한 일본인의 한국어 말투를 흉내 내는 방식이 제노포비아와 다름없다는 지적이 잇따른다며 이를 '혐오 코미디'로 다뤘다. 같은 기사는 유흥 문화가 유쾌하게 포장된다는 우려도 전했다. 2023년 8월에는 명량대첩축제가 다나카를 게스트로 섭외했다가 '왜색' 비판을 받고 사과하며 재검토하겠다고 밝혔다. 이 밈의 핵심인 국적 말투 흉내와 호스트 설정이 바로 비판받는 요소다. 그래서 대사만 빌려도 위험이 남고, 브랜드형 계정에는 맞지 않는다."
 
 [[excluded]]
 name = "선택 2014 '하하-정준하 단일화' 예언짤 / 2016 '예능 계엄' 예언짤 / 대통령 파면 상황 무도짤"
