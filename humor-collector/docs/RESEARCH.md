@@ -150,3 +150,45 @@ YouTube, Instagram 등 SNS와 국내 포털을 같은 기준으로 확인했습�
 - Mastodon: [Rate limits](https://docs.joinmastodon.org/api/rate-limits/)
 - 네이버: [서비스 약관](https://policy.naver.com/rules/service.html),
   [API HUB 개요](https://guide.ncloud-docs.com/docs/apihub-overview)
+
+## 4단계: Bluesky 추가와 밈·짤 찾기 (2026-11-01)
+
+### Bluesky 피드 실측
+
+`getFeed` 피드당 30~50건을 받아 확인했습니다.
+
+| 피드 | 유머·밈 비중 | 문제 | 사용 |
+|---|---|---|---|
+| 한국어/한글 30 리포스트 이상 잼얘 모음 (`aaaju46ivv6sg`) | 약 25~33% | 작성자 30명 중 14명이 `!no-unauthenticated`, porn 라벨 2건, 정치·뉴스 섞임 | 기본 |
+| 한국어 리포스트 많은 순 (`aaahkq4fquf34`) | 약 27~30% | 작성자 30명 중 14명이 `!no-unauthenticated` | 기본 |
+| 하루치 밀린 블스 따라잡기 (`aaagqpi4lcxsq`) | 0~3% | 29건 중 성인 라벨 26건 이상 | **제외** |
+
+- **getPosts:** 삭제됐거나 없는 글은 오류 없이 응답에서 빠집니다(실측). 그래서 "응답에 없음 = 삭제"로 처리합니다.
+- **공개 범위 선언:** 피드 응답에는 나오지 않습니다. 작성자 저장소의 별도 레코드
+  `app.bsky.actor.contentVisibilityDeclaration`(rkey `self`)에 들어 있습니다.
+  - 공개 AppView의 `com.atproto.repo.getRecord`가 이 레코드를 반환합니다. 레코드가 없으면
+    400 `RecordNotFound`이고, 렉시콘 규정상 "없음 = false"입니다.
+  - Bluesky 블로그(2026-09-01)는 "funniest posts" 수집기가 이 선언을 확인해야 한다고 적었습니다.
+  - 그래서 새 작성자는 저장 전에 확인하고, 결과는 7일간 캐시합니다.
+  - 선언을 실제로 켠 계정으로는 확인하지 못했습니다.
+- **실수집:** 100건을 받아 42건을 신규 저장, 3건은 두 피드 중복으로 갱신, 55건은 걸렀습니다. 이어서
+  `refresh`로 42건 모두 재확인했고 삭제 대상과 오류는 0건이었습니다.
+
+### YouTube를 조회 도구로만 둔 이유 (Developer Policies 원문, 2026-10-15 개정)
+
+- **III.E.2.a/b:** "Do not aggregate API Data … to gain insights into YouTube's usage",
+  "The API Client must not combine API Data from the different content owners."
+- **III.E.4.h:** API 데이터로 "new or derived data or metrics"를 만들 수 없습니다. 좋아요 수로 다른 지표를
+  계산하는 것도 금지입니다.
+- **III.E.4.d:** 키만으로 받은 데이터(Non-Authorized Data)는 "not longer than 30 calendar days"만
+  임시 보관할 수 있습니다.
+- **III.C.5 / III.F.2:** 검색 결과를 수정하거나 다른 출처 결과와 섞을 수 없고, YouTube가 출처임을
+  분명히 밝혀야 합니다.
+
+→ "여러 인기 영상에서 패턴을 자동 추출"은 III.E.2와 III.E.4.h에 걸리기 때문에, 밈 감지는 커뮤니티 데이터로
+만 합니다. YouTube는 그 결과 문구를 검색해 사람이 보는 용도로만 씁니다.
+
+- 결과는 별도 테이블에 두고, 순서와 숫자는 YouTube가 준 그대로 보여 줍니다.
+- 29일 뒤 삭제하고, 항목마다 출처를 표시합니다.
+- 댓글은 화면에만 보여 주고 저장하지 않으며, 작성자 정보는 뺍니다.
+- API 키가 없어 실호출은 하지 못했습니다. 테스트는 공식 레퍼런스 형식으로 만든 합성 응답을 씁니다.

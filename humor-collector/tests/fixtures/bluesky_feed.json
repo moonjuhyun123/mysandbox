@@ -1,0 +1,630 @@
+{
+ "feed": [
+  {
+   "post": {
+    "uri": "at://did:plc:fixture0001/app.bsky.feed.post/3fixture0001",
+    "cid": "bafyfixture0001",
+    "author": {
+     "did": "did:plc:fixture0001",
+     "handle": "user1.example",
+     "displayName": "사용자1",
+     "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:fixture0001/avatar@jpeg",
+     "associated": {
+      "activitySubscription": {
+       "allowSubscriptions": "followers"
+      }
+     },
+     "labels": [],
+     "createdAt": "2023-06-19T23:53:39.709Z"
+    },
+    "record": {
+     "$type": "app.bsky.feed.post",
+     "createdAt": "2026-11-01T01:22:35.648Z",
+     "embed": {
+      "$type": "app.bsky.embed.images"
+     },
+     "langs": [
+      "ko"
+     ],
+     "text": "동네마트 갔다가 본 담배피는 눈사람\n\n사장님 센스 무엇"
+    },
+    "embed": {
+     "images": [
+      {
+       "thumb": "https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:fixture0001/img0@jpeg",
+       "fullsize": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fixture0001/img0@jpeg",
+       "alt": "",
+       "aspectRatio": {
+        "height": 501,
+        "width": 399
+       }
+      }
+     ],
+     "$type": "app.bsky.embed.images#view"
+    },
+    "bookmarkCount": 1,
+    "replyCount": 1,
+    "repostCount": 43,
+    "likeCount": 47,
+    "quoteCount": 3,
+    "indexedAt": "2026-11-01T01:22:37.575Z",
+    "labels": []
+   }
+  },
+  {
+   "post": {
+    "uri": "at://did:plc:fixture0002/app.bsky.feed.post/3fixture0002",
+    "cid": "bafyfixture0002",
+    "author": {
+     "did": "did:plc:fixture0002",
+     "handle": "user2.example",
+     "displayName": "사용자2",
+     "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:fixture0002/avatar@jpeg",
+     "associated": {
+      "activitySubscription": {
+       "allowSubscriptions": "followers"
+      }
+     },
+     "labels": [],
+     "createdAt": "2025-11-09T09:30:42.151Z"
+    },
+    "record": {
+     "$type": "app.bsky.feed.post",
+     "createdAt": "2026-10-31T13:18:49.093Z",
+     "embed": {
+      "$type": "app.bsky.embed.gallery"
+     },
+     "langs": [
+      "ko"
+     ],
+     "text": "편의점 신상 라면 먹어봄\n맵기 단계별 후기"
+    },
+    "embed": {
+     "items": [
+      {
+       "thumbnail": "https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:fixture0002/img0@jpeg",
+       "fullsize": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fixture0002/img0@jpeg",
+       "alt": "",
+       "aspectRatio": {
+        "height": 2744,
+        "width": 2627
+       },
+       "$type": "app.bsky.embed.gallery#viewImage"
+      },
+      {
+       "thumbnail": "https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:fixture0002/img1@jpeg",
+       "fullsize": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fixture0002/img1@jpeg",
+       "alt": "",
+       "aspectRatio": {
+        "height": 2903,
+        "width": 3610
+       },
+       "$type": "app.bsky.embed.gallery#viewImage"
+      },
+      {
+       "thumbnail": "https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:fixture0002/img2@jpeg",
+       "fullsize": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fixture0002/img2@jpeg",
+       "alt": "",
+       "aspectRatio": {
+        "height": 3135,
+        "width": 2260
+       },
+       "$type": "app.bsky.embed.gallery#viewImage"
+      },
+      {
+       "thumbnail": "https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:fixture0002/img3@jpeg",
+       "fullsize": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fixture0002/img3@jpeg",
+       "alt": "",
+       "aspectRatio": {
+        "height": 3974,
+        "width": 2438
+       },
+       "$type": "app.bsky.embed.gallery#viewImage"
+      },
+      {
+       "thumbnail": "https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:fixture0002/img4@jpeg",
+       "fullsize": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fixture0002/img4@jpeg",
+       "alt": "",
+       "aspectRatio": {
+        "height": 3869,
+        "width": 2413
+       },
+       "$type": "app.bsky.embed.gallery#viewImage"
+      }
+     ],
+     "$type": "app.bsky.embed.gallery#view"
+    },
+    "bookmarkCount": 0,
+    "replyCount": 0,
+    "repostCount": 45,
+    "likeCount": 43,
+    "quoteCount": 0,
+    "indexedAt": "2026-10-31T13:19:08.672Z",
+    "labels": []
+   }
+  },
+  {
+   "post": {
+    "uri": "at://did:plc:fixture0003/app.bsky.feed.post/3fixture0003",
+    "cid": "bafyfixture0003",
+    "author": {
+     "did": "did:plc:fixture0003",
+     "handle": "user3.example",
+     "displayName": "사용자3",
+     "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:fixture0003/avatar@jpeg",
+     "associated": {
+      "activitySubscription": {
+       "allowSubscriptions": "followers"
+      }
+     },
+     "labels": [],
+     "createdAt": "2023-12-21T06:42:14.123Z"
+    },
+    "record": {
+     "$type": "app.bsky.feed.post",
+     "createdAt": "2026-10-31T18:06:19.975Z",
+     "embed": {
+      "$type": "app.bsky.embed.video"
+     },
+     "langs": [
+      "ko"
+     ],
+     "text": "고양이가 택배상자 점령하는 영상"
+    },
+    "embed": {
+     "cid": "bafyvideo3",
+     "playlist": "https://video.bsky.app/watch/did:plc:fixture0003/video3/playlist.m3u8",
+     "thumbnail": "https://video.bsky.app/watch/did:plc:fixture0003/video3/thumbnail.jpg",
+     "aspectRatio": {
+      "height": 360,
+      "width": 640
+     },
+     "presentation": "default",
+     "$type": "app.bsky.embed.video#view"
+    },
+    "bookmarkCount": 0,
+    "replyCount": 0,
+    "repostCount": 36,
+    "likeCount": 15,
+    "quoteCount": 0,
+    "indexedAt": "2026-10-31T18:06:22.076Z",
+    "labels": []
+   }
+  },
+  {
+   "post": {
+    "uri": "at://did:plc:fixture0004/app.bsky.feed.post/3fixture0004",
+    "cid": "bafyfixture0004",
+    "author": {
+     "did": "did:plc:fixture0004",
+     "handle": "user4.example",
+     "displayName": "사용자4",
+     "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:fixture0004/avatar@jpeg",
+     "associated": {
+      "activitySubscription": {
+       "allowSubscriptions": "followers"
+      }
+     },
+     "labels": [],
+     "createdAt": "2024-10-18T13:45:29.311Z"
+    },
+    "record": {
+     "$type": "app.bsky.feed.post",
+     "createdAt": "2026-10-31T09:00:11.566Z",
+     "embed": {
+      "$type": "app.bsky.embed.external"
+     },
+     "langs": [
+      "ko"
+     ],
+     "text": "회사 단톡방 레전드 모음 기사"
+    },
+    "embed": {
+     "external": {
+      "uri": "https://news.example/article/1",
+      "title": "회사 단톡방 레전드 기사",
+      "description": "",
+      "thumb": "https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:fixture0004/ext@jpeg"
+     },
+     "$type": "app.bsky.embed.external#view"
+    },
+    "bookmarkCount": 1,
+    "replyCount": 0,
+    "repostCount": 30,
+    "likeCount": 15,
+    "quoteCount": 1,
+    "indexedAt": "2026-10-31T09:00:16.377Z",
+    "labels": []
+   }
+  },
+  {
+   "post": {
+    "uri": "at://did:plc:fixture0005/app.bsky.feed.post/3fixture0005",
+    "cid": "bafyfixture0005",
+    "author": {
+     "did": "did:plc:fixture0005",
+     "handle": "user5.example",
+     "displayName": "사용자5",
+     "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:fixture0005/avatar@jpeg",
+     "associated": {
+      "chat": {
+       "allowIncoming": "following"
+      },
+      "activitySubscription": {
+       "allowSubscriptions": "followers"
+      }
+     },
+     "labels": [],
+     "createdAt": "2023-06-02T07:20:26.240Z"
+    },
+    "record": {
+     "$type": "app.bsky.feed.post",
+     "createdAt": "2026-10-31T13:03:05.710Z",
+     "embed": {
+      "$type": "app.bsky.embed.record"
+     },
+     "langs": [
+      "ko"
+     ],
+     "text": "이거 완전 우리 엄마잖아"
+    },
+    "embed": {
+     "record": {
+      "uri": "at://did:plc:quoted0001/app.bsky.feed.post/3quoted0001",
+      "cid": "bafyreidbddreth6fkijqwecv434k63nxfjxwo5hivnzwrpwpe6tw7indre",
+      "author": {
+       "did": "did:plc:quoted0001",
+       "handle": "quoted.example",
+       "displayName": "인용된 사용자",
+       "labels": [],
+       "createdAt": "2023-04-12T16:14:28.615Z"
+      },
+      "value": {
+       "$type": "app.bsky.feed.post",
+       "createdAt": "2026-10-31T10:51:19.308Z",
+       "text": "엄마들 카톡 특징 모음"
+      },
+      "labels": [],
+      "likeCount": 17,
+      "replyCount": 1,
+      "repostCount": 31,
+      "quoteCount": 1,
+      "opThreadPostIndex": 2,
+      "opThreadPostCount": 3,
+      "indexedAt": "2026-10-31T10:51:22.076Z",
+      "$type": "app.bsky.embed.record#viewRecord"
+     },
+     "$type": "app.bsky.embed.record#view"
+    },
+    "bookmarkCount": 0,
+    "replyCount": 0,
+    "repostCount": 35,
+    "likeCount": 15,
+    "quoteCount": 1,
+    "indexedAt": "2026-10-31T13:03:07.175Z",
+    "labels": []
+   }
+  },
+  {
+   "post": {
+    "uri": "at://did:plc:fixture0006/app.bsky.feed.post/3fixture0006",
+    "cid": "bafyfixture0006",
+    "author": {
+     "did": "did:plc:fixture0006",
+     "handle": "user6.example",
+     "displayName": "사용자6",
+     "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:fixture0006/avatar@jpeg",
+     "associated": {
+      "chat": {
+       "allowIncoming": "all",
+       "allowGroupInvites": "all"
+      },
+      "activitySubscription": {
+       "allowSubscriptions": "followers"
+      }
+     },
+     "labels": [],
+     "createdAt": "2023-09-19T05:01:58.210Z"
+    },
+    "record": {
+     "$type": "app.bsky.feed.post",
+     "createdAt": "2026-10-31T08:48:35.846Z",
+     "embed": {
+      "$type": "app.bsky.embed.recordWithMedia"
+     },
+     "langs": [
+      "ko"
+     ],
+     "text": "엄마: 밥 먹었니\n나: 응\n엄마: 뭐 먹었는데\n나: 라면\n엄마: 그게 밥이니"
+    },
+    "embed": {
+     "media": {
+      "images": [
+       {
+        "thumb": "https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:fixture0006/img0@jpeg",
+        "fullsize": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fixture0006/img0@jpeg",
+        "alt": "",
+        "aspectRatio": {
+         "height": 2480,
+         "width": 1748
+        }
+       }
+      ],
+      "$type": "app.bsky.embed.images#view"
+     },
+     "record": {
+      "record": {
+       "uri": "at://did:plc:other0001/app.bsky.feed.post/3mz5vdeo3y22f",
+       "notFound": true,
+       "$type": "app.bsky.embed.record#viewNotFound"
+      },
+      "$type": "app.bsky.embed.record#view"
+     },
+     "$type": "app.bsky.embed.recordWithMedia#view"
+    },
+    "bookmarkCount": 0,
+    "replyCount": 1,
+    "repostCount": 30,
+    "likeCount": 34,
+    "quoteCount": 2,
+    "indexedAt": "2026-10-31T08:48:41.679Z",
+    "labels": []
+   },
+   "opThreadPostIndex": 1,
+   "opThreadPostCount": 2
+  },
+  {
+   "post": {
+    "uri": "at://did:plc:fixture0007/app.bsky.feed.post/3fixture0007",
+    "cid": "bafyfixture0007",
+    "author": {
+     "did": "did:plc:fixture0007",
+     "handle": "user7.example",
+     "displayName": "사용자7",
+     "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:fixture0007/avatar@jpeg",
+     "associated": {
+      "chat": {
+       "allowIncoming": "all"
+      },
+      "activitySubscription": {
+       "allowSubscriptions": "followers"
+      }
+     },
+     "labels": [
+      {
+       "src": "did:plc:other0002",
+       "uri": "at://did:plc:fixture0007/app.bsky.feed.post/3fixture0007",
+       "val": "!no-unauthenticated",
+       "cts": "1970-01-01T00:00:00.000Z"
+      }
+     ],
+     "createdAt": "2023-08-08T06:49:32.649Z"
+    },
+    "record": {
+     "$type": "app.bsky.feed.post",
+     "createdAt": "2026-11-01T02:22:29.244Z",
+     "embed": {
+      "$type": "app.bsky.embed.external"
+     },
+     "langs": [
+      "ko"
+     ],
+     "text": "비로그인 공개를 원하지 않는 작성자의 글"
+    },
+    "embed": {
+     "external": {
+      "uri": "https://news.example/article/1",
+      "title": "회사 단톡방 레전드 기사",
+      "description": "",
+      "thumb": "https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:fixture0007/ext@jpeg"
+     },
+     "$type": "app.bsky.embed.external#view"
+    },
+    "bookmarkCount": 1,
+    "replyCount": 0,
+    "repostCount": 45,
+    "likeCount": 11,
+    "quoteCount": 4,
+    "indexedAt": "2026-11-01T02:22:31.869Z",
+    "labels": []
+   }
+  },
+  {
+   "post": {
+    "uri": "at://did:plc:fixture0008/app.bsky.feed.post/3fixture0008",
+    "cid": "bafyfixture0008",
+    "author": {
+     "did": "did:plc:fixture0008",
+     "handle": "user8.example",
+     "displayName": "사용자8",
+     "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:fixture0008/avatar@jpeg",
+     "associated": {
+      "chat": {
+       "allowIncoming": "all",
+       "allowGroupInvites": "all"
+      },
+      "activitySubscription": {
+       "allowSubscriptions": "followers"
+      }
+     },
+     "labels": [],
+     "createdAt": "2026-10-01T23:21:57.264Z"
+    },
+    "record": {
+     "$type": "app.bsky.feed.post",
+     "createdAt": "2026-10-31T12:55:14.084Z",
+     "embed": {
+      "$type": "app.bsky.embed.images"
+     },
+     "labels": {
+      "$type": "com.atproto.label.defs#selfLabels",
+      "values": [
+       {
+        "val": "porn"
+       }
+      ]
+     },
+     "langs": [
+      "ko"
+     ],
+     "text": "성인 라벨이 붙은 글"
+    },
+    "embed": {
+     "images": [
+      {
+       "thumb": "https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:fixture0008/img0@jpeg",
+       "fullsize": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fixture0008/img0@jpeg",
+       "alt": "",
+       "aspectRatio": {
+        "height": 2422,
+        "width": 1105
+       }
+      }
+     ],
+     "$type": "app.bsky.embed.images#view"
+    },
+    "bookmarkCount": 5,
+    "replyCount": 1,
+    "repostCount": 48,
+    "likeCount": 82,
+    "quoteCount": 3,
+    "indexedAt": "2026-10-31T12:55:30.884Z",
+    "labels": [
+     {
+      "src": "did:plc:other0003",
+      "uri": "at://did:plc:fixture0008/app.bsky.feed.post/3fixture0008",
+      "val": "porn",
+      "cts": "2026-10-31T12:55:14.084Z"
+     }
+    ],
+    "threadgate": {
+     "uri": "at://did:plc:other0003/app.bsky.feed.threadgate/3mz6dqbz6zs2z",
+     "cid": "bafyreifcr7mooouii24qy6uxbv75waa6cei2gplmexa4ekontme7qpsi24",
+     "record": {
+      "$type": "app.bsky.feed.threadgate",
+      "createdAt": "2026-10-31T14:09:37.836Z",
+      "hiddenReplies": [
+       "at://did:plc:other0004/app.bsky.feed.post/3mz6hryapu22u"
+      ],
+      "post": "at://did:plc:other0003/app.bsky.feed.post/3mz6dqbz6zs2z"
+     },
+     "lists": []
+    }
+   }
+  },
+  {
+   "post": {
+    "uri": "at://did:plc:fixture0009/app.bsky.feed.post/3fixture0009",
+    "cid": "bafyfixture0009",
+    "author": {
+     "did": "did:plc:fixture0009",
+     "handle": "user9.example",
+     "displayName": "사용자9",
+     "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:fixture0009/avatar@jpeg",
+     "associated": {
+      "chat": {
+       "allowIncoming": "all",
+       "allowGroupInvites": "all"
+      },
+      "activitySubscription": {
+       "allowSubscriptions": "followers"
+      }
+     },
+     "labels": [],
+     "createdAt": "2024-02-21T06:22:47.807Z"
+    },
+    "record": {
+     "$type": "app.bsky.feed.post",
+     "createdAt": "2026-10-31T13:05:00.026Z",
+     "embed": {
+      "$type": "app.bsky.embed.images"
+     },
+     "langs": [
+      "en"
+     ],
+     "text": "When the microwave beeps at 3am"
+    },
+    "embed": {
+     "images": [
+      {
+       "thumb": "https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:fixture0009/img0@jpeg",
+       "fullsize": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fixture0009/img0@jpeg",
+       "alt": "",
+       "aspectRatio": {
+        "height": 1414,
+        "width": 1000
+       }
+      },
+      {
+       "thumb": "https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:fixture0009/img1@jpeg",
+       "fullsize": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fixture0009/img1@jpeg",
+       "alt": "",
+       "aspectRatio": {
+        "height": 2838,
+        "width": 2000
+       }
+      },
+      {
+       "thumb": "https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:fixture0009/img2@jpeg",
+       "fullsize": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fixture0009/img2@jpeg",
+       "alt": "",
+       "aspectRatio": {
+        "height": 2838,
+        "width": 2000
+       }
+      }
+     ],
+     "$type": "app.bsky.embed.images#view"
+    },
+    "bookmarkCount": 5,
+    "replyCount": 1,
+    "repostCount": 48,
+    "likeCount": 50,
+    "quoteCount": 4,
+    "indexedAt": "2026-10-31T13:05:06.984Z",
+    "labels": []
+   },
+   "opThreadPostIndex": 1,
+   "opThreadPostCount": 2
+  },
+  {
+   "post": {
+    "uri": "at://did:plc:fixture0010/app.bsky.feed.post/3fixture0010",
+    "cid": "bafyfixture0010",
+    "author": {
+     "did": "did:plc:fixture0010",
+     "handle": "user10.example",
+     "displayName": "사용자10",
+     "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:fixture0010/avatar@jpeg",
+     "associated": {
+      "chat": {
+       "allowIncoming": "all",
+       "allowGroupInvites": "all"
+      },
+      "activitySubscription": {
+       "allowSubscriptions": "followers"
+      }
+     },
+     "labels": [],
+     "createdAt": "2026-03-22T12:52:24.654Z"
+    },
+    "record": {
+     "$type": "app.bsky.feed.post",
+     "createdAt": "2026-10-31T09:02:20.591Z",
+     "langs": [
+      "ko"
+     ],
+     "text": "퇴근길 지하철에서 졸다가 종점까지 감"
+    },
+    "bookmarkCount": 1,
+    "replyCount": 0,
+    "repostCount": 44,
+    "likeCount": 52,
+    "quoteCount": 1,
+    "indexedAt": "2026-10-31T09:01:31.577Z",
+    "labels": []
+   }
+  }
+ ],
+ "cursor": "fixture-cursor"
+}

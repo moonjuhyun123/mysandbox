@@ -1,0 +1,203 @@
+{
+  "kind": "youtube#videoListResponse",
+  "etag": "h7Gg5Ff3Dd1Ss9Aa7Qq5Ww3Ee1R",
+  "items": [
+    {
+      "kind": "youtube#video",
+      "etag": "Zx1cV3bN5mA7sD9fG1hJ3kL5qW7",
+      "id": "Mp1aVb2Cd3E",
+      "snippet": {
+        "publishedAt": "2026-10-30T09:00:06Z",
+        "channelId": "UCq1W2e3R4t5Y6u7I8o9P0aS",
+        "title": "[MV] Synthetic Band - First Snow (Official Video)",
+        "description": "Synthetic fixture description for a music video.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Mp1aVb2Cd3E/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Mp1aVb2Cd3E/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Mp1aVb2Cd3E/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/Mp1aVb2Cd3E/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/Mp1aVb2Cd3E/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Synthetic Music Official",
+        "tags": [
+          "MV",
+          "music"
+        ],
+        "categoryId": "10",
+        "liveBroadcastContent": "none",
+        "defaultLanguage": "ko",
+        "localized": {
+          "title": "[MV] Synthetic Band - First Snow (Official Video)",
+          "description": "Synthetic fixture description for a music video."
+        },
+        "defaultAudioLanguage": "ko"
+      },
+      "contentDetails": {
+        "duration": "PT4M3S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "true",
+        "licensedContent": false,
+        "contentRating": {},
+        "projection": "rectangular"
+      },
+      "statistics": {
+        "viewCount": "15238876",
+        "likeCount": "803112",
+        "favoriteCount": "0",
+        "commentCount": "45210"
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "etag": "Kj4hG6fD8sA0pO2iU4yT6rE8wQ0",
+      "id": "Mp4fGh5Ij6K",
+      "snippet": {
+        "publishedAt": "2026-10-29T15:30:00Z",
+        "channelId": "UCd1F2g3H4j5K6l7Z8x9C0vB",
+        "title": "24시간 생존 서버 풀버전 다시보기",
+        "description": "Synthetic fixture description for a long gaming VOD.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Mp4fGh5Ij6K/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Mp4fGh5Ij6K/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Mp4fGh5Ij6K/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/Mp4fGh5Ij6K/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/Mp4fGh5Ij6K/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Synthetic Gaming",
+        "tags": [
+          "게임",
+          "생존"
+        ],
+        "categoryId": "20",
+        "liveBroadcastContent": "none",
+        "defaultLanguage": "ko",
+        "localized": {
+          "title": "24시간 생존 서버 풀버전 다시보기",
+          "description": "Synthetic fixture description for a long gaming VOD."
+        },
+        "defaultAudioLanguage": "ko"
+      },
+      "contentDetails": {
+        "duration": "P1DT2H3M4S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "false",
+        "licensedContent": false,
+        "contentRating": {},
+        "projection": "rectangular"
+      },
+      "statistics": {
+        "viewCount": "2210983",
+        "likeCount": "40551",
+        "favoriteCount": "0",
+        "commentCount": "3307"
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "etag": "Bv5nM7aS9dF1gH3jK5lZ7xC9vB1",
+      "id": "Mp7lMn8Op9Q",
+      "snippet": {
+        "publishedAt": "2026-10-27T17:00:00Z",
+        "channelId": "UCn1M2q3W4e5R6t7Y8u9I0oP",
+        "title": "Synthetic Movie - Official Trailer",
+        "description": "Synthetic fixture description for a movie trailer.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Mp7lMn8Op9Q/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Mp7lMn8Op9Q/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Mp7lMn8Op9Q/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/Mp7lMn8Op9Q/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          }
+        },
+        "channelTitle": "Synthetic Movies",
+        "tags": [
+          "trailer"
+        ],
+        "categoryId": "1",
+        "liveBroadcastContent": "none",
+        "defaultLanguage": "ko",
+        "localized": {
+          "title": "Synthetic Movie - Official Trailer",
+          "description": "Synthetic fixture description for a movie trailer."
+        },
+        "defaultAudioLanguage": "ko"
+      },
+      "contentDetails": {
+        "duration": "PT1H2M5S",
+        "dimension": "2d",
+        "definition": "hd",
+        "caption": "true",
+        "licensedContent": false,
+        "contentRating": {},
+        "projection": "rectangular"
+      },
+      "statistics": {
+        "viewCount": "4410276",
+        "likeCount": "120334",
+        "favoriteCount": "0",
+        "commentCount": "8771"
+      }
+    }
+  ],
+  "nextPageToken": "CAMQAA",
+  "pageInfo": {
+    "totalResults": 200,
+    "resultsPerPage": 3
+  }
+}

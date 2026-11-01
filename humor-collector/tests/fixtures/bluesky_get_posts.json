@@ -1,0 +1,104 @@
+{
+ "posts": [
+  {
+   "uri": "at://did:plc:fixture0001/app.bsky.feed.post/3fixture0001",
+   "cid": "bafyfixture0001",
+   "author": {
+    "did": "did:plc:fixture0001",
+    "handle": "user1.example",
+    "displayName": "사용자1",
+    "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:fixture0001/avatar@jpeg",
+    "associated": {
+     "activitySubscription": {
+      "allowSubscriptions": "followers"
+     }
+    },
+    "labels": [],
+    "createdAt": "2023-06-19T23:53:39.709Z"
+   },
+   "record": {
+    "$type": "app.bsky.feed.post",
+    "createdAt": "2026-11-01T01:22:35.648Z",
+    "embed": {
+     "$type": "app.bsky.embed.images"
+    },
+    "langs": [
+     "ko"
+    ],
+    "text": "동네마트 갔다가 본 담배피는 눈사람\n\n사장님 센스 무엇"
+   },
+   "embed": {
+    "images": [
+     {
+      "thumb": "https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:fixture0001/img0@jpeg",
+      "fullsize": "https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:fixture0001/img0@jpeg",
+      "alt": "",
+      "aspectRatio": {
+       "height": 501,
+       "width": 399
+      }
+     }
+    ],
+    "$type": "app.bsky.embed.images#view"
+   },
+   "bookmarkCount": 1,
+   "replyCount": 1,
+   "repostCount": 43,
+   "likeCount": 147,
+   "quoteCount": 3,
+   "indexedAt": "2026-11-01T01:22:37.575Z",
+   "labels": []
+  },
+  {
+   "uri": "at://did:plc:fixture0004/app.bsky.feed.post/3fixture0004",
+   "cid": "bafyfixture0004",
+   "author": {
+    "did": "did:plc:fixture0004",
+    "handle": "user4.example",
+    "displayName": "사용자4",
+    "avatar": "https://cdn.bsky.app/img/avatar/plain/did:plc:fixture0004/avatar@jpeg",
+    "associated": {
+     "activitySubscription": {
+      "allowSubscriptions": "followers"
+     }
+    },
+    "labels": [
+     {
+      "src": "did:plc:fixture0004",
+      "uri": "did:plc:fixture0004",
+      "val": "!no-unauthenticated",
+      "cts": "2026-11-01T00:00:00.000Z"
+     }
+    ],
+    "createdAt": "2024-10-18T13:45:29.311Z"
+   },
+   "record": {
+    "$type": "app.bsky.feed.post",
+    "createdAt": "2026-10-31T09:00:11.566Z",
+    "embed": {
+     "$type": "app.bsky.embed.external"
+    },
+    "langs": [
+     "ko"
+    ],
+    "text": "회사 단톡방 레전드 모음 기사"
+   },
+   "embed": {
+    "external": {
+     "uri": "https://news.example/article/1",
+     "title": "회사 단톡방 레전드 기사",
+     "description": "",
+     "thumb": "https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:fixture0004/ext@jpeg"
+    },
+    "$type": "app.bsky.embed.external#view"
+   },
+   "bookmarkCount": 1,
+   "replyCount": 0,
+   "repostCount": 30,
+   "likeCount": 15,
+   "quoteCount": 1,
+   "indexedAt": "2026-10-31T09:00:16.377Z",
+   "labels": []
+  }
+ ]
+}

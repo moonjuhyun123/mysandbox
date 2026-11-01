@@ -1,0 +1,136 @@
+{
+  "kind": "youtube#commentThreadListResponse",
+  "etag": "tH3Rr5Ee7Aa9Dd1Ll3Ii5Ss7Tt9",
+  "nextPageToken": "Z2V0X3JlbGV2YW5jZS0tU1lOVEhFVElDLVBBR0UtVE9LRU4tMg==",
+  "pageInfo": {
+    "totalResults": 3,
+    "resultsPerPage": 3
+  },
+  "items": [
+    {
+      "kind": "youtube#commentThread",
+      "etag": "aT1k2LmN9pR4sT6vW8yZ0AaABAg",
+      "id": "Ugx7Qk2LmN9pR4sT6vW8yZ0AaABAg",
+      "snippet": {
+        "channelId": "UCa1B2c3D4e5F6g7H8i9J0kL",
+        "videoId": "Qx7fK2mN9aB",
+        "topLevelComment": {
+          "kind": "youtube#comment",
+          "etag": "cEQk2LmN9pR4sT6vW8yZ0AaABAg",
+          "id": "Ugx7Qk2LmN9pR4sT6vW8yZ0AaABAg",
+          "snippet": {
+            "authorDisplayName": "@snowman_fan_01",
+            "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/SYNTHETIC_snowman_fan_01=s48-c-k-c0x00ffffff-no-rj",
+            "authorChannelUrl": "http://www.youtube.com/@snowman_fan_01",
+            "authorChannelId": {
+              "value": "UCsnowmanfan01snowmanfan"
+            },
+            "channelId": "UCa1B2c3D4e5F6g7H8i9J0kL",
+            "textDisplay": "눈사람 표정 왜 이렇게 지쳐보이냐 ㅋㅋㅋㅋ<br><a href=\"https://www.youtube.com/watch?v=Qx7fK2mN9aB&amp;t=12\">0:12</a> 여기서 터짐",
+            "textOriginal": "눈사람 표정 왜 이렇게 지쳐보이냐 ㅋㅋㅋㅋ\n0:12 여기서 터짐",
+            "canRate": true,
+            "viewerRating": "none",
+            "likeCount": 3021,
+            "publishedAt": "2026-10-28T10:02:44Z",
+            "updatedAt": "2026-10-28T10:02:44Z"
+          }
+        },
+        "canReply": true,
+        "totalReplyCount": 2,
+        "isPublic": true
+      },
+      "replies": {
+        "comments": [
+          {
+            "kind": "youtube#comment",
+            "etag": "cEAg.9zSYNTHrepLy0aB1cD2eF3",
+            "id": "Ugx7Qk2LmN9pR4sT6vW8yZ0AaABAg.9zSYNTHrepLy0aB1cD2eF3",
+            "snippet": {
+              "authorDisplayName": "@meme_archivist",
+              "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/SYNTHETIC_meme_archivist=s48-c-k-c0x00ffffff-no-rj",
+              "authorChannelUrl": "http://www.youtube.com/@meme_archivist",
+              "authorChannelId": {
+                "value": "UCmemearchivistmemearchi"
+              },
+              "channelId": "UCa1B2c3D4e5F6g7H8i9J0kL",
+              "textDisplay": "출근하는 내 모습 그 자체",
+              "textOriginal": "출근하는 내 모습 그 자체",
+              "parentId": "Ugx7Qk2LmN9pR4sT6vW8yZ0AaABAg",
+              "canRate": true,
+              "viewerRating": "none",
+              "likeCount": 418,
+              "publishedAt": "2026-10-28T11:20:09Z",
+              "updatedAt": "2026-10-28T11:20:09Z"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "youtube#commentThread",
+      "etag": "bU2eF7gH9iJ1kL3mN5oP4AaABAg",
+      "id": "UgyB3cD5eF7gH9iJ1kL3mN5oP4AaABAg",
+      "snippet": {
+        "channelId": "UCa1B2c3D4e5F6g7H8i9J0kL",
+        "videoId": "Qx7fK2mN9aB",
+        "topLevelComment": {
+          "kind": "youtube#comment",
+          "etag": "cE5eF7gH9iJ1kL3mN5oP4AaABAg",
+          "id": "UgyB3cD5eF7gH9iJ1kL3mN5oP4AaABAg",
+          "snippet": {
+            "authorDisplayName": "@winter_is_here",
+            "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/SYNTHETIC_winter_is_here=s48-c-k-c0x00ffffff-no-rj",
+            "authorChannelUrl": "http://www.youtube.com/@winter_is_here",
+            "authorChannelId": {
+              "value": "UCwinterisherewinterishe"
+            },
+            "channelId": "UCa1B2c3D4e5F6g7H8i9J0kL",
+            "textDisplay": "이거 짤로만 보다가 원본 처음 봄 &quot;퇴근 5분 전&quot; 느낌",
+            "textOriginal": "이거 짤로만 보다가 원본 처음 봄 \"퇴근 5분 전\" 느낌",
+            "canRate": true,
+            "viewerRating": "none",
+            "likeCount": 1187,
+            "publishedAt": "2026-10-28T13:45:51Z",
+            "updatedAt": "2026-10-28T13:45:51Z"
+          }
+        },
+        "canReply": true,
+        "totalReplyCount": 0,
+        "isPublic": true
+      }
+    },
+    {
+      "kind": "youtube#commentThread",
+      "etag": "cV3uI6oP8aS0dF2gH4jK4AaABAg",
+      "id": "UgzR2tY4uI6oP8aS0dF2gH4jK4AaABAg",
+      "snippet": {
+        "channelId": "UCa1B2c3D4e5F6g7H8i9J0kL",
+        "videoId": "Qx7fK2mN9aB",
+        "topLevelComment": {
+          "kind": "youtube#comment",
+          "etag": "cE4uI6oP8aS0dF2gH4jK4AaABAg",
+          "id": "UgzR2tY4uI6oP8aS0dF2gH4jK4AaABAg",
+          "snippet": {
+            "authorDisplayName": "@gif_collector",
+            "authorProfileImageUrl": "https://yt3.ggpht.com/ytc/SYNTHETIC_gif_collector=s48-c-k-c0x00ffffff-no-rj",
+            "authorChannelUrl": "http://www.youtube.com/@gif_collector",
+            "authorChannelId": {
+              "value": "UCgifcollectorgifcollect"
+            },
+            "channelId": "UCa1B2c3D4e5F6g7H8i9J0kL",
+            "textDisplay": "움짤 버전 만들어 봄",
+            "canRate": true,
+            "viewerRating": "none",
+            "likeCount": 96,
+            "publishedAt": "2026-10-29T02:13:37Z",
+            "updatedAt": "2026-10-29T02:13:37Z",
+            "imageUrl": "https://example.invalid/synthetic-signed-comment-image.gif?expires=1793261617&sig=SYNTHETIC"
+          }
+        },
+        "canReply": true,
+        "totalReplyCount": 0,
+        "isPublic": true
+      }
+    }
+  ]
+}

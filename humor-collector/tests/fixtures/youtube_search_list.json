@@ -1,0 +1,114 @@
+{
+  "kind": "youtube#searchListResponse",
+  "etag": "q8Vn2bXc4ZsL1kJ7hG5fD3sA9pO",
+  "nextPageToken": "CAMQAA",
+  "regionCode": "KR",
+  "pageInfo": {
+    "totalResults": 41873,
+    "resultsPerPage": 3
+  },
+  "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "mC4n0vLs2kY7rPq1dXbZ8eTfW3a",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Qx7fK2mN9aB"
+      },
+      "snippet": {
+        "publishedAt": "2026-10-28T09:15:02Z",
+        "channelId": "UCa1B2c3D4e5F6g7H8i9J0kL",
+        "title": "담배 피는 눈사람 짤 원본 (겨울 레전드 밈)",
+        "description": "요즘 커뮤에서 돌고 있는 담배 피는 눈사람 짤의 원본 영상입니다. #눈사람 #밈 #shorts",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Qx7fK2mN9aB/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Qx7fK2mN9aB/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Qx7fK2mN9aB/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "밈창고 MemeWarehouse",
+        "liveBroadcastContent": "none",
+        "publishTime": "2026-10-28T09:15:02Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Yt6hJ9sK1lM0nB2vC3xZ4aQ5wE7",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Lp3ZtR8vW1c"
+      },
+      "snippet": {
+        "publishedAt": "2026-10-21T12:00:31Z",
+        "channelId": "UCz9Y8x7W6v5U4t3S2r1Q0pO",
+        "title": "음료수 주르륵 흘리는 리액션 모음 ㅋㅋㅋ",
+        "description": "음료수 주르륵 리액션 짤 모음. 출처는 영상 설명란 참고.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Lp3ZtR8vW1c/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Lp3ZtR8vW1c/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Lp3ZtR8vW1c/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "오늘의짤방",
+        "liveBroadcastContent": "none",
+        "publishTime": "2026-10-21T12:00:31Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Rf8gT0yH2uJ4iK6oL8pA1sD3fG5",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Hd5YsJ0eU4g"
+      },
+      "snippet": {
+        "publishedAt": "2026-10-05T03:47:10Z",
+        "channelId": "UCm1N2b3V4c5X6z7L8k9J0hG",
+        "title": "편의점 알바 레전드 썰 애니메이션",
+        "description": "구독자 사연으로 만든 짧은 애니메이션입니다.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Hd5YsJ0eU4g/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Hd5YsJ0eU4g/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Hd5YsJ0eU4g/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "짤줍는사람",
+        "liveBroadcastContent": "none",
+        "publishTime": "2026-10-05T03:47:10Z"
+      }
+    }
+  ]
+}

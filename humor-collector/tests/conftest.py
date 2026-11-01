@@ -53,9 +53,11 @@ class FakeSession:
         self.routes = dict(routes or {})
         self.headers: dict[str, str] = {}
         self.calls: list[str] = []
+        self.params_log: list[dict] = []      # query params of each call (routes match on the URL only)
 
     def get(self, url, params=None, headers=None, timeout=None):
         self.calls.append(url)
+        self.params_log.append(dict(params or {}))
         target = self._match(url)
         if target is None:
             if url.endswith("/robots.txt"):

@@ -27,6 +27,7 @@ DEFAULTS: dict[str, Any] = {
         "respect_robots": True,
         "blocked_cooldown_hours": 12,
         "detail_max_attempts": 3,
+        "check_cache_hours": 168,
     },
     "scoring": {},
     "dedup": {},

@@ -13,6 +13,7 @@ default_delay = 3.0           # minimum seconds between requests to the same hos
 respect_robots = true         # robots.txt Disallow and Crawl-delay (protego)
 blocked_cooldown_hours = 12   # after a CAPTCHA/challenge the source pauses this long
 detail_max_attempts = 3       # retries of a failed post page across runs
+check_cache_hours = 168       # reuse per-author checks (Bluesky visibility declaration) for 7 days
 
 [output]
 # Posts with these flags are hidden from `top` and `export` unless --all is given.
@@ -36,6 +37,31 @@ long_body_len = 150
 min_exact_title_len = 8       # image/list-only posts: identical normalized title of >= 8 chars
 window_days = 30
 
+[trends]
+# `python main.py trends`: phrases repeated in titles of several recent posts (meme / 짤 names)
+window_days = 7               # "recent" window
+baseline_days = 28            # earlier period used to tell bursts from always-common words
+min_docs = 3                  # distinct posts (re-uploads count once) ...
+min_sources_if_two_docs = 2   # ... or 2 posts from 2+ different communities
+min_ratio = 3.0               # recent rate / baseline rate (only once a baseline exists)
+extra_stop_phrases = []       # add generic words that keep showing up, e.g. ["아이폰"]
+
+[youtube]
+# `python main.py youtube ...` and `trends --youtube N`. Needs your own free API key in the
+# YOUTUBE_API_KEY environment variable (never put the key in this file).
+# Results are display-only: stored apart from community posts, never scored or merged,
+# deleted after retention_days (YouTube API policy: at most 30 days).
+api_key_env = "YOUTUBE_API_KEY"
+region = "KR"
+language = "ko"
+keywords = ["밈", "짤", "유행어", "웃긴 쇼츠"]   # `youtube popular` runs one search per keyword
+days = 7                      # videos published in the last N days
+trend_days = 30               # window for `trends --youtube` lookups
+short_only = true             # videoDuration=short (< 4 min, includes Shorts)
+max_results = 25
+retention_days = 29
+chart = false                 # also list videos.list chart=mostPopular (music/movies/gaming based)
+
 # --------------------------------------------------------------------------- sources
 # Listing overrides: [sources.<name>.listings.<listing>] max_pages = N / enabled = false
 # `python main.py sources` shows every listing name.
@@ -55,6 +81,14 @@ allowed_categories = ["유머게시판", "신유머/이슈/움짤"]
 enabled = true
 delay = 10.0                  # robots.txt Crawl-delay: 10
 min_likes = 20
+
+[sources.bluesky]
+enabled = true
+feeds = ["jaem_30_reposts", "ko_most_reposted"]   # see collectors/bluesky.py DEFAULT_FEEDS
+page_size = 50
+languages = ["ko"]
+delay = 3.0
+# extra_feeds = [{ name = "my_feed", uri = "at://did:plc:.../app.bsky.feed.generator/...", label = "..." }]
 
 [sources.lemmy]
 enabled = true

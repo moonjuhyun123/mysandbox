@@ -4,6 +4,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from collectors.base import BaseCollector
+from collectors.bluesky import BlueskyCollector
 from collectors.bobaedream import BobaedreamCollector
 from collectors.dogdrip import DogdripCollector
 from collectors.lemmy import LemmyCollector
@@ -11,7 +12,7 @@ from collectors.ruliweb import RuliwebCollector
 
 COLLECTORS: dict[str, type[BaseCollector]] = {
     cls.name: cls
-    for cls in (RuliwebCollector, BobaedreamCollector, DogdripCollector, LemmyCollector)
+    for cls in (RuliwebCollector, BobaedreamCollector, DogdripCollector, LemmyCollector, BlueskyCollector)
 }
 
 
@@ -87,11 +88,11 @@ UNSUPPORTED: dict[str, UnsupportedSource] = {
     ),
     "youtube": UnsupportedSource(
         "YouTube",
-        "Data API v3 needs an API key (owner's Google Cloud project); keyless calls get 403, channel "
-        "RSS /feeds/videos.xml is disallowed by robots.txt and the Trending page was retired 2025-07-21. "
-        "API terms: delete/refresh data within 30 days, no derived score from views/likes.",
+        "Not a collector: API policies forbid aggregating/merging YouTube data and deriving scores, and "
+        "cap storage at 30 days. Use the lookup tool `main.py youtube ...` (needs YOUTUBE_API_KEY); "
+        "results are kept apart and purged after 29 days. Channel RSS is robots-disallowed.",
         "2026-11-01",
-        "Possible with your free API key; YouTube data then needs its own retention and scoring rules.",
+        "Lookup only, with your API key.",
     ),
     "instagram": UnsupportedSource(
         "Instagram",

@@ -15,9 +15,14 @@
 | `bobaedream` 보배드림 | HTML | 베스트 실시간·주간·월간 + **명예의 전당**(역대 순위) | 추천·조회·댓글, 순위, 원 게시판, 본문, 이미지 URL | 1차 구현 |
 | `dogdrip` 개드립 | HTML(목록만) | 개드립 게시판 목록 | 추천·댓글, 인기 배지 순서, 대략적 시각. **본문 없음** | 보조(게시글 페이지가 Cloudflare 챌린지) |
 | `lemmy` Lemmy | **공식 API** | c/funny·c/jokes의 TopDay/TopWeek + TopAll | upvote·downvote·댓글, 순위, 본문, 미디어 URL | 해외 소스 |
+| `bluesky` Bluesky | **공식 공개 API**(계정 불필요) | 한국어 인기 피드 2개("30 리포스트 이상 잼얘 모음", "한국어 리포스트 많은 순") | 좋아요·댓글·리포스트·인용, 피드 순위, 본문, 이미지 URL | 비로그인 노출 거부 작성자·성인 라벨 글은 저장 안 함. `refresh`로 삭제된 글 정리 |
 
-에펨코리아, 더쿠, 인스티즈, 디시인사이드, 네이트판, 웃긴대학, 뽐뿌, 9GAG, Reddit은 수집하지
-않습니다. 사유는 `python main.py sources`와 [docs/RESEARCH.md](docs/RESEARCH.md)에 있습니다
+YouTube는 수집 소스가 아니라 **조회 도구**(`python main.py youtube ...`)입니다. 소유자의 API 키가
+필요하고, YouTube 정책 때문에 결과를 별도로 저장하며 29일 뒤 삭제합니다. 자세한 내용은 아래
+"밈·짤 찾기"를 보세요.
+
+에펨코리아, 더쿠, 인스티즈, 디시인사이드, 네이트판, 웃긴대학, 뽐뿌, 9GAG, Reddit, Instagram, TikTok, X,
+Threads, 네이버(카페·블로그·뉴스·웹툰), 오늘의유머는 수집하지 않습니다. 사유는 `python main.py sources`와 [docs/RESEARCH.md](docs/RESEARCH.md)에 있습니다
 (CAPTCHA·챌린지, robots.txt 금지, 계정 필요 등). 로그인 우회, CAPTCHA 우회, 브라우저 위장 같은
 차단 회피는 구현하지 않았습니다. 수집 중 챌린지를 받으면 해당 소스를 일정 시간 멈추고 사유를
 기록합니다.
@@ -68,7 +73,60 @@ python3 -m venv .venv
 
 # config/categories.toml을 고친 뒤 저장된 글 전체를 다시 분류
 .venv/bin/python main.py reclassify
+
+# Bluesky: 저장한 글을 다시 확인해 숫자를 갱신하고, 지워졌거나 비공개 전환된 글은 삭제
+.venv/bin/python main.py refresh --source bluesky --max-age-days 3650 --limit 1000
 ```
+
+## 밈·짤 찾기 (`trends`, `youtube`)
+
+"담배피는 눈사람", "음료수 주르륵"처럼 지금 퍼지는 밈을 찾는 기능입니다.
+
+**1. 커뮤니티에서 반복되는 문구 (`trends`, 키 불필요)**
+
+여러 커뮤니티의 최근 인기글 제목에서 반복해 나타나는 문구를 찾습니다.
+
+- 띄어쓰기와 조사가 달라도 같은 문구로 봅니다. 예: "담배피는 눈사람.jpg", "담배 피는 눈사람 근황"
+- 서로 다른 글 3개 이상, 또는 서로 다른 커뮤니티 2곳 이상에서 나와야 합니다.
+- 이전 기간보다 크게 늘어난 문구만 남깁니다. "근황", "레전드" 같은 일반 단어는 뺍니다.
+
+```bash
+.venv/bin/python main.py trends --days 7                      # 문구 + 예시 글 + 이미지 링크
+.venv/bin/python main.py trends --days 7 --html trends.html   # 예시 이미지를 카드로 보는 HTML
+```
+
+**2. 그 문구로 YouTube 인기 영상 조회 (`youtube`, API 키 필요)**
+
+```bash
+export YOUTUBE_API_KEY=...                                     # 본인 Google Cloud 프로젝트의 키
+.venv/bin/python main.py youtube search "담배피는 눈사람" --html yt.html
+.venv/bin/python main.py youtube popular                       # [youtube] keywords로 한 번씩 검색
+.venv/bin/python main.py trends --youtube 5 --html trends.html # 상위 5개 문구를 YouTube에서도 검색
+.venv/bin/python main.py youtube comments VIDEO_ID             # 베스트 댓글 (화면 표시만, 저장 안 함)
+.venv/bin/python main.py youtube list --html yt.html           # 저장된 결과 다시 보기
+.venv/bin/python main.py youtube purge --all                   # YouTube 데이터 즉시 전부 삭제
+```
+
+**키 발급:** Google Cloud Console에서 새 프로젝트를 만듭니다. "YouTube Data API v3"를 사용 설정하고,
+사용자 인증 정보 → API 키를 만듭니다(무료). 키는 환경변수로만 넣으세요. 설정 파일이나 채팅에 붙이지
+마세요. 키는 로그와 오류 기록에서 `***`로 가려집니다.
+
+**한도:** 검색은 하루 100회, 영상 정보·댓글 조회는 하루 10,000회입니다. 태평양 시간 자정에 초기화됩니다.
+
+**YouTube 정책 때문에 다르게 처리하는 점** (Developer Policies, 2026-10-15 개정):
+
+- **III.E.2 (집계·결합 금지):** 여러 채널의 YouTube 데이터를 집계해 인사이트를 뽑거나 섞을 수 없습니다.
+  그래서 **트렌드 계산은 커뮤니티 데이터로만** 하고, YouTube는 사람이 보는 조회 결과로만 씁니다.
+- **III.E.4.h (파생 지표 금지):** 조회수·좋아요로 점수를 만들 수 없습니다. 그래서 YouTube 결과에는
+  인기 점수가 없고, YouTube가 준 순서와 숫자를 그대로 보여 줍니다.
+- **III.E.4.d (30일 보관 제한):** 키만으로 받은 데이터는 30일까지만 둘 수 있습니다. 그래서
+  `youtube_results` 테이블에 따로 두고, `collect`와 `youtube` 명령이 돌 때마다 29일 지난 행을 지웁니다.
+- **III.C.5 / III.F.2 (출처 표시):** 다른 출처 결과와 섞지 않고, 항목마다 "YouTube"로 표시하고 영상에
+  링크합니다.
+- **작성자 정보:** 베스트 댓글은 화면에만 보여 주고 저장하지 않습니다. 작성자 이름은 빼서, 사람을
+  식별할 정보를 모으지 않습니다(YouTube 약관).
+- **III.A:** 이 도구는 소유자 혼자 쓰는 것을 전제로 합니다. 다른 사람에게 서비스로 제공하려면 이용약관과
+  개인정보 처리방침 등 추가 의무가 생깁니다.
 
 종료 코드는 모든 소스가 `ok`, `partial`, `skipped`이면 0, 실패나 차단이 있으면 1입니다.
 로그는 콘솔과 `data/logs/collector.log`(5MB씩 회전)에 남습니다.
@@ -101,14 +159,16 @@ journalctl -u humor-collector.service -n 50
 
 ```
 humor-collector/
-├── main.py                 CLI (collect / refresh / top / export / stats / sources / show / reclassify)
+├── main.py                 CLI (collect / refresh / top / export / stats / sources / show / reclassify /
+│                           trends / youtube)
 ├── pipeline.py             수집 흐름, 실패 격리, 차단 시 일시 정지, 과거 페이지 커서
 ├── settings.py             기본값과 config/settings.toml 병합
 ├── collectors/
 │   ├── base.py             어댑터 인터페이스 (Listing, parse_listing, parse_detail, accept)
 │   ├── http.py             PoliteHttpClient: robots(protego), 간격, 재시도, 타임아웃, 챌린지 감지, 문자셋
 │   ├── registry.py         구현 어댑터 목록과 제외 사이트 사유
-│   ├── ruliweb.py  bobaedream.py  dogdrip.py  lemmy.py
+│   ├── ruliweb.py  bobaedream.py  dogdrip.py  lemmy.py  bluesky.py
+│   ├── youtube.py          YouTube Data API 조회 도구 (수집기 아님, 별도 테이블, 29일 보관)
 │   └── timeutil.py         "15 시간 전", "10/20", "2026.10.24 (토) 10:36" 같은 시각 문자열 파싱
 ├── models/post.py          ListingEntry / PostDetail / PostRecord / Metrics
 ├── storage/db.py           SQLite 스키마, upsert, 지표 이력, 소스 상태, 실행·오류 기록
@@ -116,7 +176,9 @@ humor-collector/
 │   ├── normalize.py        URL·제목·본문 정규화
 │   ├── dedup.py            재업로드 묶음(cluster) 판정
 │   ├── scoring.py          커뮤니티별 백분위로 정규화한 인기 점수
-│   └── classifier.py       ContentClassifier 인터페이스, KeywordClassifier, LLMClassifier
+│   ├── classifier.py       ContentClassifier 인터페이스, KeywordClassifier, LLMClassifier
+│   ├── trends.py           반복되는 밈·짤 문구 감지 (공백 무시 n-gram, 이전 기간 대비 급증)
+│   └── report.py           trends / youtube HTML 갤러리
 ├── config/settings.toml  config/categories.toml
 ├── deploy/                 run_collect.sh, systemd service/timer, crontab 예시
 ├── docs/RESEARCH.md        1단계 조사 보고서

@@ -72,6 +72,7 @@ class BaseCollector(ABC):
     method: ClassVar[str]                  # "official-api" | "rss" | "html"
     needs_detail: ClassVar[bool] = True    # list rows lack the body -> fetch each post page
     list_has_body: ClassVar[bool] = False  # list/API rows already carry the full post (no detail needed)
+    batch_refresh: ClassVar[bool] = False  # implements refresh_urls()/parse_refresh() (API sources)
 
     def __init__(self, options: dict[str, Any] | None = None):
         self.options = dict(options or {})
@@ -102,6 +103,13 @@ class BaseCollector(ABC):
     @abstractmethod
     def parse_listing(self, text: str, listing: Listing, now: datetime, page: int = 1) -> ParseResult:
         ...
+
+    def pre_store_check(self, entry: ListingEntry, fetch: Callable[[str], tuple[int | None, str]]) -> str | None:
+        """Optional extra check before a NEW post is stored (and again on refresh).
+
+        ``fetch(url)`` makes a polite request and returns ``(status, body)``; the status is None
+        when the request failed. Return a reason to skip/delete the post, or None to keep it."""
+        return None
 
     def accept(self, entry: ListingEntry) -> bool:
         """Cheap filter before any detail request (board allow-list, minimum likes...)."""

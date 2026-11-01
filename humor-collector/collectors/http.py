@@ -44,10 +44,11 @@ _META_CHARSET = re.compile(rb"""<meta[^>]+charset\s*=\s*["']?([A-Za-z0-9_-]+)"""
 
 
 class FetchError(Exception):
-    def __init__(self, message: str, url: str = "", status: int | None = None):
+    def __init__(self, message: str, url: str = "", status: int | None = None, body: str | None = None):
         super().__init__(message)
         self.url = url
         self.status = status
+        self.body = body            # error response body (e.g. an API's JSON error), truncated
 
 
 class AccessBlocked(FetchError):
@@ -148,12 +149,19 @@ class PoliteHttpClient:
         self._robots: dict[str, Protego | None] = {}   # None = allow all (robots.txt absent)
         self._lock = threading.Lock()
         self.request_count = 0
+        self.secrets: set[str] = set()   # values (API keys) scrubbed from every log line and error
 
     # ------------------------------------------------------------------ public
     def get(self, url: str, *, params: dict | None = None, accept: str | None = None) -> Response:
         if self.respect_robots:
             self._check_robots(url)
         return self._get_with_retries(url, params=params, accept=accept)
+
+    def scrub(self, text: str) -> str:
+        for secret in self.secrets:
+            if secret:
+                text = text.replace(secret, "***")
+        return text
 
     def delay_for(self, url: str) -> float:
         host = urlsplit(url).netloc
@@ -196,7 +204,7 @@ class PoliteHttpClient:
             try:
                 resp = self.session.get(url, params=params, headers=headers, timeout=self.timeout)
             except (requests.ConnectionError, requests.Timeout) as exc:
-                last_error = f"{type(exc).__name__}: {exc}"
+                last_error = self.scrub(f"{type(exc).__name__}: {exc}")
                 log.warning("attempt %d/%d failed for %s: %s", attempt, self.max_retries + 1, url, last_error)
                 if attempt <= self.max_retries:
                     self._sleep(self._backoff(attempt, None))
@@ -213,7 +221,8 @@ class PoliteHttpClient:
                     self._sleep(self._backoff(attempt, resp.headers.get("Retry-After")))
                 continue
             if resp.status_code >= 400:
-                raise FetchError(f"HTTP {resp.status_code}", url=url, status=resp.status_code)
+                raise FetchError(f"HTTP {resp.status_code}", url=url, status=resp.status_code,
+                                 body=self.scrub(text[:4000]))
             return Response(url=resp.url, status=resp.status_code, text=text, headers=hdrs)
         raise FetchError(f"giving up after {self.max_retries + 1} attempts ({last_error})", url=url)
 

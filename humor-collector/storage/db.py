@@ -6,6 +6,9 @@ Tables
 - source_state     per-source status, last success, block reason, archive cursors
 - runs             one row per source per collection run
 - fetch_errors     every failed request / parse problem, with stage and URL
+- check_cache      answers of small per-author checks (e.g. Bluesky visibility declaration), with TTL
+- youtube_results  YouTube API lookups, kept apart (never scored or merged) and purged after
+                   at most 30 days as the YouTube API policies require (see collectors/youtube.py)
 
 All timestamps are stored as UTC ISO-8601 strings (``2026-10-24T01:14:22+00:00``)
 so that string order equals time order.
@@ -21,7 +24,7 @@ from typing import Any, Iterable, Iterator
 
 from models.post import Metrics, PostRecord
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 3
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS posts (
@@ -120,6 +123,34 @@ CREATE TABLE IF NOT EXISTS fetch_errors (
 CREATE INDEX IF NOT EXISTS ix_errors_source ON fetch_errors (source, occurred_at);
 """
 
+YOUTUBE_SCHEMA = """
+CREATE TABLE IF NOT EXISTS youtube_results (
+    query         TEXT    NOT NULL,
+    position      INTEGER NOT NULL,     -- order as returned by the API
+    video_id      TEXT    NOT NULL,
+    title         TEXT    NOT NULL,
+    channel_title TEXT,
+    published_at  TEXT,
+    view_count    INTEGER,
+    like_count    INTEGER,
+    comment_count INTEGER,
+    duration      TEXT,
+    thumbnail_url TEXT,
+    fetched_at    TEXT    NOT NULL,
+    PRIMARY KEY (query, video_id)
+);
+CREATE INDEX IF NOT EXISTS ix_youtube_fetched ON youtube_results (fetched_at);
+"""
+
+CHECK_CACHE_SCHEMA = """
+CREATE TABLE IF NOT EXISTS check_cache (
+    url        TEXT PRIMARY KEY,
+    status     INTEGER NOT NULL,
+    body       TEXT    NOT NULL,
+    fetched_at TEXT    NOT NULL
+);
+"""
+
 POST_COLUMNS_FOR_EXPORT = (
     "id", "source", "source_post_id", "url", "title", "body", "published_at",
     "published_at_approx", "collected_at", "category", "views", "likes", "dislikes",
@@ -174,6 +205,11 @@ class Database:
         version = self.conn.execute("PRAGMA user_version").fetchone()[0]
         if version < 1:
             self.conn.executescript(SCHEMA)
+        if version < 2:
+            self.conn.executescript(YOUTUBE_SCHEMA)
+        if version < 3:
+            self.conn.executescript(CHECK_CACHE_SCHEMA)
+        if version < SCHEMA_VERSION:
             self.conn.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
             self.conn.commit()
 
@@ -319,6 +355,19 @@ class Database:
         )
         self.conn.commit()
         return cur.rowcount
+
+    def delete_post(self, post_id: int) -> None:
+        """Remove a post (e.g. deleted at the source). Its re-upload cluster is re-pointed to
+        the oldest remaining member so other copies stay linked."""
+        self.conn.execute("DELETE FROM posts WHERE id = ?", (post_id,))
+        self.conn.execute(
+            """
+            UPDATE posts SET cluster_id = (SELECT MIN(id) FROM posts WHERE cluster_id = :old)
+            WHERE cluster_id = :old
+            """,
+            {"old": post_id},
+        )
+        self.conn.commit()
 
     def mark_detail_failed(self, post_id: int) -> None:
         self.conn.execute(
@@ -528,6 +577,52 @@ class Database:
         return self.conn.execute(
             "SELECT * FROM fetch_errors ORDER BY id DESC LIMIT ?", (limit,)
         ).fetchall()
+
+    # ------------------------------------------------------------ check cache
+    def cached_check(self, url: str, newer_than: datetime) -> tuple[int, str] | None:
+        row = self.conn.execute(
+            "SELECT status, body FROM check_cache WHERE url = ? AND fetched_at >= ?", (url, utc_iso(newer_than))
+        ).fetchone()
+        return (row["status"], row["body"]) if row else None
+
+    def store_check(self, url: str, status: int, body: str, at: datetime) -> None:
+        self.conn.execute(
+            "INSERT OR REPLACE INTO check_cache (url, status, body, fetched_at) VALUES (?, ?, ?, ?)",
+            (url, status, body[:4000], utc_iso(at)),
+        )
+        self.conn.commit()
+
+    # ---------------------------------------------------------------- youtube
+    def save_youtube_results(self, query: str, videos, fetched_at: datetime) -> None:
+        """Replace the stored answer for ``query`` with the latest one (keeps data current)."""
+        at = utc_iso(fetched_at)
+        self.conn.execute("DELETE FROM youtube_results WHERE query = ?", (query,))
+        self.conn.executemany(
+            """
+            INSERT INTO youtube_results (query, position, video_id, title, channel_title, published_at,
+                view_count, like_count, comment_count, duration, thumbnail_url, fetched_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            [(query, pos, v.video_id, v.title, v.channel_title, v.published_at, v.view_count, v.like_count,
+              v.comment_count, v.duration, v.thumbnail_url, at) for pos, v in enumerate(videos, start=1)],
+        )
+        self.conn.commit()
+
+    def youtube_results(self, query: str | None = None) -> list[sqlite3.Row]:
+        sql, params = "SELECT * FROM youtube_results", []
+        if query is not None:
+            sql += " WHERE query = ?"
+            params.append(query)
+        return self.conn.execute(sql + " ORDER BY fetched_at DESC, query, position", params).fetchall()
+
+    def purge_youtube(self, older_than: datetime | None = None) -> int:
+        """Delete YouTube rows fetched before ``older_than`` (all rows when None)."""
+        if older_than is None:
+            cur = self.conn.execute("DELETE FROM youtube_results")
+        else:
+            cur = self.conn.execute("DELETE FROM youtube_results WHERE fetched_at < ?", (utc_iso(older_than),))
+        self.conn.commit()
+        return cur.rowcount
 
     # ------------------------------------------------------------------ stats
     def stats(self) -> dict[str, Any]:

@@ -70,6 +70,7 @@ class CollectionPipeline:
         general = settings["general"]
         self.cooldown = timedelta(hours=float(general.get("blocked_cooldown_hours", 12)))
         self.detail_max_attempts = int(general.get("detail_max_attempts", 3))
+        self.check_ttl = timedelta(hours=float(general.get("check_cache_hours", 168)))
         self.dedup_cfg = DedupConfig(**settings.get("dedup", {}))
         self.scoring_cfg = ScoringConfig(**settings.get("scoring", {}))
 
@@ -144,7 +145,7 @@ class CollectionPipeline:
                 limit: int = 50, force: bool = False) -> RunSummary:
         """Re-read post pages of recent posts that dropped off the lists, to update numbers."""
         collector = self.make_collector(source)
-        if not collector.needs_detail:
+        if not collector.needs_detail and not collector.batch_refresh:
             return RunSummary(source, "refresh", "skipped",
                               message="source has no post pages to refresh (list/API data only)")
         now = self.clock()
@@ -158,13 +159,16 @@ class CollectionPipeline:
         )
         status, message = "ok", None
         try:
-            for row in rows:
-                entry = ListingEntry(source_post_id=row["source_post_id"], url=row["url"], title=row["title"])
-                detail = self._fetch_detail(collector, entry, run)
-                if detail is None:
-                    continue
-                self.db.record_observation(row["id"], detail.metrics, None, "refresh", self.clock())
-                run.counters["posts_updated"] += 1
+            if collector.batch_refresh:
+                self._refresh_batches(collector, rows, run)
+            else:
+                for row in rows:
+                    entry = ListingEntry(source_post_id=row["source_post_id"], url=row["url"], title=row["title"])
+                    detail = self._fetch_detail(collector, entry, run)
+                    if detail is None:
+                        continue
+                    self.db.record_observation(row["id"], detail.metrics, None, "refresh", self.clock())
+                    run.counters["posts_updated"] += 1
             if run.counters["errors"]:
                 status = "partial"
         except AccessBlocked as exc:
@@ -174,6 +178,57 @@ class CollectionPipeline:
             self._finish(run, status, message, now)
         self.rescore()
         return RunSummary(source, "refresh", status, run.counters, message)
+
+    def _refresh_batches(self, collector: BaseCollector, rows, run: _Run) -> None:
+        """API sources: re-read stored posts in batches. A post missing from the answer, or now
+        excluded (author opted out, adult label), is deleted; a failed request deletes nothing."""
+        by_id = {r["source_post_id"]: r for r in rows}
+        for url, ids in collector.refresh_urls(list(by_id)):
+            try:
+                found = collector.parse_refresh(self.http.get(url).text)
+            except AccessBlocked:
+                raise
+            except Exception as exc:  # noqa: BLE001 - keep the stored rows when we cannot check
+                self._log_error(run, "refresh", url, exc)
+                continue
+            for pid in ids:
+                entry = found.get(pid)
+                reason = None
+                if entry is None:
+                    reason = "gone at the source"
+                elif entry.extra.get("skip_reason"):
+                    reason = entry.extra["skip_reason"]
+                else:
+                    reason = collector.pre_store_check(entry, self._fetch_text)
+                    if reason and "could not be checked" in reason:
+                        continue                              # unknown is not a reason to delete
+                if reason:
+                    self.db.delete_post(by_id[pid]["id"])
+                    run.counters["posts_deleted"] = run.counters.get("posts_deleted", 0) + 1
+                    log.info("%s %s removed: %s", collector.name, pid, reason)
+                else:
+                    self.db.record_observation(by_id[pid]["id"], entry.metrics, None, "refresh", self.clock())
+                    run.counters["posts_updated"] += 1
+
+    def _fetch_text(self, url: str) -> tuple[int | None, str]:
+        """For collector checks: (status, body); (None, "") when the request failed.
+
+        Definitive answers (2xx/4xx) are cached for ``check_cache_hours`` (default 7 days) so a
+        refresh over many posts does not re-ask about the same author every run."""
+        now = self.clock()
+        cached = self.db.cached_check(url, now - self.check_ttl)
+        if cached is not None:
+            return cached
+        try:
+            resp = self.http.get(url, accept="application/json")
+            status, body = resp.status, resp.text
+        except AccessBlocked:
+            raise
+        except FetchError as exc:
+            status, body = exc.status, exc.body or ""
+        if status is not None and status < 500:
+            self.db.store_check(url, status, body, now)
+        return status, body
 
     def rescore(self) -> None:
         self.db.set_scores(compute_scores(self.db.scoring_rows(), self.scoring_cfg))
@@ -233,6 +288,9 @@ class CollectionPipeline:
                     continue
                 outcome = self._process_entry(collector, listing, entry, run)
                 log.debug("%s %s %s: %s", collector.name, entry.source_post_id, outcome, entry.title[:40])
+                if outcome == "skipped":
+                    run.counters["posts_skipped"] += 1
+                    continue
                 run.counters["posts_new" if outcome == "new" else "posts_updated"] += 1
                 if mode != "archive" or outcome == "new":
                     processed += 1
@@ -257,6 +315,10 @@ class CollectionPipeline:
                     self._store_detail(collector, existing["id"], entry, detail)
             return "updated"
 
+        reason = collector.pre_store_check(entry, self._fetch_text)
+        if reason:
+            log.info("%s %s not stored: %s", collector.name, entry.source_post_id, reason)
+            return "skipped"
         detail: PostDetail | None = None
         if collector.needs_detail:
             detail = self._fetch_detail(collector, entry, run)
