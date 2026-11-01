@@ -7,8 +7,9 @@
 - 사이트별 조사 결과와 선정 근거: [docs/RESEARCH.md](docs/RESEARCH.md)
 - 수집한 원문은 **분석 참고자료**입니다. 그대로 재게시하지 마세요(아래 "정책 준수" 참고).
 - 만화에 가끔 넣을 "모두가 아는" 고전 개그·밈 사전: [reference/CLASSICS.md](reference/CLASSICS.md)
-  (데이터 `reference/classics.toml`). 수집기가 아니라 웹 조사로 만든 정리본이며, 항목마다 원본·뜻·쓰기 좋은
-  장면·주의 사항·출처를 적었습니다.
+  (데이터 `reference/classics.toml`, 개그·밈은 `[[classic]]`, 신조어·유행어는 `[[slang]]`). 수집기가 아니라 웹 조사로
+  만든 정리본입니다. 항목마다 원본, 뜻, 쓰기 좋은 장면, 음식 캐릭터 활용, 주의 사항(출연자 논란·상표 등), 출처를
+  적었습니다. `tests/test_classics.py`가 파일 형식을 검사합니다.
 
 ## 수집 소스
 
