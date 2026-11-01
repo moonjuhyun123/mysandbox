@@ -18,7 +18,7 @@
 | `bluesky` Bluesky | **공식 공개 API**(계정 불필요) | 한국어 인기 피드 2개("30 리포스트 이상 잼얘 모음", "한국어 리포스트 많은 순") | 좋아요·댓글·리포스트·인용, 피드 순위, 본문, 이미지 URL | 비로그인 노출 거부 작성자·성인 라벨 글은 저장 안 함. `refresh`로 삭제된 글 정리 |
 
 YouTube는 수집 소스가 아니라 **조회 도구**(`python main.py youtube ...`)입니다. 소유자의 API 키가
-필요하고, YouTube 정책 때문에 결과를 별도로 저장하며 29일 뒤 삭제합니다. 자세한 내용은 아래
+필요하고, YouTube 정책 때문에 결과를 별도로 짧게 캐시합니다(기본 24시간, 최대 29일). 자세한 내용은 아래
 "밈·짤 찾기"를 보세요.
 
 에펨코리아, 더쿠, 인스티즈, 디시인사이드, 네이트판, 웃긴대학, 뽐뿌, 9GAG, Reddit, Instagram, TikTok, X,
@@ -99,34 +99,70 @@ python3 -m venv .venv
 
 ```bash
 export YOUTUBE_API_KEY=...                                     # 본인 Google Cloud 프로젝트의 키
+.venv/bin/python main.py youtube accept-terms                  # 처음 한 번: 이용약관·개인정보 고지 동의
 .venv/bin/python main.py youtube search "담배피는 눈사람" --html yt.html
-.venv/bin/python main.py youtube popular                       # [youtube] keywords로 한 번씩 검색
 .venv/bin/python main.py trends --youtube 5 --html trends.html # 상위 5개 문구를 YouTube에서도 검색
 .venv/bin/python main.py youtube comments VIDEO_ID             # 베스트 댓글 (화면 표시만, 저장 안 함)
-.venv/bin/python main.py youtube list --html yt.html           # 저장된 결과 다시 보기
-.venv/bin/python main.py youtube purge --all                   # YouTube 데이터 즉시 전부 삭제
+.venv/bin/python main.py youtube list --html yt.html           # 캐시된 결과 다시 보기
+.venv/bin/python main.py youtube purge --all                   # YouTube 데이터와 페이지 즉시 전부 삭제
 ```
 
 **키 발급:** Google Cloud Console에서 새 프로젝트를 만듭니다. "YouTube Data API v3"를 사용 설정하고,
 사용자 인증 정보 → API 키를 만듭니다(무료). 키는 환경변수로만 넣으세요. 설정 파일이나 채팅에 붙이지
-마세요. 키는 로그와 오류 기록에서 `***`로 가려집니다.
+마세요. 키는 로그와 오류 기록에서 `***`로 가려집니다. 프로젝트는 하나만 쓰고, 한도를 늘리려고 키를
+여러 개 만들지 마세요(III.D).
 
-**한도:** 검색은 하루 100회, 영상 정보·댓글 조회는 하루 10,000회입니다. 태평양 시간 자정에 초기화됩니다.
+**한도:** 검색은 하루 100회까지입니다. 이 도구는 로컬에서 세다가 90회에서 멈춥니다
+(`[youtube] daily_search_cap`). 같은 검색은 24시간 동안 캐시를 다시 씁니다. 한도는 태평양 시간 자정에
+초기화됩니다.
 
-**YouTube 정책 때문에 다르게 처리하는 점** (Developer Policies, 2026-10-15 개정):
+**YouTube 정책 때문에 다르게 처리하는 점** (Developer Policies, 2026-10-15 개정). 독립 검토 2건을 거쳤고,
+위험하다는 지적이 나온 기능은 뺐습니다.
 
-- **III.E.2 (집계·결합 금지):** 여러 채널의 YouTube 데이터를 집계해 인사이트를 뽑거나 섞을 수 없습니다.
-  그래서 **트렌드 계산은 커뮤니티 데이터로만** 하고, YouTube는 사람이 보는 조회 결과로만 씁니다.
-- **III.E.4.h (파생 지표 금지):** 조회수·좋아요로 점수를 만들 수 없습니다. 그래서 YouTube 결과에는
-  인기 점수가 없고, YouTube가 준 순서와 숫자를 그대로 보여 줍니다.
-- **III.E.4.d (30일 보관 제한):** 키만으로 받은 데이터는 30일까지만 둘 수 있습니다. 그래서
-  `youtube_results` 테이블에 따로 두고, `collect`와 `youtube` 명령이 돌 때마다 29일 지난 행을 지웁니다.
-- **III.C.5 / III.F.2 (출처 표시):** 다른 출처 결과와 섞지 않고, 항목마다 "YouTube"로 표시하고 영상에
-  링크합니다.
-- **작성자 정보:** 베스트 댓글은 화면에만 보여 주고 저장하지 않습니다. 작성자 이름은 빼서, 사람을
-  식별할 정보를 모으지 않습니다(YouTube 약관).
-- **III.A:** 이 도구는 소유자 혼자 쓰는 것을 전제로 합니다. 다른 사람에게 서비스로 제공하려면 이용약관과
-  개인정보 처리방침 등 추가 의무가 생깁니다.
+- **III.E.2 (집계 금지):**
+  - **트렌드 계산은 커뮤니티 데이터로만** 하고, YouTube 결과는 사람이 보는 검색 결과로만 씁니다.
+    트렌드·점수·중복 판정 코드는 YouTube 테이블을 읽지 않으며, 테스트로 확인합니다.
+  - 정기 자동 수집과 YouTube 인기 차트 복제는 하지 않습니다. 그래서 키워드 일괄 수집(`popular`)과 차트는
+    넣지 않았고, cron에도 YouTube를 넣지 마세요. 검색은 사용자가 직접 실행할 때만 합니다.
+- **III.E.4.h (파생 지표 금지):** 조회수·좋아요로 점수나 비율을 만들지 않습니다. YouTube가 준 순서와 숫자를
+  조회 시각과 함께 그대로 보여 줍니다. 검색어 옆에는 "YouTube 데이터가 아님"을 표시합니다.
+- **III.E.4.d (최대 30일 보관):** 결과는 `youtube_results` 테이블에 따로 둡니다.
+  - 기본 24시간이 지나면 지웁니다(`cache_hours`, 최대 29일).
+  - 그 결과로 만든 HTML 파일도 함께 지우고, DB 파일을 VACUUM합니다.
+  - 이 정리는 **모든 명령이 시작될 때** 실행됩니다.
+- **III.C.5 / III.F.2 (출처 표시):** YouTube 결과는 커뮤니티 글과 섞지 않습니다. 텍스트 출력에서는 블록을
+  나누고, HTML은 **별도 페이지**로 만듭니다. 항목마다 "YouTube"를 표시하고, 제목을 자르지 않고, 썸네일도
+  자르지 않으며, "YouTube에서 보기" 링크를 붙입니다.
+  - 공식 YouTube 로고 이미지는 넣지 않았고 텍스트로 출처를 표시합니다. 이것으로 브랜드 지침을 충족하는지는
+    확인하지 못했습니다.
+- **댓글:** 영상 제목과 채널명을 함께 보여 줍니다. 작성자 표시 이름은 YouTube가 준 그대로 화면에만 보여
+  주고(작성자 표시를 지우지 말라는 약관 조항), 저장하지 않습니다. 댓글마다 YouTube 링크를 붙입니다.
+- **III.A (이용약관·개인정보 고지):** 혼자 쓰는 도구에도 적용됩니다. 그래서
+  [docs/TERMS_AND_PRIVACY.md](docs/TERMS_AND_PRIVACY.md)를 두고, `youtube accept-terms` 동의 전에는
+  YouTube 기능이 켜지지 않습니다. HTML 하단에는 YouTube 약관과 Google 개인정보처리방침 링크가 들어갑니다.
+- **종료 시:** YouTube 기능을 그만 쓰면 `youtube purge --all`로 모두 지웁니다(API 약관 24.3).
+
+## Bluesky 삭제 요청과 차단 (`forget`)
+
+Bluesky 개발자 가이드라인은 삭제 요청 처리와 차단 수단을 요구합니다.
+
+```bash
+# 글 하나 삭제 (URL, at:// URI, source_post_id 모두 가능) + 다시 수집하지 않음
+.venv/bin/python main.py forget --source bluesky --post https://bsky.app/profile/did:plc:.../post/... \
+    --note "작성자 삭제 요청"
+# 작성자(DID) 전체 삭제 + 차단
+.venv/bin/python main.py forget --source bluesky --author did:plc:...
+```
+
+- 로컬 데이터만 지우며 Bluesky 원본에는 영향이 없습니다. 다른 소스도 `--post`로 같은 방식으로 지울 수 있습니다.
+- `refresh --source bluesky`는 저장된 모든 글을 오래 확인 안 한 순서대로 다시 확인합니다. 다음에
+  해당하는 글은 지웁니다.
+  - 원본이 삭제된 글
+  - 작성자가 비로그인 노출을 거부한 글
+  - 성인 라벨이 붙은 글
+  - 작성자가 "알고리즘 추천에서 제외"를 선언한 글
+- 확인이 불확실하면 지우지 않습니다. 보관 기간은 처음 본 날부터 90일입니다(`retention_days`).
+- 인용된 다른 사람의 글 본문은 저장하지 않습니다.
 
 종료 코드는 모든 소스가 `ok`, `partial`, `skipped`이면 0, 실패나 차단이 있으면 1입니다.
 로그는 콘솔과 `data/logs/collector.log`(5MB씩 회전)에 남습니다.
@@ -168,7 +204,7 @@ humor-collector/
 │   ├── http.py             PoliteHttpClient: robots(protego), 간격, 재시도, 타임아웃, 챌린지 감지, 문자셋
 │   ├── registry.py         구현 어댑터 목록과 제외 사이트 사유
 │   ├── ruliweb.py  bobaedream.py  dogdrip.py  lemmy.py  bluesky.py
-│   ├── youtube.py          YouTube Data API 조회 도구 (수집기 아님, 별도 테이블, 29일 보관)
+│   ├── youtube.py          YouTube Data API 조회 도구 (수집기 아님, 별도 테이블, 24시간 캐시)
 │   └── timeutil.py         "15 시간 전", "10/20", "2026.10.24 (토) 10:36" 같은 시각 문자열 파싱
 ├── models/post.py          ListingEntry / PostDetail / PostRecord / Metrics
 ├── storage/db.py           SQLite 스키마, upsert, 지표 이력, 소스 상태, 실행·오류 기록
@@ -320,6 +356,24 @@ humor-collector/
   정확도를 높이려면 LLM 분류기를 연결하세요.
 - **네트워크**: 모든 결과는 데이터센터 IP 기준입니다. 운영 서버에서는 `stats`의 소스 상태와 오류를
   먼저 확인하세요.
+
+### 추가 검증 (2026-11-01: Bluesky, 밈 트렌드, YouTube 조회)
+
+- **테스트:** 124개 모두 통과했습니다(Python 3.10.20 / 3.12.3 / 3.13.17).
+- **Bluesky 실수집:**
+  - 피드 2개에서 100건을 받아 42건 저장, 3건은 두 피드 중복으로 갱신, 55건은 걸렀습니다.
+  - `refresh` 재확인에서는 작성자 32명의 PDS 22곳을 조회했습니다. 그중 "알고리즘 추천 제외"를 선언한
+    작성자 1명의 글 2건을 지웠습니다.
+  - 같은 선언이 공개 AppView에서는 보이지 않는 것도 실측으로 확인했습니다. 그래서 PDS에서 확인합니다.
+- **밈 트렌드 실데이터:** 띄어쓰기가 달라도 묶이는 것을 확인했습니다. 예: "아이폰 듀오"(2개 사이트 5건),
+  "엣지러너2"/"엣지러너 2".
+- **YouTube:** API 키가 없어 **실제 호출은 하지 않았습니다**. 공식 레퍼런스 형식으로 만든 합성 응답으로만
+  테스트했습니다. 키를 넣은 뒤 `youtube accept-terms` → `youtube search "밈"`으로 처음 확인하세요.
+- **정책 검토와 코드 리뷰:**
+  - 독립 정책 검토 2건의 지적은 "정책 때문에 다르게 처리하는 점"에 반영했습니다.
+  - 코드 리뷰에서 결함 22건이 보고됐고 모두 고쳤으며, 각각 회귀 테스트를 붙였습니다. 사용자 예시
+    "예나 선정이 딸이에요 음료수 주르륵"이 잘리던 문제도 여기에 포함됩니다. 재현 검증을 거친 것은
+    그중 12건입니다.
 
 ## 정책 준수
 

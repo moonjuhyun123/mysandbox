@@ -3,15 +3,17 @@
 This is deliberately NOT a collector feeding the community database. YouTube API Services
 Developer Policies (last updated 2026-10-15) restrict what may be done with API data:
 - III.E.2: do not aggregate API data or combine data from different content owners to gain
-  insights -> YouTube results are never used for trend detection or cross-source rankings;
+  insights -> YouTube results are never used for trend detection, scoring or rankings, and
+  there is no scheduled harvesting and no copy of YouTube's popular/trending charts;
 - III.E.4.h: no new or derived data/metrics (e.g. no score from likes/views) -> raw numbers only,
-  shown exactly as returned, in the API's own order;
+  shown exactly as returned, in the API's own order, with the time they were fetched;
 - III.E.4.d: data fetched with only an API key may be stored temporarily, at most 30 days ->
-  rows are kept in their own table and purged after ``retention_days`` (default 29);
-- III.C.5 / III.F.2: do not merge YouTube results with other sources; label YouTube as source.
-What it does: search popular recent videos for keywords (e.g. meme names found by
-``main.py trends``), list today's chart, and show a video's top comments (display only, no
-author names). Patterns are spotted by the person looking at the results.
+  a short cache (default 24 h) in its own table, purged together with any HTML written from it;
+- III.C.5 / III.F.2: do not modify results or merge them with other sources; show YouTube as
+  the source of every item; III.A: terms/privacy notice accepted before first use.
+What it does, only when the owner runs it: search recent popular videos for a phrase (for
+example a meme name found by ``main.py trends``) and show a video's top comments on screen.
+Spotting patterns is left to the person looking at the results.
 """
 from __future__ import annotations
 
@@ -56,10 +58,17 @@ class YouTubeVideo:
 
 @dataclass
 class YouTubeComment:
+    """Shown on screen only, never stored. The author's display name is kept as returned for
+    attribution (ToS: do not delete author attributions) and is not collected anywhere."""
+    comment_id: str
+    author: str | None
     text: str
     like_count: int | None
     published_at: str | None
     reply_count: int | None
+
+    def url(self, video_id: str) -> str:
+        return f"https://www.youtube.com/watch?v={video_id}&lc={self.comment_id}"
 
 
 def api_key_from_env(var: str = "YOUTUBE_API_KEY") -> str:
@@ -107,7 +116,8 @@ class YouTubeAPI:
         if short_only:
             params["videoDuration"] = "short"          # under 4 minutes (includes Shorts)
         data = self._get("search", params)
-        return [item["id"]["videoId"] for item in data.get("items", []) if item.get("id", {}).get("videoId")]
+        ids = [item["id"]["videoId"] for item in data.get("items", []) if item.get("id", {}).get("videoId")]
+        return list(dict.fromkeys(ids))            # a repeated id keeps its first position
 
     def videos(self, video_ids: list[str]) -> list[YouTubeVideo]:
         """Title and raw statistics for up to 50 ids per call, kept in the given order."""
@@ -120,26 +130,20 @@ class YouTubeAPI:
                 found[item["id"]] = self._video(item)
         return [found[v] for v in video_ids if v in found]
 
-    def most_popular(self, *, region: str = "KR", category_id: str | None = None,
-                     max_results: int = 25) -> list[YouTubeVideo]:
-        params = {"part": "snippet,statistics,contentDetails", "chart": "mostPopular", "regionCode": region,
-                  "maxResults": min(max(max_results, 1), 50)}
-        if category_id:
-            params["videoCategoryId"] = category_id
-        return [self._video(item) for item in self._get("videos", params).get("items", [])]
-
     def top_comments(self, video_id: str, max_results: int = 20) -> list[YouTubeComment]:
-        """Most relevant top-level comments; author names are dropped (YouTube ToS: no harvesting of
-        information that identifies a person)."""
+        """Most relevant top-level comments, in the API's order, for display only."""
         data = self._get("commentThreads", {"part": "snippet", "videoId": video_id, "order": "relevance",
                                             "textFormat": "plainText", "maxResults": min(max(max_results, 1), 100)})
         out = []
         for item in data.get("items", []):
             snip = item.get("snippet", {})
-            top = (snip.get("topLevelComment") or {}).get("snippet", {})
-            out.append(YouTubeComment(text=top.get("textOriginal") or top.get("textDisplay") or "",
-                                      like_count=_int(top.get("likeCount")), published_at=top.get("publishedAt"),
-                                      reply_count=_int(snip.get("totalReplyCount"))))
+            top_level = snip.get("topLevelComment") or {}
+            top = top_level.get("snippet", {})
+            out.append(YouTubeComment(
+                comment_id=top_level.get("id") or item.get("id", ""), author=top.get("authorDisplayName"),
+                text=top.get("textDisplay") or top.get("textOriginal") or "",
+                like_count=_int(top.get("likeCount")), published_at=top.get("publishedAt"),
+                reply_count=_int(snip.get("totalReplyCount"))))
         return out
 
     # -------------------------------------------------------------- internals
@@ -168,11 +172,16 @@ class YouTubeAPI:
     def _error(self, exc: FetchError) -> YouTubeError:
         reason, message = None, str(exc)
         try:
-            err = json.loads(exc.body or "")["error"]
+            data = json.loads(exc.body or "")
+        except ValueError:
+            data = None
+        err = data.get("error") if isinstance(data, dict) else None
+        if isinstance(err, dict):
             message = err.get("message") or message
-            reason = (err.get("errors") or [{}])[0].get("reason")
-        except (ValueError, KeyError, TypeError, IndexError):
-            pass
+            first = (err.get("errors") or [None])[0]
+            reason = first.get("reason") if isinstance(first, dict) else None
+        elif isinstance(err, str):
+            message = err
         message = self.http.scrub(f"YouTube API error ({exc.status}, {reason}): {message}")
         if reason in QUOTA_REASONS:
             return QuotaExceeded(message, reason)

@@ -3,6 +3,8 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 
+import unicodedata
+
 from processing.trends import TrendConfig, display_phrase, find_trends
 
 NOW = datetime(2026, 11, 1, 3, 0, tzinfo=timezone.utc)
@@ -94,3 +96,59 @@ def test_html_gallery_escapes_text_and_drops_unsafe_urls(tmp_path):
     assert "<script>alert" not in page and "&lt;script&gt;" in page
     assert "javascript:" not in page
     assert 'src="https://img.test/' in page
+
+
+
+# ---- regressions found in review
+def test_long_meme_name_is_kept_whole():
+    """The owner's own example is 15 characters once normalized; it must not be cut off."""
+    rows = [post("예나 선정이 딸이에요 음료수 주르륵", s) for s in ("dogdrip", "ruliweb", "bobaedream")]
+    assert phrases(find_trends(rows, NOW)) == ["예나 선정이 딸이에요 음료수 주르륵"]
+
+
+def test_phrase_with_particle_does_not_replace_the_wider_phrase():
+    rows = [post(f"담배피는 눈사람이 {x}") for x in ("화제", "등장", "또", "인기")]
+    rows.append(post("담배피는 눈사람 원본", score=99))
+    [t] = find_trends(rows, NOW)
+    assert t.phrase == "담배피는 눈사람" and t.docs == 5
+    assert t.examples[0].score == 99
+
+
+def test_new_word_on_an_old_core_is_still_a_burst():
+    old = [post(f"사이버트럭 {w} {i}", days_ago=8 + i) for i, w in enumerate(["후기", "주행", "가격"] * 8)]
+    new = [post(f"사이버트럭 폭발 {x}", days_ago=1) for x in ("영상", "원인", "현장", "뉴스", "속보", "사진")]
+    assert "사이버트럭 폭발" in phrases(find_trends(old + new, NOW))
+
+
+def test_short_history_does_not_inflate_bursts():
+    """Only 2 days of earlier history: no burst test yet, so steady phrases are not called x12."""
+    steady = [post(f"아이폰 듀오 {i}", days_ago=d) for i, d in enumerate([1, 1, 2, 2, 3, 3, 8, 8.5, 9])]
+    trends = find_trends(steady, NOW)
+    assert trends and trends[0].ratio is None
+
+
+def test_decomposed_hangul_titles_are_matched():
+    rows = [post(unicodedata.normalize("NFD", t), s) for t, s in
+            [("담배피는 눈사람.jpg", "dogdrip"), ("담배 피는 눈사람 근황", "ruliweb"), ("담배피는 눈사람이 화제", "bobaedream")]]
+    assert phrases(find_trends(rows, NOW)) == ["담배피는 눈사람"]
+
+
+def test_mid_word_fragment_is_never_a_phrase():
+    rows = [post("굉장한 사은품 도착", "dogdrip"), post("대단한 사은품 도착", "ruliweb")]
+    assert phrases(find_trends(rows, NOW)) == ["사은품 도착"]
+
+
+def test_display_title_comes_from_a_copy_that_has_the_phrase():
+    rows = [post("담배피는 눈사람.jpg", cluster=500, score=10), post("이거 보고 빵 터짐", cluster=500, score=95),
+            post("담배피는 눈사람 원본"), post("담배 피는 눈사람 근황")]
+    [t] = find_trends(rows, NOW)
+    assert t.phrase in ("담배피는 눈사람", "담배 피는 눈사람") and t.docs == 3
+    assert all("눈사람" in e.title for e in t.examples)
+
+
+def test_user_stop_phrases_are_normalized(tmp_path):
+    import main
+    from types import SimpleNamespace
+    cfg = main.trend_config({"trends": {"extra_stop_phrases": ["iPhone 듀오"]}}, SimpleNamespace(days=None))
+    rows = [post(f"iPhone 듀오 {x}", s) for x, s in (("후기", "dogdrip"), ("리뷰", "ruliweb"), ("사용기", "bobaedream"))]
+    assert find_trends(rows, NOW, cfg) == []

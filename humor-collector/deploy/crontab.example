@@ -7,5 +7,4 @@
 29 5 * * *    cd /opt/humor-collector && .venv/bin/python main.py refresh --source ruliweb && .venv/bin/python main.py refresh --source bobaedream
 # Bluesky: delete posts removed at the source / authors who opted out since (developer guidelines)
 47 5 * * *    cd /opt/humor-collector && .venv/bin/python main.py refresh --source bluesky --max-age-days 3650 --limit 1000
-# optional: daily YouTube lookup for meme keywords (needs YOUTUBE_API_KEY in the cron environment)
-# 7 6 * * *   cd /opt/humor-collector && YOUTUBE_API_KEY=... .venv/bin/python main.py youtube popular
+# Do NOT schedule YouTube searches: the API policies allow only owner-initiated lookups here.

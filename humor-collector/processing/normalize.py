@@ -47,15 +47,21 @@ def normalize_text(text: str | None) -> str:
     return _NON_WORD.sub("", text)
 
 
-def normalize_title(title: str | None) -> str:
+def clean_title(title: str | None) -> str:
+    """NFKC title without board tags ("[펌]", "롤)"), file suffixes (".jpg") and laughter ("ㅋㅋ"),
+    spaces kept so word boundaries survive."""
     if not title:
         return ""
     t = unicodedata.normalize("NFKC", title)
     for _ in range(2):                      # "[펌] 롤) 제목" has two tags
         t = _TAG_PREFIX.sub("", t)
-    t = _FILE_SUFFIX.sub("", t)
-    t = _LAUGH.sub("", t)
-    return normalize_text(t)
+    t = _FILE_SUFFIX.sub(" ", t)
+    t = _LAUGH.sub(" ", t)
+    return t.strip()
+
+
+def normalize_title(title: str | None) -> str:
+    return normalize_text(clean_title(title))
 
 
 def shingles(text: str, k: int = 3) -> set[str]:

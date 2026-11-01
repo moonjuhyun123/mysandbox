@@ -70,7 +70,8 @@ class CollectionPipeline:
         general = settings["general"]
         self.cooldown = timedelta(hours=float(general.get("blocked_cooldown_hours", 12)))
         self.detail_max_attempts = int(general.get("detail_max_attempts", 3))
-        self.check_ttl = timedelta(hours=float(general.get("check_cache_hours", 168)))
+        self.check_ttl_new = timedelta(hours=float(general.get("check_cache_hours", 24)))
+        self.check_ttl_recheck = timedelta(hours=float(general.get("recheck_cache_hours", 168)))
         self.dedup_cfg = DedupConfig(**settings.get("dedup", {}))
         self.scoring_cfg = ScoringConfig(**settings.get("scoring", {}))
 
@@ -138,6 +139,7 @@ class CollectionPipeline:
             self._log_error(run, "internal", None, exc)
         finally:
             self._finish(run, status, message, started)
+        self._apply_retention(collector)
         log.info("%s %s: %s %s", name, mode, status, run.counters)
         return RunSummary(name, mode, status, run.counters, message)
 
@@ -153,10 +155,14 @@ class CollectionPipeline:
         if paused:
             return RunSummary(source, "refresh", "skipped", message=paused)
         run = _Run(source, self.db.start_run(source, "refresh", now))
-        rows = self.db.posts_for_refresh(
-            source, published_after=utc_iso(now - timedelta(days=max_age_days)),
-            seen_before=utc_iso(now - timedelta(hours=min_interval_hours)), limit=limit,
-        )
+        seen_before = utc_iso(now - timedelta(hours=min_interval_hours))
+        if collector.batch_refresh:
+            # deletion / opt-out checks must reach every stored post, not just recent ones
+            rows = self.db.posts_for_recheck(source, seen_before=seen_before, limit=limit)
+        else:
+            rows = self.db.posts_for_refresh(
+                source, published_after=utc_iso(now - timedelta(days=max_age_days)),
+                seen_before=seen_before, limit=limit)
         status, message = "ok", None
         try:
             if collector.batch_refresh:
@@ -174,8 +180,13 @@ class CollectionPipeline:
         except AccessBlocked as exc:
             status, message = "blocked", str(exc)
             self._log_error(run, "blocked", exc.url, exc)
+        except Exception as exc:  # noqa: BLE001 - record it instead of leaving the run as "ok"
+            status, message = "error", f"{type(exc).__name__}: {exc}"
+            log.exception("%s refresh crashed", source)
+            self._log_error(run, "internal", None, exc)
         finally:
             self._finish(run, status, message, now)
+        self._apply_retention(collector)
         self.rescore()
         return RunSummary(source, "refresh", status, run.counters, message)
 
@@ -191,6 +202,11 @@ class CollectionPipeline:
             except Exception as exc:  # noqa: BLE001 - keep the stored rows when we cannot check
                 self._log_error(run, "refresh", url, exc)
                 continue
+            if not found and len(ids) > 1:
+                # every post of a batch "gone" at once is far more likely an API fault than reality
+                self._log_error(run, "refresh", url, ParseError(f"no posts returned for {len(ids)} ids; "
+                                                                "nothing deleted"))
+                continue
             for pid in ids:
                 entry = found.get(pid)
                 reason = None
@@ -199,7 +215,7 @@ class CollectionPipeline:
                 elif entry.extra.get("skip_reason"):
                     reason = entry.extra["skip_reason"]
                 else:
-                    reason = collector.pre_store_check(entry, self._fetch_text)
+                    reason = collector.pre_store_check(entry, self._fetcher(self.check_ttl_recheck))
                     if reason and "could not be checked" in reason:
                         continue                              # unknown is not a reason to delete
                 if reason:
@@ -210,13 +226,26 @@ class CollectionPipeline:
                     self.db.record_observation(by_id[pid]["id"], entry.metrics, None, "refresh", self.clock())
                     run.counters["posts_updated"] += 1
 
-    def _fetch_text(self, url: str) -> tuple[int | None, str]:
-        """For collector checks: (status, body); (None, "") when the request failed.
+    def _apply_retention(self, collector: BaseCollector) -> None:
+        """Optional per-source maximum retention (``[sources.<name>] retention_days``)."""
+        days = collector.options.get("retention_days")
+        if days:
+            removed = self.db.purge_source_older_than(collector.name, self.clock() - timedelta(days=float(days)))
+            if removed:
+                log.info("%s: deleted %d posts first seen more than %s days ago", collector.name, removed, days)
 
-        Definitive answers (2xx/4xx) are cached for ``check_cache_hours`` (default 7 days) so a
-        refresh over many posts does not re-ask about the same author every run."""
+    def _fetcher(self, ttl: timedelta) -> Callable[..., tuple[int | None, str]]:
+        return lambda url, definitive=None: self._fetch_text(url, ttl, definitive)
+
+    def _fetch_text(self, url: str, ttl: timedelta,
+                    definitive: Callable[[int | None, str], bool] | None = None) -> tuple[int | None, str]:
+        """For collector checks: (status, body); (None, "") when the request failed for any reason.
+
+        Answers the collector calls definitive (default: HTTP 200) are reused for ``ttl``:
+        ``check_cache_hours`` (24 h) before storing a new post, ``recheck_cache_hours`` (7 days)
+        when refresh re-checks stored posts. Inconclusive answers are never cached."""
         now = self.clock()
-        cached = self.db.cached_check(url, now - self.check_ttl)
+        cached = self.db.cached_check(url, now - ttl)
         if cached is not None:
             return cached
         try:
@@ -226,7 +255,10 @@ class CollectionPipeline:
             raise
         except FetchError as exc:
             status, body = exc.status, exc.body or ""
-        if status is not None and status < 500:
+        except Exception as exc:  # noqa: BLE001 - e.g. ChunkedEncodingError: inconclusive, not a crash
+            log.warning("check request failed for %s: %s", url, exc)
+            return None, ""
+        if (definitive or (lambda s, b: s == 200))(status, body):
             self.db.store_check(url, status, body, now)
         return status, body
 
@@ -286,7 +318,13 @@ class CollectionPipeline:
                 if not collector.accept(entry):
                     run.counters["posts_skipped"] += 1
                     continue
-                outcome = self._process_entry(collector, listing, entry, run)
+                try:
+                    outcome = self._process_entry(collector, listing, entry, run)
+                except AccessBlocked:
+                    raise
+                except Exception as exc:  # noqa: BLE001 - one bad row must not stop the others
+                    self._log_error(run, "entry", entry.url, exc)
+                    continue
                 log.debug("%s %s %s: %s", collector.name, entry.source_post_id, outcome, entry.title[:40])
                 if outcome == "skipped":
                     run.counters["posts_skipped"] += 1
@@ -315,7 +353,9 @@ class CollectionPipeline:
                     self._store_detail(collector, existing["id"], entry, detail)
             return "updated"
 
-        reason = collector.pre_store_check(entry, self._fetch_text)
+        if self.db.is_blocked(collector.name, entry.source_post_id, collector.author_key(entry)):
+            return "skipped"                                   # the owner asked to forget it
+        reason = collector.pre_store_check(entry, self._fetcher(self.check_ttl_new))
         if reason:
             log.info("%s %s not stored: %s", collector.name, entry.source_post_id, reason)
             return "skipped"

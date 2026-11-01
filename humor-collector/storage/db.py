@@ -7,6 +7,9 @@ Tables
 - runs             one row per source per collection run
 - fetch_errors     every failed request / parse problem, with stage and URL
 - check_cache      answers of small per-author checks (e.g. Bluesky visibility declaration), with TTL
+- app_state        small key/value state (YouTube daily search count, terms acceptance)
+- blocklist        authors/posts the owner asked to forget; never collected again
+- youtube_files    HTML files written with YouTube data, deleted with the rows
 - youtube_results  YouTube API lookups, kept apart (never scored or merged) and purged after
                    at most 30 days as the YouTube API policies require (see collectors/youtube.py)
 
@@ -24,7 +27,7 @@ from typing import Any, Iterable, Iterator
 
 from models.post import Metrics, PostRecord
 
-SCHEMA_VERSION = 3
+SCHEMA_VERSION = 5
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS posts (
@@ -151,6 +154,26 @@ CREATE TABLE IF NOT EXISTS check_cache (
 );
 """
 
+V4_SCHEMA = """
+CREATE TABLE IF NOT EXISTS app_state (
+    key        TEXT PRIMARY KEY,
+    value      TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS blocklist (
+    source   TEXT NOT NULL,
+    kind     TEXT NOT NULL,          -- 'author' (Bluesky DID) or 'post' (source_post_id)
+    value    TEXT NOT NULL,
+    note     TEXT,
+    added_at TEXT NOT NULL,
+    PRIMARY KEY (source, kind, value)
+);
+CREATE TABLE IF NOT EXISTS youtube_files (
+    path       TEXT PRIMARY KEY,
+    written_at TEXT NOT NULL
+);
+"""
+
 POST_COLUMNS_FOR_EXPORT = (
     "id", "source", "source_post_id", "url", "title", "body", "published_at",
     "published_at_approx", "collected_at", "category", "views", "likes", "dislikes",
@@ -209,6 +232,10 @@ class Database:
             self.conn.executescript(YOUTUBE_SCHEMA)
         if version < 3:
             self.conn.executescript(CHECK_CACHE_SCHEMA)
+        if version < 4:
+            self.conn.executescript(V4_SCHEMA)
+        if version < 5:
+            self.conn.execute("ALTER TABLE runs ADD COLUMN posts_deleted INTEGER NOT NULL DEFAULT 0")
         if version < SCHEMA_VERSION:
             self.conn.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
             self.conn.commit()
@@ -433,6 +460,14 @@ class Database:
             (source, published_after, seen_before, limit),
         ).fetchall()
 
+    def posts_for_recheck(self, source: str, *, seen_before: str, limit: int) -> list[sqlite3.Row]:
+        """Every stored post of the source, least recently seen/checked first, so repeated
+        runs with a limit rotate through all of them (deletion / opt-out checks)."""
+        return self.conn.execute(
+            "SELECT * FROM posts WHERE source = ? AND last_seen_at < ? ORDER BY last_seen_at, id LIMIT ?",
+            (source, seen_before, limit),
+        ).fetchall()
+
     def scoring_rows(self) -> list[sqlite3.Row]:
         return self.conn.execute(
             """
@@ -547,14 +582,14 @@ class Database:
         self.conn.execute(
             """
             UPDATE runs SET status = ?, finished_at = ?, pages_fetched = ?, entries_seen = ?,
-                posts_new = ?, posts_updated = ?, posts_skipped = ?, errors = ?, message = ?
+                posts_new = ?, posts_updated = ?, posts_skipped = ?, posts_deleted = ?, errors = ?, message = ?
             WHERE id = ?
             """,
             (
                 status, utc_iso(finished_at), counters.get("pages_fetched", 0),
                 counters.get("entries_seen", 0), counters.get("posts_new", 0),
                 counters.get("posts_updated", 0), counters.get("posts_skipped", 0),
-                counters.get("errors", 0), message, run_id,
+                counters.get("posts_deleted", 0), counters.get("errors", 0), message, run_id,
             ),
         )
         self.conn.commit()
@@ -615,14 +650,96 @@ class Database:
             params.append(query)
         return self.conn.execute(sql + " ORDER BY fetched_at DESC, query, position", params).fetchall()
 
-    def purge_youtube(self, older_than: datetime | None = None) -> int:
-        """Delete YouTube rows fetched before ``older_than`` (all rows when None)."""
+    def purge_youtube(self, older_than: datetime | None = None, *, max_rows: int | None = None) -> int:
+        """Delete YouTube rows fetched before ``older_than`` (all rows when None), then the oldest
+        queries beyond ``max_rows``. Files written with YouTube data are removed with them."""
         if older_than is None:
-            cur = self.conn.execute("DELETE FROM youtube_results")
+            removed = self.conn.execute("DELETE FROM youtube_results").rowcount
+            files = [r[0] for r in self.conn.execute("SELECT path FROM youtube_files")]
+            self.conn.execute("DELETE FROM youtube_files")
+            self.conn.execute("DELETE FROM app_state WHERE key LIKE 'youtube_empty:%'")
         else:
-            cur = self.conn.execute("DELETE FROM youtube_results WHERE fetched_at < ?", (utc_iso(older_than),))
+            cutoff = utc_iso(older_than)
+            removed = self.conn.execute("DELETE FROM youtube_results WHERE fetched_at < ?", (cutoff,)).rowcount
+            files = [r[0] for r in self.conn.execute("SELECT path FROM youtube_files WHERE written_at < ?", (cutoff,))]
+            self.conn.execute("DELETE FROM youtube_files WHERE written_at < ?", (cutoff,))
+            self.conn.execute("DELETE FROM app_state WHERE key LIKE 'youtube_empty:%' AND value < ?", (cutoff,))
+        if max_rows is not None:
+            total = self.conn.execute("SELECT COUNT(*) FROM youtube_results").fetchone()[0]
+            for (query,) in self.conn.execute(
+                "SELECT query FROM youtube_results GROUP BY query ORDER BY MIN(fetched_at)"
+            ).fetchall():
+                if total <= max_rows:
+                    break
+                n = self.conn.execute("DELETE FROM youtube_results WHERE query = ?", (query,)).rowcount
+                total -= n
+                removed += n
         self.conn.commit()
-        return cur.rowcount
+        for path in files:
+            Path(path).unlink(missing_ok=True)
+        if removed or files:
+            self.compact()
+        return removed
+
+    def record_youtube_file(self, path: str | Path, at: datetime | str) -> None:
+        """``at`` must be the fetch time of the OLDEST data in the file, so the file is deleted
+        no later than that data."""
+        at = at if isinstance(at, str) else utc_iso(at)
+        self.conn.execute(
+            """INSERT INTO youtube_files (path, written_at) VALUES (?, ?)
+               ON CONFLICT (path) DO UPDATE SET written_at = MIN(written_at, excluded.written_at)""",
+            (str(Path(path).resolve()), at))
+        self.conn.commit()
+
+    def compact(self) -> None:
+        """Make deleted rows really gone: checkpoint the WAL and rebuild the file."""
+        if self.path != ":memory:":
+            self.conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")
+        self.conn.execute("VACUUM")
+
+    # -------------------------------------------------------------- app state
+    def get_state(self, key: str) -> str | None:
+        row = self.conn.execute("SELECT value FROM app_state WHERE key = ?", (key,)).fetchone()
+        return row[0] if row else None
+
+    def set_state(self, key: str, value: str, at: datetime) -> None:
+        self.conn.execute("INSERT OR REPLACE INTO app_state (key, value, updated_at) VALUES (?, ?, ?)",
+                          (key, value, utc_iso(at)))
+        self.conn.commit()
+
+    # -------------------------------------------------------------- blocklist
+    def block(self, source: str, kind: str, value: str, at: datetime, note: str | None = None) -> None:
+        self.conn.execute(
+            "INSERT OR REPLACE INTO blocklist (source, kind, value, note, added_at) VALUES (?, ?, ?, ?, ?)",
+            (source, kind, value, note, utc_iso(at)))
+        self.conn.commit()
+
+    def is_blocked(self, source: str, source_post_id: str, author: str | None) -> bool:
+        row = self.conn.execute(
+            """SELECT 1 FROM blocklist WHERE source = ? AND
+               ((kind = 'post' AND value = ?) OR (kind = 'author' AND value = ?)) LIMIT 1""",
+            (source, source_post_id, author or "")).fetchone()
+        return row is not None
+
+    def forget(self, source: str, *, post_id: str | None = None, author: str | None = None) -> int:
+        """Delete stored posts of one post or one author (Bluesky DID prefix of source_post_id)."""
+        if post_id:
+            ids = [r[0] for r in self.conn.execute(
+                "SELECT id FROM posts WHERE source = ? AND source_post_id = ?", (source, post_id))]
+        else:
+            ids = [r[0] for r in self.conn.execute(
+                "SELECT id FROM posts WHERE source = ? AND source_post_id LIKE ? ESCAPE '\\'",
+                (source, author.replace("%", "\\%").replace("_", "\\_") + "/%"))]
+        for pid in ids:
+            self.delete_post(pid)
+        return len(ids)
+
+    def purge_source_older_than(self, source: str, older_than: datetime) -> int:
+        ids = [r[0] for r in self.conn.execute(
+            "SELECT id FROM posts WHERE source = ? AND first_seen_at < ?", (source, utc_iso(older_than)))]
+        for pid in ids:
+            self.delete_post(pid)
+        return len(ids)
 
     # ------------------------------------------------------------------ stats
     def stats(self) -> dict[str, Any]:

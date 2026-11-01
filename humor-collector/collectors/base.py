@@ -104,11 +104,17 @@ class BaseCollector(ABC):
     def parse_listing(self, text: str, listing: Listing, now: datetime, page: int = 1) -> ParseResult:
         ...
 
-    def pre_store_check(self, entry: ListingEntry, fetch: Callable[[str], tuple[int | None, str]]) -> str | None:
+    def pre_store_check(self, entry: ListingEntry, fetch: Callable[..., tuple[int | None, str]]) -> str | None:
         """Optional extra check before a NEW post is stored (and again on refresh).
 
-        ``fetch(url)`` makes a polite request and returns ``(status, body)``; the status is None
-        when the request failed. Return a reason to skip/delete the post, or None to keep it."""
+        ``fetch(url, definitive)`` makes a polite request and returns ``(status, body)``; the status
+        is None when the request failed. ``definitive(status, body)`` says whether the answer may be
+        cached (inconclusive answers are never reused). Return a reason to skip/delete the post, or
+        None to keep it."""
+        return None
+
+    def author_key(self, entry: ListingEntry) -> str | None:
+        """Stable author id when the source exposes one (for `forget --author`); None otherwise."""
         return None
 
     def accept(self, entry: ListingEntry) -> bool:

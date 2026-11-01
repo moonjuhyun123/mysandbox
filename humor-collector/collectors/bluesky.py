@@ -15,10 +15,13 @@ Access notes (checked 2026-11-01):
   whose author opted out since.
 - Authors can publish ``app.bsky.actor.contentVisibilityDeclaration`` (record "self") with
   ``hideFromAlgorithmicRecommendations: true``; Bluesky's 2026-09-01 post asks "funniest posts"
-  aggregators to check it. Before storing a new author's post we read it once per run via
-  ``com.atproto.repo.getRecord`` on the public AppView ("RecordNotFound" = not set, per the
-  lexicon) and skip those authors; refresh re-checks stored posts. Not verified live against an
-  account that has the declaration set (none found while writing this).
+  aggregators to check it. It is not part of feed views, so before storing a new author's post we
+  resolve the author's DID document (plc.directory or did:web) and read the record from the
+  author's own PDS with ``com.atproto.repo.getRecord`` ("RecordNotFound" = not set, per the
+  lexicon). Authors who set it are skipped; when the check is inconclusive the post is not stored
+  this run; refresh re-checks stored posts. Verified live 2026-11-01: an author with the
+  declaration set was found on their PDS while the public AppView answered "RecordNotFound" for
+  the same record - the AppView is not a reliable source for it.
 - Author handles and display names are not stored (the post URL contains the author's DID).
 """
 from __future__ import annotations
@@ -27,7 +30,8 @@ import json
 from dataclasses import replace
 from datetime import datetime
 from typing import Any, Callable, Iterable, Mapping
-from urllib.parse import quote, urlencode
+from ipaddress import ip_address
+from urllib.parse import quote, urlencode, urlsplit
 
 from collectors.base import BaseCollector, Listing, ParseError, ParseResult, parse_rows
 from collectors.timeutil import parse_iso
@@ -48,6 +52,7 @@ OPT_OUT_LABELS = {"!no-unauthenticated"}
 ADULT_LABELS = {"porn", "sexual", "nudity", "graphic-media", "gore", "corpse", "!hide"}
 GET_POSTS_BATCH = 25
 VISIBILITY_COLLECTION = "app.bsky.actor.contentVisibilityDeclaration"
+PLC_DIRECTORY = "https://plc.directory"
 
 
 def _label_values(labels: Iterable[Mapping] | None) -> set[str]:
@@ -60,6 +65,52 @@ def _split_uri(uri: str) -> tuple[str, str]:
         raise ParseError(f"not a post uri: {uri!r}")
     did, rkey = uri[5:].split("/app.bsky.feed.post/", 1)
     return did, rkey
+
+
+def did_document_url(did: str) -> str | None:
+    if did.startswith("did:plc:") and did[8:].isalnum():
+        return f"{PLC_DIRECTORY}/{did}"
+    if did.startswith("did:web:"):
+        host = did[8:]
+        if host and ":" not in host and "/" not in host and _public_host(host):
+            return f"https://{host}/.well-known/did.json"
+    return None
+
+
+def _public_host(host: str) -> bool:
+    """Refuse IP literals and local names: a DID document is untrusted input (no SSRF)."""
+    host = host.strip("[]").lower()
+    try:
+        ip_address(host)
+        return False
+    except ValueError:
+        pass
+    return "." in host and not host.endswith((".local", ".localhost", ".internal", ".lan")) and host != "localhost"
+
+
+def pds_endpoint(doc_text: str) -> str | None:
+    """https://host of the account's PDS from a DID document, or None."""
+    try:
+        doc = json.loads(doc_text)
+    except ValueError:
+        return None
+    for svc in doc.get("service", []) if isinstance(doc, dict) else []:
+        if str(svc.get("id", "")).endswith("#atproto_pds") and svc.get("type") == "AtprotoPersonalDataServer":
+            endpoint = svc.get("serviceEndpoint")
+            if isinstance(endpoint, str) and endpoint.startswith("https://"):
+                host = urlsplit(endpoint).netloc
+                if host and "@" not in host and _public_host(host.split(":")[0]):
+                    return f"https://{host}"
+    return None
+
+
+def _ok_only(status: int | None, text: str) -> bool:
+    return status == 200
+
+
+def _definitive_record(status: int | None, text: str) -> bool:
+    """Only answers parse_visibility can decide on may be cached."""
+    return parse_visibility(status, text) is not None
 
 
 def parse_visibility(status: int | None, text: str) -> bool | None:
@@ -95,16 +146,12 @@ def _media(embed: Mapping | None) -> tuple[list[str], dict[str, Any]]:
         media_urls, media_extra = _media(embed.get("media"))
         urls += media_urls
         extra.update(media_extra)
-        extra.update(_quoted(embed.get("record")))
+        extra["quotes_a_post"] = True
     elif kind.startswith("app.bsky.embed.record"):
-        extra.update(_quoted(embed))
+        # the quoted post belongs to someone else, whose opt-out / labels / visibility declaration
+        # we have not checked: keep only the fact that it is a quote, never the quoted text
+        extra["quotes_a_post"] = True
     return urls, extra
-
-
-def _quoted(record_view: Mapping | None) -> dict[str, Any]:
-    rec = (record_view or {}).get("record") or {}
-    text = (rec.get("value") or {}).get("text")
-    return {"quoted_text": text} if text else {}
 
 
 class BlueskyCollector(BaseCollector):
@@ -187,20 +234,34 @@ class BlueskyCollector(BaseCollector):
             extra=extra,
         )
 
-    def pre_store_check(self, entry: ListingEntry, fetch: Callable[[str], tuple[int | None, str]]) -> str | None:
+    def pre_store_check(self, entry: ListingEntry, fetch: Callable[..., tuple[int | None, str]]) -> str | None:
         if not self.options.get("honor_visibility_declaration", True):
             return None
-        did = entry.source_post_id.split("/", 1)[0]
+        did = self.author_key(entry)
         cache = self.__dict__.setdefault("_hide_from_recs", {})
         if did not in cache:
-            query = urlencode({"repo": did, "collection": VISIBILITY_COLLECTION, "rkey": "self"})
-            cache[did] = parse_visibility(*fetch(f"{API}/com.atproto.repo.getRecord?{query}"))
+            cache[did] = self._read_declaration(did, fetch)
         hide = cache[did]
         if hide is None:
             return "visibility declaration could not be checked"
         if hide:
             return "author asked to be hidden from algorithmic recommendations"
         return None
+
+    def author_key(self, entry: ListingEntry) -> str:
+        return entry.source_post_id.split("/", 1)[0]
+
+    @staticmethod
+    def _read_declaration(did: str, fetch: Callable[..., tuple[int | None, str]]) -> bool | None:
+        doc_url = did_document_url(did)
+        if doc_url is None:
+            return None
+        status, text = fetch(doc_url, _ok_only)
+        pds = pds_endpoint(text) if status == 200 else None
+        if pds is None:
+            return None
+        query = urlencode({"repo": did, "collection": VISIBILITY_COLLECTION, "rkey": "self"})
+        return parse_visibility(*fetch(f"{pds}/xrpc/com.atproto.repo.getRecord?{query}", _definitive_record))
 
     def accept(self, entry: ListingEntry) -> bool:
         if entry.extra.get("skip_reason"):
@@ -227,8 +288,10 @@ class BlueskyCollector(BaseCollector):
             data = json.loads(text)
         except json.JSONDecodeError as exc:
             raise ParseError(f"invalid JSON: {exc}") from exc
+        if not isinstance(data, dict) or not isinstance(data.get("posts"), list):
+            raise ParseError("getPosts answer has no 'posts' list")      # never read as "all deleted"
         found = {}
-        for post in data.get("posts", []):
+        for post in data["posts"]:
             entry = self._entry(post, None, None)
             found[entry.source_post_id] = entry
         return found

@@ -13,7 +13,8 @@ default_delay = 3.0           # minimum seconds between requests to the same hos
 respect_robots = true         # robots.txt Disallow and Crawl-delay (protego)
 blocked_cooldown_hours = 12   # after a CAPTCHA/challenge the source pauses this long
 detail_max_attempts = 3       # retries of a failed post page across runs
-check_cache_hours = 168       # reuse per-author checks (Bluesky visibility declaration) for 7 days
+check_cache_hours = 24        # per-author checks (Bluesky visibility declaration) before storing a new post
+recheck_cache_hours = 168     # ... and when `refresh` re-checks stored posts
 
 [output]
 # Posts with these flags are hidden from `top` and `export` unless --all is given.
@@ -47,20 +48,20 @@ min_ratio = 3.0               # recent rate / baseline rate (only once a baselin
 extra_stop_phrases = []       # add generic words that keep showing up, e.g. ["아이폰"]
 
 [youtube]
-# `python main.py youtube ...` and `trends --youtube N`. Needs your own free API key in the
-# YOUTUBE_API_KEY environment variable (never put the key in this file).
-# Results are display-only: stored apart from community posts, never scored or merged,
-# deleted after retention_days (YouTube API policy: at most 30 days).
+# `python main.py youtube search ...` and `trends --youtube N`. Needs your own free API key in the
+# YOUTUBE_API_KEY environment variable (never put the key in this file) and a one-time
+# `python main.py youtube accept-terms`. Display-only lookups run by you: no scheduled
+# harvesting, results kept apart from community posts, never scored or merged.
 api_key_env = "YOUTUBE_API_KEY"
 region = "KR"
 language = "ko"
-keywords = ["밈", "짤", "유행어", "웃긴 쇼츠"]   # `youtube popular` runs one search per keyword
-days = 7                      # videos published in the last N days
-trend_days = 30               # window for `trends --youtube` lookups
+days = 7                      # videos published in the last N days (`youtube search`)
+trend_days = 30               # window for `trends --youtube N`
 short_only = true             # videoDuration=short (< 4 min, includes Shorts)
 max_results = 25
-retention_days = 29
-chart = false                 # also list videos.list chart=mostPopular (music/movies/gaming based)
+cache_hours = 24              # reuse an answer for the same search; deleted after this (max 29 days)
+max_rows = 500                # cap on cached rows
+daily_search_cap = 90         # local stop below YouTube's 100 search calls/day
 
 # --------------------------------------------------------------------------- sources
 # Listing overrides: [sources.<name>.listings.<listing>] max_pages = N / enabled = false
@@ -88,6 +89,7 @@ feeds = ["jaem_30_reposts", "ko_most_reposted"]   # see collectors/bluesky.py DE
 page_size = 50
 languages = ["ko"]
 delay = 3.0
+retention_days = 90           # stored Bluesky posts are deleted 90 days after first seen
 # extra_feeds = [{ name = "my_feed", uri = "at://did:plc:.../app.bsky.feed.generator/...", label = "..." }]
 
 [sources.lemmy]
