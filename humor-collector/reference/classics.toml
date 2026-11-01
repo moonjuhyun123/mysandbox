@@ -6502,6 +6502,40 @@ sources = ["https://www.nocutnews.co.kr/news/6467516"]
 caution_sources = ["https://weekly.khan.co.kr/article/202004061514181"]
 
 [[slang]]
+name = "갑분싸"
+aliases = ["갑자기 분위기 싸해짐", "갑분핫", "갑분띠"]
+category = "인터넷·커뮤니티"
+year = "2017 등장, 2018 유행"
+origin = "'갑자기 분위기 싸해짐'의 줄임말. 나무위키는 2017년 중반 인터넷 '몰카' 드립 댓글에서 시작해 인터넷 방송 채팅을 거쳐 줄여 불리게 됐다고 적었다(최초 게시판은 나무위키 단독 서술이라 미확인). 2018년 12월 카카오톡 이용자 투표 '자주 사용한 신조어'에서 33%로 1위였다."
+meaning = "농담이나 행동 때문에 분위기가 갑자기 어색하고 싸늘해지는 상황을 말한다."
+use_when = "한 캐릭터의 아재개그 뒤 다들 굳어 버리는 컷, 찬바람 효과선과 함께."
+food_fit = "좋음. 아이스크림·냉면 캐릭터가 등장하자 분위기가 얼어붙는 시각 개그로 쓰기 좋다."
+fame = 5
+fame_evidence = "카카오 '2018 베스트' 투표(87만 4,481명 참여) 자주 사용한 신조어 1위(33%). tvN 코미디빅리그에 '갑분싸' 코너가 있었다."
+caution = "말 자체는 무난하다. 나무위키에 극우 커뮤니티 게시판 유래설이 있으나 확인되지 않았고, 지금은 일반 어휘로 쓰인다. 다소 2018년 느낌이 나는 말이다."
+verified = "partial"
+risk_checked = true
+notes = "유행·인지도는 카카오 자료로 확인. 최초 기원(게시판)은 미확인. 사용자 요청대로 '신조어' 묶음으로 분류할 것."
+sources = ["https://namu.moe/w/%EA%B0%91%EB%B6%84%EC%8B%B8", "https://www.kakaocorp.com/page/detail/8639", "https://www.i-boss.co.kr/ab-2877-2969", "https://sports.khan.co.kr/article/201812281745003"]
+
+[[slang]]
+name = "겉바속촉"
+aliases = ["겉은 바삭 속은 촉촉"]
+category = "인터넷·커뮤니티"
+year = "미확인 (2010년대에 대중화된 것으로 보이나 연도 미확인)"
+origin = "'겉은 바삭, 속은 촉촉'의 앞글자를 딴 말이다. 나무위키는 월드 오브 워크래프트 유저들이 벼락을 맞고 죽은 가로쉬를 통닭에 빗댄 데서 줄임말이 퍼졌다고 적었으나, 다른 출처로는 확인하지 못했다."
+meaning = "튀김·빵·고기 등이 겉은 바삭하고 속은 부드럽다는 식감 칭찬이다. 겉은 무뚝뚝하고 속은 다정한 사람을 가리키기도 한다."
+use_when = "튀김이나 빵 캐릭터가 자기 식감을 자랑하거나, 무뚝뚝한데 속이 따뜻한 캐릭터를 소개할 때."
+food_fit = "아주 좋음. 치킨·크루아상·붕어빵 캐릭터의 자기소개 대사나 '겉바속촉 성격'이라는 비유로 쓰기 좋다."
+fame = 5
+fame_evidence = "K치킨을 다룬 언론 기사(코리아데일리 2024, 2026 다음 기사)에서도 그대로 쓰일 만큼 일반 어휘가 됐다."
+caution = "특별한 위험 요소 없음. 실제 치킨 브랜드의 광고 문구·로고와 겹치지 않게 할 것."
+verified = "partial"
+risk_checked = true
+notes = "뜻은 확인됐지만 유래(WoW 가로쉬 설)와 유행 시점은 나무위키 단독 서술이라 미확인. 사용자 요청대로 '신조어' 묶음으로 분류할 것."
+sources = ["https://namu.moe/w/%EA%B2%89%EB%B0%94%EC%86%8D%EC%B4%89", "https://mirinae.io/blogs/?p=2536", "https://www.koreadaily.com/article/20240324190034151", "https://v.daum.net/v/20260217073218722"]
+
+[[slang]]
 name = "고구마 / 사이다"
 aliases = ["고구마 전개", "고구마 백 개 먹은 느낌", "사이다 발언", "핵사이다"]
 category = "인터넷·커뮤니티"
@@ -6534,6 +6568,23 @@ verified = "partial"
 risk_checked = true
 notes = "뜻과 준말 관계는 위키낱말사전으로 확인했다. 기원 시점과 커뮤니티는 미확인이다. 나무위키는 접속이 차단되었고 검색 한도도 소진되어 더 확인하지 못했다. 위키백과 신조어 목록에는 이 말이 실려 있지 않다."
 sources = ["https://ko.wiktionary.org/wiki/관종"]
+
+[[slang]]
+name = "국룰"
+aliases = ["국민 룰", "국제 룰"]
+category = "인터넷·커뮤니티"
+year = "2010년 전후 게임 커뮤니티, 2017 스트리머 방송으로 확산, 2020년경 일반화"
+origin = "'국민 룰'의 준말로 소개된다. 나무위키는 워크래프트3 유즈맵과 FPS 게임 아바(AVA) 온라인의 '칼전 국룰'에서 자리 잡았고, 2017년 트위치 스트리머들의 스타크래프트 유즈맵 '경매 디펜스' 방송으로 일반에 퍼졌다고 적었다. 정확한 최초 사용은 미확인."
+meaning = "정해진 규칙은 아니지만 모두가 당연하게 따르는 관습이나 조합을 말한다."
+use_when = "'치킨엔 콜라가 국룰'처럼 당연한 조합을 주장하거나 다툴 때."
+food_fit = "아주 좋음. '떡볶이엔 튀김 국룰', '부먹이 국룰이냐 찍먹이 국룰이냐' 같은 음식 조합 논쟁 대사로 딱 맞는다."
+fame = 5
+fame_evidence = "언론에서도 '국룰'을 그대로 쓴다(2026년 브라보 기사의 '월드컵엔 치맥 국룰' 등). 음식 조합 예시로 흔히 쓰인다."
+caution = "특별한 위험 요소 없음."
+verified = "partial"
+risk_checked = true
+notes = "게임·스트리머 유래는 나무위키 서술이라 정확한 최초 사용은 미확인. 사용자 요청대로 '신조어' 묶음으로 분류할 것(목록에 없는 카테고리라 인터넷·커뮤니티로 둠)."
+sources = ["https://namu.moe/w/%EA%B5%AD%EB%A3%B0", "https://www.yugacrew.com/yugawiki/%EA%B5%AD%EB%A3%B0", "https://bravo.etoday.co.kr/view/atc_view/19416"]
 
 [[slang]]
 name = "국뽕"
@@ -6657,6 +6708,24 @@ sources = ["https://ko.wikipedia.org/wiki/대한민국의_인터넷_신조어_�
 caution_sources = ["https://ebook-product.kyobobook.co.kr/dig/epd/sam/E000003155374"]
 
 [[slang]]
+name = "떡상 / 떡락"
+aliases = ["떡상", "떡락"]
+category = "인터넷·커뮤니티"
+year = "2017~2018 (비트코인 열풍 때 확산)"
+origin = "디시인사이드 비트코인 갤러리에서 쓰이기 시작해 인터넷 전반으로 퍼진 말이다. 2018년 한경 뉴스래빗은 비트코인 급등락 두 달 동안 이용자들이 '떡상과 떡락 사이에서 존버와 가즈아를 외쳤다'고 보도했다. 최초 게시글과 정확한 시점은 미확인."
+meaning = "떡상은 급상승, 떡락은 급락을 뜻한다. 주가, 인기, 조회수, 기분 등 무엇이든 확 오르내릴 때 쓴다."
+use_when = "인기·가격·기분이 갑자기 치솟거나 곤두박질치는 장면의 대사나 그래프 소품."
+food_fit = "아주 좋음. 떡 캐릭터가 실제로 위로 솟구치는 '떡상' 말장난이 바로 된다. 가래떡 모양 주식 그래프도 가능."
+fame = 5
+fame_evidence = "경제 뉴스와 유튜브 제목에서도 쓰일 만큼 퍼져 폭등·폭락을 대신하는 말이 됐다(한경 뉴스래빗 2018 등)."
+caution = "코인·주식 투자 권유처럼 보이지 않게 할 것. 실존 거래소·종목 로고는 쓰지 말 것. 코인·주식 리딩방 사기에서 '떡상'이 미끼 문구로 쓰인다는 경고가 있다. 그래서 '떡상 보장', 수익 인증 화면, 거래소 가입 유도처럼 보이는 장면은 넣지 않는다."
+verified = "partial"
+risk_checked = true
+notes = "비트코인 갤러리 기원은 여러 출처가 일치하지만 정확한 최초 시점은 미확인. 사용자 요청대로 '신조어' 묶음으로 분류할 것."
+sources = ["https://namu.moe/w/%EB%96%A1%EC%83%81", "https://www.hankyung.com/amp/201802139740G", "https://thewiki.kr/w/떡상", "https://www.bloomberg.com/news/articles/2018-08-20/bitcoiners-favorite-lingo-falls-by-the-wayside-as-prices-fizzle"]
+caution_sources = ["https://www.lawtalk.co.kr/posts/141199", "https://www.khan.co.kr/article/202508102056005/"]
+
+[[slang]]
 name = "리즈 시절"
 aliases = ["리즈", "리즈 갱신"]
 category = "인터넷·커뮤니티"
@@ -6672,6 +6741,24 @@ verified = "partial"
 risk_checked = true
 notes = "골닷컴 기사를 보면 발생 시기는 스미스와 박지성이 함께 맨유에서 뛴 2005~2007년 무렵으로 좁혀지지만, 정확한 연도는 미확인이다. 2000년대에 생긴 말이라 2010년 이후 일반어로 퍼진 시점은 확인하지 못했다. 다만 2019년 BBC 소개와 우리말샘 등재로 지금도 널리 쓰인다는 점은 확인된다. 웹 검색 한도가 소진되어 추가 검색은 하지 못했다."
 sources = ["https://ko.wikipedia.org/wiki/리즈_시절", "https://www.goal.com/kr/%EB%89%B4%EC%8A%A4/%E8%8B%B1-bbc-%ED%95%9C%EA%B5%AD%EC%9D%98-%EB%A6%AC%EC%A6%88-%EC%8B%9C%EC%A0%88-%EC%9C%A0%ED%96%89%EC%96%B4%EC%97%90-%EC%A3%BC%EB%AA%A9/q5yd8j6s5qab14dhdu92ozksl", "https://opendict.korean.go.kr/search/searchResult?query=%EB%A6%AC%EC%A6%88%20%EC%8B%9C%EC%A0%88"]
+
+[[slang]]
+name = "먹방"
+aliases = ["mukbang", "먹는 방송", "먹방러"]
+category = "인터넷·커뮤니티"
+year = "2000년대 중후반 인터넷 방송, 2010년대 초 대중화, 2021 OED 등재"
+origin = "'먹는 방송'의 줄임말. 한 논문은 2005년 나우콤 W플레이어(2006년 아프리카TV로 개편)에서 처음 등장했다고 보며, 2010년대 초 아프리카TV BJ들의 먹는 방송이 인기를 끌며 널리 퍼졌다. 이 말을 처음 쓴 BJ는 미확인(나무위키는 MC태현 설을 소개)."
+meaning = "음식을 먹는 모습을 보여 주는 방송이나 영상, 또는 맛있게 많이 먹는 모습 자체를 말한다."
+use_when = "한 캐릭터가 카메라 앞에서 음식을 잔뜩 먹는 장면, 또는 음식 캐릭터가 '먹방' 소리에 겁먹는 반전 개그."
+food_fit = "아주 좋음. 음식 캐릭터 입장에서 '먹방 촬영'은 공포라는 반전 설정으로 쓰기 쉽다."
+fame = 5
+fame_evidence = "2021년 9월 옥스퍼드 영어사전에 'mukbang'으로 한국어 26개 단어와 함께 등재됐다."
+caution = "실존 먹방 유튜버(쯔양, 히밥 등)의 얼굴·말투·채널 로고를 닮게 그리지 말 것. 2026년 9월 유튜브가 섭식장애·폭식 조장 기준으로 먹방 유튜버들의 수익 창출을 정지한 일이 보도됐다. 2024년에는 중국 먹방 스트리머가 생방송 도중 숨졌다. 폭식 과시, 체중 수치, '먹고 토하기'를 떠올리게 하는 연출은 피한다. 쯔양은 '먹토' 허위 제보 피해자로, 제보자가 2026년 2월 명예훼손으로 약식기소됐다. 따라서 실존 먹방러에 대한 루머를 패러디하지 않는다."
+verified = "verified"
+risk_checked = true
+notes = "처음 쓴 사람은 미확인. 이전 메모처럼 일상 어휘가 됐지만, 사용자 요청대로 '신조어' 묶음으로 분류해 쓸 수 있다."
+sources = ["https://namu.moe/w/%EB%A8%B9%EB%B0%A9", "https://www.koreascience.kr/article/JAKO202029462557773.page", "https://www.ytn.co.kr/_ln/0104_202109111010013838", "https://www.dailian.co.kr/news/view/1040348/", "https://www.khan.co.kr/article/201404181857565/amp"]
+caution_sources = ["https://www.dailian.co.kr/news/view/1693738", "https://sbsstar.net/article/N1008485601/tzuyang-eatandvomit-claim-was-fake-college-classmate-fined-7-million-won-in-summary-indictment"]
 
 [[slang]]
 name = "손발이 오그라든다 / 오글거리다"
@@ -6777,6 +6864,23 @@ notes = "부적을 낸 회사는 한국야쿠르트(쿠퍼스 '간쿵방지' 부
 sources = ["https://www.ajunews.com/view/20141217144431235", "https://ko.wikipedia.org/wiki/이불킥"]
 
 [[slang]]
+name = "인싸 / 아싸 / 핵인싸"
+aliases = ["인싸템", "자발적 아싸", "인싸력"]
+category = "인터넷·커뮤니티"
+year = "2000년대 대학가·커뮤니티, 2017~2018 대중화"
+origin = "'아싸'(아웃사이더)는 2000년대 대학가와 디시인사이드에서 먼저 쓰였고, 그 반대말로 '인싸'(인사이더)가 생겼다. 2017년 전후 널리 퍼졌고, 2018년 카카오톡 투표 '자주 사용한 신조어' 3위(18%)였다. 최초 사용처는 미확인."
+meaning = "인싸는 무리에 잘 어울리고 유행에 밝은 사람, 아싸는 무리 밖에서 혼자 지내는 사람, 핵인싸는 인싸 중의 인싸다."
+use_when = "유행 음식을 든 캐릭터를 '핵인싸'로, 구석에서 혼자 노는 캐릭터를 '자발적 아싸'로 그릴 때."
+food_fit = "좋음. 유행 디저트 캐릭터는 핵인싸, 아무도 안 찾는 반찬 캐릭터는 아싸 같은 식으로 대비시키기 쉽다."
+fame = 5
+fame_evidence = "카카오 2018 투표 3위, 2018 스포츠경향 신조어 목록에 '핵인싸' 수록, 매일신문은 2019년 '전 세대에 걸쳐 확산'이라고 보도했다."
+caution = "아싸를 조롱하는 쪽보다는 자기 비하나 귀여운 대비로 쓰는 편이 안전하다. 특정 실존 인물을 아싸로 지목하지 말 것."
+verified = "partial"
+risk_checked = true
+notes = "인싸가 2018년 '1위'였다는 근거는 없고 카카오 투표 3위였다. 최초 사용처는 미확인. 사용자 요청대로 '신조어' 묶음으로 분류할 것."
+sources = ["https://namu.moe/w/%EC%9D%B8%EC%8B%B8", "https://www.kakaocorp.com/page/detail/8639", "https://www.imaeil.com/page/view/2019022113212039535", "https://sports.khan.co.kr/article/201812281745003"]
+
+[[slang]]
 name = "읽씹"
 aliases = ["읽고 씹기", "카톡 1 안 없어짐", "안읽씹"]
 category = "인터넷·커뮤니티"
@@ -6792,6 +6896,24 @@ verified = "partial"
 risk_checked = true
 notes = "seoulstart는 외국인 독자용 안내 사이트이며 2026년 6월 갱신으로 표기돼 있다. 용어가 처음 쓰인 시점은 확인하지 못했다."
 sources = ["https://www.marieclairekorea.com/culture/lifestyle/2015/10/%EC%9D%B4%EB%B3%84-%EC%95%85%EB%8B%B4", "https://seoulstart.com/guides/kakaotalk-culture"]
+
+[[slang]]
+name = "존맛탱 (JMT)"
+aliases = ["존맛", "JMT", "JMTGR(존맛탱구리)"]
+category = "인터넷·커뮤니티"
+year = "2000년대 중반 '존맛' 추정, 2018 전후 JMT로 대중화"
+origin = "'존나 맛있다'를 줄인 '존맛'에 '탱'을 붙인 말이고, JMT는 그 초성을 로마자로 쓴 순화형이다. 2018년 10월 알바몬 20대 설문에서 '존맛·존맛탱·JMT'가 46.6%로 가장 많이 쓰는 신조어 1위였다. 최초 사용처는 미확인."
+meaning = "아주 맛있다는 감탄사다."
+use_when = "한 입 먹고 눈이 번쩍 뜨이는 리액션 컷의 대사로 쓴다."
+food_fit = "아주 좋음. 음식 만화 리액션 대사로 가장 자연스럽다. 음식 캐릭터가 자기 자신을 'JMT'라고 자랑하는 식으로도 쓸 수 있다."
+fame = 5
+fame_evidence = "2018 알바몬 설문 1위(46.6%), 2018 스포츠경향 신조어 목록에 수록, 2019년 팔도 비빔면 광고 해시태그에도 쓰였다."
+caution = "어원이 비속어('존나')라서 '존맛'보다 'JMT'나 '존맛탱'이 무난하다. 실존 상호 'JMT' 등과 혼동될 로고 디자인은 피할 것. 2023년 일본에서 '개존맛 김치'라는 상품명이 비속어라는 비판을 받았다. 제조사는 사과하고 이름을 바꾸겠다고 밝혔다. 2024년에는 해외 식당의 '존맛탱' 간판을 두고 우려가 보도됐다. 따라서 대사로만 가볍게 쓰고, 캐릭터 이름·상품명·제목 문구로는 쓰지 않는다. '개존맛'처럼 비속어가 더 센 변형도 피한다."
+verified = "partial"
+risk_checked = true
+notes = "최초 등장 시점과 출처는 미확인. 이전 메모의 '밈으로 인식되지 않음'과 달리, 만화 대사용 신조어로는 쓸모가 크다. 사용자 요청대로 '신조어' 묶음으로 분류할 것."
+sources = ["https://namu.moe/w/%EC%A1%B4%EB%A7%9B", "https://sports.khan.co.kr/article/201812281745003", "https://thewiki.kr/w/JMT", "https://www.koreadaily.com/article/20240723122507325"]
+caution_sources = ["https://www.asiae.co.kr/en/article/2024101113443159332"]
 
 [[slang]]
 name = "존버"
@@ -7151,6 +7273,24 @@ notes = "캐릿 1492(2024.10.29)에서 '한차례 화제가 된 줄임말'이라
 sources = ["https://www.careet.net/1451", "https://www.careet.net/1492", "https://opendict.korean.go.kr/search/searchResult?query=느좋&infoType=suggest"]
 
 [[slang]]
+name = "돈쭐"
+aliases = ["돈쭐내다", "돈쭐 내러 왔다"]
+category = "인터넷·커뮤니티"
+year = "2019 (진짜파스타 사례), 밈 유행 2021"
+origin = "'돈'과 '혼쭐'을 합친 말. 나무위키는 2019년 7월 홍대 '진짜파스타'의 결식아동 무료 식사가 알려지며 문화가 시작됐다고 본다. 2021년 2~3월 철인7호 치킨 홍대점 사장이 형편이 어려운 형제에게 무료로 치킨을 준 일이 퍼지며 '돈쭐' 주문이 몰렸다. 단어를 처음 쓴 사람과 시점은 미확인."
+meaning = "선행을 한 가게의 물건을 일부러 많이 사 주며 보상한다는 반어적 표현이다."
+use_when = "착한 일을 한 캐릭터에게 손님이 몰려들어 '돈쭐 내러 왔다'고 하는 장면."
+food_fit = "좋음. 몰래 선행한 떡볶이·치킨 캐릭터 가게 앞에 손님이 줄 서는 컷에 바로 쓸 수 있다."
+fame = 4
+fame_evidence = "2021년 아시아경제·SBS·노컷뉴스 등 주요 언론이 '돈쭐'이라는 표현을 그대로 썼다. 착한 가게 미담 기사의 단골 표현이다."
+caution = "실제 가게(철인7호, 진짜파스타)의 이름·간판·사장 얼굴은 쓰지 말 것. 주문이 몰려 영업을 잠시 멈춘 사례도 있어, 실존 가게를 연상시키지 말고 가상의 가게로만 그린다. 철인7호 홍대점 사장은 화제가 된 뒤 공황장애와 우울증을 겪었다고 밝혔다. 동정심을 악용해 돈을 요구하는 협박도 받았다(2022년 보도). 2025년 4월에는 윤석열 파면 감사 문구를 내건 치킨집이 별점 테러를 당했고, 반대편에서 '돈쭐' 응원이 몰렸다. 이처럼 진영 대결 구도에서도 쓰인 말이다. 정치적 문구, '별점 테러 대 돈쭐' 구도, 선행 당사자를 다시 주목받게 하는 연출은 피한다."
+verified = "partial"
+risk_checked = true
+notes = "단어의 최초 사용 시점·출처는 미확인. 카테고리 목록에 '신조어'가 없어 인터넷·커뮤니티로 두었으며, 사용자 요청대로 별도 '신조어' 묶음으로 분류해야 한다. 이전 메모의 '인지도 4 미만'은 2021년 언론 보도량을 볼 때 4로 상향."
+sources = ["https://namu.moe/w/%EB%8F%88%EC%AD%90", "https://www.asiae.co.kr/en/article/2021030110160372465", "https://www.yugacrew.com/yugawiki/%EB%8F%88%EC%AD%90", "https://nocutnews.co.kr/news/5627812"]
+caution_sources = ["https://seoul.co.kr/news/life/2022/08/21/20220821500097", "https://nocutnews.co.kr/news/6322157"]
+
+[[slang]]
 name = "동공지진"
 category = "인터넷·커뮤니티"
 year = "미확인 (우리말샘 신문 용례로 2016년 7월 이전부터 쓰인 것은 확인)"
@@ -7287,7 +7427,7 @@ sources = ["https://www.koreajoongangdaily.com/korea/think-english-ep1/11828301"
 
 [[slang]]
 name = "안물안궁"
-aliases = ["안 물어봤고 안 궁금해"]
+aliases = ["안 물어봤고 안 궁금해", "어쩔티비", "어쩔TV", "저쩔티비", "어쩔냉장고"]
 category = "인터넷·커뮤니티"
 year = "미확인 (2010년대)"
 origin = "'안 물어봤고, 안 궁금하다'의 줄임말이다. 한국어 위키백과는 '안 물었고 안 궁금해'의 줄임말로 적는다. 처음 쓰인 곳과 시기는 미확인이다."
@@ -7299,8 +7439,26 @@ fame_evidence = "이투데이 브라보마이라이프(2026.3.23) '요즘말 사
 caution = "상대를 무시하는 말이므로 실존 인물을 겨냥하지 않는다. 캐릭터끼리의 가벼운 티키타카로만 쓴다."
 verified = "partial"
 risk_checked = true
-notes = "제시된 출처는 2026년 3월 23일자 기사 하나뿐이며, 2019년 기사는 확인하지 못했다. 기원과 시기는 검색 한도 소진으로 추가 확인하지 못했다."
-sources = ["https://bravo.etoday.co.kr/view/atc_view/18738", "https://ko.wikipedia.org/wiki/대한민국의_인터넷_신조어"]
+notes = "제시된 출처는 2026년 3월 23일자 기사 하나뿐이며, 2019년 기사는 확인하지 못했다. 기원과 시기는 검색 한도 소진으로 추가 확인하지 못했다. 10대 중심 신조어라는 이전 메모는 맞음. 최초 출처·발화자는 미확인."
+sources = ["https://bravo.etoday.co.kr/view/atc_view/18738", "https://ko.wikipedia.org/wiki/대한민국의_인터넷_신조어", "https://maily.so/trendaword/posts/2x1zg5d9oqg", "https://www.careet.net/779", "https://www.incheon.go.kr/moo/MOO030101/2086225", "https://www.insight.co.kr/news/374814"]
+
+[[slang]]
+name = "야민정음"
+aliases = ["댕댕이", "띵작", "커엽다", "머대리", "쀼"]
+category = "인터넷·커뮤니티"
+year = "1990~2000년대 통신체에서 비롯, 2014 무렵 야갤에서 확산, 2018 전후 대중화"
+origin = "모양이 비슷한 글자로 바꿔 쓰는 말장난(멍멍이→댕댕이, 명작→띵작). 이름은 디시인사이드 국내야구 갤러리(야갤)와 훈민정음을 합친 것이다. 나무위키는 2014년 초 야갤 유저들이 엠엘비파크에 '대/머'를 바꿔 쓴 낚시 글을 올리며 크게 알려졌다고 적었다. 최초 창작자와 시점은 미확인."
+meaning = "글자 모양이 비슷한 다른 글자로 바꿔 써서 웃음을 주는 표기 놀이다."
+use_when = "간판, 메뉴판, 자막 같은 글자 소품을 비틀어 쓸 때. 대사보다는 배경 글씨에 어울린다."
+food_fit = "보통. 강아지 간식 캐릭터를 '댕댕이'로 부르거나 메뉴판에 '띵작 라면'이라고 쓰는 정도로 쓸 수 있다."
+fame = 4
+fame_evidence = "'띵작'이 2018년 스포츠경향 신조어 정리에 실렸고, 강남구청이 '댕댕이 학교'로 홍보할 만큼 '댕댕이'가 굳어졌다. 영어 위키백과에도 문서가 있다."
+caution = "'숲튽훈'처럼 실존 인물 이름을 비튼 예시는 쓰지 말 것. 실제 브랜드명·로고를 야민정음으로 비틀면 상표 패러디 문제가 생길 수 있다. 한글 파괴 논란이 있는 말이다. 2019년 팔도가 한정판 상품명을 '괄도네넴띤'으로 내놓았는데, 화제가 되자 한글 파괴 비판이 커졌다. 기업이나 브랜드가 쓰면 비판이 더 커질 수 있다. 계정명, 상품명, 한글날 무렵 게시물에는 쓰지 않는다."
+verified = "partial"
+risk_checked = true
+notes = "야갤에서 처음 생긴 말은 아니고, 야갤에서 많이 쓰여 이름이 붙었다. 정확한 기원은 미확인. 용어 자체보다 댕댕이·띵작 같은 개별 단어가 더 유명하다. 사용자 요청대로 '신조어' 묶음으로 분류할 것(목록에 없는 카테고리라 인터넷·커뮤니티로 둠)."
+sources = ["https://namu.moe/w/%EC%95%BC%EB%AF%BC%EC%A0%95%EC%9D%8C", "https://Www.wikipedia.org/wiki/Yaminjeongeum", "https://aimatters.co.kr/news-report/25580/", "https://sports.khan.co.kr/article/201812281745003"]
+caution_sources = ["https://sgsg.hankyung.com/article/2019071296091"]
 
 [[slang]]
 name = "억까"
@@ -7558,6 +7716,23 @@ notes = "조선일보 기사의 제목·기자·날짜는 위키백과 각주로
 sources = ["https://ko.wikipedia.org/wiki/대한민국의_인터넷_신조어_목록", "http://news.chosun.com/site/data/html_dir/2019/08/31/2019083100788.html"]
 
 [[slang]]
+name = "쿠크다스 멘탈"
+aliases = ["멘탈 쿠크다스", "유리멘탈", "두부멘탈"]
+category = "인터넷·커뮤니티"
+year = "미확인 (2010년대 초중반 '멘붕·유리멘탈' 유행 뒤 퍼진 것으로 보이며, 2018년 칼럼에 이미 유행어로 소개됨)"
+origin = "특정 방송이나 사건에서 나온 말이 아니다. 크라운제과 과자 쿠크다스가 얇아서 잘 부서지는 데 빗대어, 쉽게 무너지는 정신력을 가리키는 인터넷 신조어다. 처음 쓴 사람과 시점은 미확인이다. '멘탈' 용법은 해외축구 갤러리·게임 커뮤니티에서 퍼졌다는 위키 서술이 있다."
+meaning = "작은 일에도 바스러질 만큼 약한 멘탈을 말하며, 유리멘탈·두부멘탈과 같은 뜻이다. 반대말은 강철멘탈이다."
+use_when = "사소한 말 한마디나 실수에 캐릭터가 크게 상처받거나 멘붕에 빠지는 장면에서 쓴다. 자조 대사(\"나 쿠크다스 멘탈이라고…\")로 쓰기 좋다."
+food_fit = "아주 잘 맞는다. 과자 캐릭터가 \"내 멘탈 쿠크다스야\" 하며 부스러지는 연출이 바로 나오고, 다른 음식 캐릭터 대사에도 그대로 쓸 수 있다."
+fame = 4
+fame_evidence = "일상 대화에서 흔히 쓰이는 표현이다. 지역신문 칼럼(고양신문 2018)과 시사캐스트 칼럼 제목에 쓰였고, 외국인 한국어 Q&A(HiNative)에도 질문이 올라와 있다. 나무위키에는 여초 커뮤니티에서 더 많이 쓴다는 서술이 있다는 검색 요약이 나왔다."
+caution = "쿠크다스는 크라운제과의 상표이므로 실제 포장 디자인이나 로고를 그대로 그리지 말고, 일반 웨이퍼 과자 형태로 그리는 것이 안전하다. 대사에 단어만 쓰는 것은 문제가 적다. 실존 인물 초상권이나 방송 영상 저작권 문제는 없다. 다만 실제 정신건강 문제를 희화화하는 맥락은 피한다."
+verified = "partial"
+risk_checked = true
+notes = "[신조어] 사용자 요청에 따라 신조어로 따로 분류해 주세요. 스키마에 신조어 카테고리가 없어서 일단 인터넷·커뮤니티로 두었습니다. 인지도는 3에서 4로 올렸습니다. 일상에서 널리 쓰이고 대사 말투로 바로 쓸 수 있는 신조어이기 때문입니다. 정확한 발생 시점과 최초 사용처는 확인하지 못했습니다(미확인). 나무위키와 HiNative 본문은 403으로 직접 열지 못해, 그 내용은 검색 결과 요약으로만 확인했습니다."
+sources = ["http://www.mygoyang.com/news/articleView.html?idxno=48635", "http://www.sisacast.kr/news/articleView.html?idxno=72046", "https://thewiki.kr/w/멘탈", "https://hinative.com/questions/18842316", "https://namu.wiki/w/%EC%BF%A0%ED%81%AC%EB%8B%A4%EC%8A%A4", "https://brunch.co.kr/@huiyeon814/26"]
+
+[[slang]]
 name = "탕진잼"
 aliases = ["탕진하는 재미"]
 category = "인터넷·커뮤니티"
@@ -7726,6 +7901,40 @@ notes = "남양유업 사태는 2013년 5월, 땅콩 회항은 2014년 12월 5�
 sources = ["https://ko.wikipedia.org/wiki/갑질"]
 
 [[slang]]
+name = "갓생"
+aliases = ["갓생 살기", "갓생러"]
+category = "기타"
+year = "미확인 (2021~2022년 MZ세대 유행어로 확산)"
+origin = "신을 뜻하는 'God'과 '인생'을 합친 말로, 코로나19 이후 미라클 모닝·운동 인증·스터디 인증처럼 작은 성취를 쌓는 생활을 가리키며 퍼졌다. 최초 사용처는 미확인."
+meaning = "[신조어] 부지런하고 계획적으로 자기 관리하며 사는 모범적인 삶."
+use_when = "새벽 기상·운동·공부를 인증하는 캐릭터와 늘어진 캐릭터를 대비할 때."
+food_fit = "샐러드·닭가슴살 캐릭터의 갓생 루틴과 야식 치킨 캐릭터의 대비 구도로 쓰기 좋다."
+fame = 5
+fame_evidence = "2021~2022년 서울시 미디어허브, 파이낸셜뉴스, 한경 매거진 등 다수 언론이 MZ세대 유행어로 보도함."
+caution = "분류: 신조어. 일반 단어라 권리 문제 없음."
+verified = "partial"
+risk_checked = true
+notes = "뜻과 확산 시기는 확인됐으나 최초 사용 시점·출처는 미확인."
+sources = ["https://mediahub.seoul.go.kr/archives/2006903", "https://www.fnnews.com/news/202207291030495988", "https://magazine.hankyung.com/job-joy/article/202211212467d"]
+
+[[slang]]
+name = "멘붕"
+aliases = ["멘탈붕괴", "멘탈 붕괴"]
+category = "기타"
+year = "2011~2012 (2012년 대표 유행어, 이후 일상어로 정착)"
+origin = "'멘탈 붕괴'의 줄임말. 인터넷 커뮤니티에서 퍼진 뒤 2011~2012년 예능 자막 등으로 확산됐고 2012년 대표 인터넷 유행어로 꼽혔다. 최초 사용처는 미확인."
+meaning = "[신조어] 정신이 무너질 만큼 당황하거나 충격받은 상태."
+use_when = "예상 못 한 일로 캐릭터가 얼어붙거나 패닉에 빠지는 컷의 대사나 효과 글자."
+food_fit = "아이스크림이 녹거나 라면이 불어버린 순간 \"멘붕\" 한마디, 금 간 표정 연출과 잘 맞는다."
+fame = 5
+fame_evidence = "2012년 연도별 유행어 정리 기사에서 2012년 대표어로 소개, 2017년 뉴스 최다 등장 신조어 분석에서 '스펙'과 함께 언급, 2013년 칼럼은 일상어가 됐다고 평가."
+caution = "분류: 신조어. 특정 인물·영상 유래가 아닌 일반 단어라 초상권·저작권 문제 없음."
+verified = "partial"
+risk_checked = true
+notes = "최초 방송 사용처는 위키에서도 무한도전(2011-12-03)설과 1박2일(2012-01-23)설이 엇갈려 미확인."
+sources = ["https://www.asiatoday.co.kr/kn/view.php?key=651817", "https://mobile.busan.com/view/busan/view.php?code=20171019000027", "https://peoplepower21.org/magazine/1039092"]
+
+[[slang]]
 name = "밀당"
 aliases = ["밀고 당기기", "밀당의 고수", "밀당하다"]
 category = "기타"
@@ -7813,6 +8022,41 @@ sources = ["https://www.sidae.com/article/2016122017528099046", "https://ko.wiki
 caution_sources = ["https://v.daum.net/v/20260526170248048", "https://www.hankyung.com/article/2026052697807", "https://www.heraldk.com/article/2026052617021167288"]
 
 [[slang]]
+name = "엄친아 / 엄친딸"
+aliases = ["엄마 친구 아들", "엄마 친구 딸", "엄마친구아들"]
+category = "기타"
+year = "2004~2005 (2008년 유행어, 2024년 드라마로 재조명)"
+origin = "박종원 작가의 웹툰 〈골방환상곡〉(2004년 블로그 게재, 2005년부터 네이버 연재)의 '엄친아' 편에서 나온 말. 2008년 올해의 유행어로 꼽혔고, 2024년 tvN 드라마 〈엄마친구아들〉 제목으로 다시 화제가 됐다."
+meaning = "[신조어] 엄마가 비교 대상으로 드는, 공부·외모·집안 다 갖춘 완벽한 남(딸이면 엄친딸)."
+use_when = "늘 비교당하는 캐릭터 옆에 모든 게 완벽한 캐릭터가 등장할 때."
+food_fit = "평범한 라면 옆의 프리미엄 한우, 편의점 김밥 옆의 오마카세 초밥처럼 '엄친아 음식' 비교 구도로 쓰기 좋다."
+fame = 5
+fame_evidence = "2008년 서울신문 올해의 유행어 기사, 웹툰 관련 기사들이 '대명사가 된 말'로 소개, 2024년 tvN 드라마 제목, 사회학 칼럼·경제학 논문('엄친아 효과')에도 쓰임."
+caution = "분류: 신조어. 단어 자체는 자유롭게 써도 되지만 드라마 〈엄마친구아들〉 포스터·배우 이미지나 웹툰 그림 차용은 금지."
+verified = "verified"
+risk_checked = true
+notes = "2010년 이전에 생긴 말이지만 계속 일상어로 쓰이고 2024년 드라마로 재조명돼 범위 안으로 판단. 연재 시작 시점은 기사마다 2005년, 2005년 12월로 조금 다름."
+sources = ["https://byline.network/2019/08/13-64", "https://www.sidae.com/article/2012101100358033976", "https://m.seoul.co.kr/news/2008/12/26/20081226500017", "https://enews.imbc.com/News/ViewAmp/424881", "https://www.vogue.co.kr/?p=520510"]
+
+[[slang]]
+name = "오히려 좋아"
+aliases = ["오히려 좋아요"]
+category = "기타"
+year = "미확인 (2021년 무렵 일상어로 확산)"
+origin = "리그 오브 레전드 게임 방송인이 게임 중 아이템이 사라지자 \"오히려 좋아요\"라고 한 데서 시작됐고, 침착맨이 자주 쓰면서 게임을 안 하는 사람들에게까지 퍼졌다는 설명이 있다. 원작자 이름과 날짜는 미확인."
+meaning = "[신조어] 손해나 실수를 오히려 잘됐다며 태연하게 긍정으로 받아넘기는 말."
+use_when = "일이 꼬였는데 캐릭터가 태연하게 정신승리하는 반전 컷."
+food_fit = "라면에 물을 너무 많이 부었을 때 \"오히려 좋아, 국물 라면\" 같은 대사로 음식 실수와 아주 잘 맞는다."
+fame = 5
+fame_evidence = "마케팅 매체 DIGITAL iNSIGHT 칼럼과 트렌드 뉴스레터가 유행어에서 일상어로 넘어갔다고 분석했고, 같은 제목의 노래도 나왔다고 소개됨."
+caution = "분류: 신조어. 침착맨이 연상되는 말이므로 단어만 쓰고 인물 얼굴·캐리커처는 쓰지 말 것. 2026년 9월 침착맨이 라이브 방송에서 떡볶이(펄볶이)를 먹으며 여성 흉내 목소리로 '맛이 참 썩을 년'이라고 말했다. 이 발언이 여성혐오 논란을 일으켰고, 영상은 사과 없이 편집됐다. 음식 캐릭터 만화는 그 장면을 떠올리게 할 수 있으니 침착맨을 연상시키는 연출이나 패러디는 완전히 배제한다. 음식 맛을 성별 비하어로 표현하는 대사도 쓰지 않는다. 말 자체는 일반어로만 쓴다."
+verified = "partial"
+risk_checked = true
+notes = "침착맨이 원조가 아니라 다른 게임 방송인이 원작자라는 설명이 있으나 그 방송인 이름과 시점은 미확인."
+sources = ["https://ditoday.com/?p=59601", "https://maily.so/trendaword/posts/72nznnxkzp5"]
+caution_sources = ["https://m.go.seoul.co.kr/news/life/2026/09/28/20260928500153", "https://isplus.com/article/view/isp202609300167"]
+
+[[slang]]
 name = "욜로 (YOLO)"
 aliases = ["YOLO", "욜로족", "욜로 라이프", "인생은 한 번뿐"]
 category = "기타"
@@ -7846,6 +8090,24 @@ verified = "partial"
 risk_checked = true
 notes = "사람인 2016년 조사 10위는 확인했다. '2018년 무렵 핵심 키워드가 되었다'는 부분은 확인한 자료에 연도가 없어 미확인이다. 일상어로 널리 쓰여 인지도는 5로 올렸다."
 sources = ["https://www.nocutnews.co.kr/news/4709846", "https://ko.wikipedia.org/wiki/워라밸"]
+
+[[slang]]
+name = "킹받네"
+aliases = ["킹받다", "킹받게 하네", "왕위계승(변형)"]
+category = "기타"
+year = "2018년 말 등장 (2021~2022년 널리 유행, 대중화 정확 시점 미확인)"
+origin = "'열받네'의 '열'을 'King'으로 바꿔 강조한 말. 2018년 말 무렵 침착맨(이말년) 방송의 말버릇에서 유행했다는 설명이 여러 자료에 있으나 1차 출처는 미확인. 2021~2022년에는 '왕위계승' 같은 말장난 변형까지 나왔다."
+meaning = "[신조어] 진짜 화나기보다 얄밉고 약 올라서 웃기게 열받는 상태."
+use_when = "상대가 얄밉게 굴어서 화는 나는데 웃긴 상황, 장난스러운 짜증 대사."
+food_fit = "과자 봉지를 뜯었더니 질소만 가득할 때, 마지막 남은 튀김을 친구가 먹었을 때 \"아 킹받네\" 대사로 딱 맞다."
+fame = 5
+fame_evidence = "Z세대 트렌드 매체 캐릿, 트렌드 뉴스레터가 반복적으로 다뤘고 우리말샘 풀이를 인용한 자료가 있음. 2026년에도 '킹받으면 좋겠어' 변형 챌린지가 소개됨."
+caution = "분류: 신조어. 침착맨 유래설이 있으므로 단어만 쓰고 인물 얼굴·말투 흉내 연출은 피할 것. 유래설이 있는 침착맨이 2026년 9월 펄볶이 시식 방송에서 여성 흉내 목소리로 '맛이 참 썩을 년'이라고 말해 여성혐오 논란이 일었다. 영상은 사과 없이 편집됐다. 음식 캐릭터 만화는 이 장면과 겹쳐 보일 수 있다. 그러니 침착맨 말투나 방송 장면 패러디는 하지 않고, 음식 맛을 비하어로 표현하는 대사와 함께 쓰지 않는다."
+verified = "partial"
+risk_checked = true
+notes = "이전 메모의 '출처 근거 약함'과 달리 침착맨 말버릇 유래설이 복수 자료에 있으나 최초 방송 회차는 미확인. 일부 블로그의 '이말년 유튜브 대중화' 설명도 단일 출처라 미확인."
+sources = ["https://maily.so/trendaword/posts/jknrj3n4old", "https://maily.so/trendaword/posts/l1zq6ekeo5x", "https://www.careet.net/526"]
+caution_sources = ["https://m.go.seoul.co.kr/news/life/2026/09/28/20260928500153", "https://isplus.com/article/view/isp202609300167"]
 
 [[slang]]
 name = "투머치토커"
@@ -7882,6 +8144,24 @@ notes = "원래 메모 내용은 맞다. 사람인 조사는 성인 948명이 �
 sources = ["https://www.nocutnews.co.kr/news/4709846", "https://www.gqkorea.co.kr/?p=102353", "https://ko.wikipedia.org/wiki/혼술남녀"]
 
 [[slang]]
+name = "급식체"
+aliases = ["휴먼급식체", "ㅇㅈ? ㅇ ㅇㅈ", "인정? 어 인정", "동의? 어 보감", "오지고 지리고"]
+category = "기타"
+year = "2017년 무렵 유행 (최초 시점 미확인)"
+origin = "2017년 무렵 10대들이 SNS에서 놀이처럼 쓴 말투로, 이름은 한글 프로그램 '휴먼체' 글꼴과 10대 비하어 '급식충'을 합친 '휴먼급식체'에서 나왔다. 2017년 CU 디저트 이름(ㅇㅈ?ㅇㅇㅈ), 2017년 10월 SNL코리아 시즌9 꼭지로 화제가 됐다."
+meaning = "[신조어] '인정? 어 인정', '오지고 지리고' 같은 10대식 과장·라임 말투."
+use_when = "학창 시절 말투를 흉내 내거나 일부러 오글거리게 과장하는 대사 한 줄."
+food_fit = "급식판 위 반찬 캐릭터들이 \"ㅇㅈ? ㅇ ㅇㅈ\" 하고 맞장구치는 장면 정도로 가볍게 쓸 수 있다."
+fame = 4
+fame_evidence = "2017년 위키트리·데일리안·GQ코리아 기사, CU 상품명, SNL코리아 꼭지로 대중적으로 알려짐. 지금 20대는 학창 시절 말투로 기억함."
+caution = "분류: 신조어. 이름이 10대 비하어 '급식충'에서 왔으므로 만화에 '급식충'이라는 말은 쓰지 말고 표현만 빌릴 것. 지금은 다소 낡은 말투라 복고 개그로 쓰는 게 낫다. 2018년 3월 13일 방송통신심의위원회 방송심의소위원회가 SNL코리아9 '급식체 특강' 코너에 권고 조치를 내렸다. 소개된 신조어 가운데 여성 성기를 비하하는 표현과 일본 성인 동영상에서 빌려 온 말이 섞여 있었기 때문이다. 급식체 단어 묶음에는 이런 성적 비속어가 함께 들어 있으므로 'ㅇㅈ? ㅇ ㅇㅈ', '동의? 어 보감'처럼 문제없는 표현만 쓴다. 급식체 단어를 더 넣으려면 하나씩 유래를 확인하고, 유래가 성적이거나 비속한 말은 빼야 한다."
+verified = "verified"
+risk_checked = true
+notes = "2015~2017년 유행이라는 이전 메모 중 2015~2016년 시작 시점은 미확인이고, 확인되는 유행 정점은 2017년. 현재는 약하다는 메모는 맞음."
+sources = ["https://www.wikitree.co.kr/articles/243809", "https://www.dailian.co.kr/news/view/670233/", "https://www.gqkorea.co.kr/?p=102353", "https://v.daum.net/v/LzxqSQmkH3"]
+caution_sources = ["https://www.tenasia.co.kr/article/2018031321974", "https://www.dailian.co.kr/news/view/670233/"]
+
+[[slang]]
 name = "뇌섹남"
 aliases = ["뇌가 섹시한 남자", "뇌섹녀"]
 category = "기타"
@@ -7897,6 +8177,23 @@ verified = "partial"
 risk_checked = true
 notes = "세계일보 칼럼에는 유래나 프로그램 언급이 없다. 처음 쓰인 곳은 미확인이며, tvN 프로그램은 위키백과에서 방송 기간만 확인했다. 웹 검색 한도가 다 차서 추가 확인은 하지 못했다."
 sources = ["https://www.segye.com/newsView/20160119003943", "https://ko.wikipedia.org/wiki/뇌섹시대_-_문제적_남자"]
+
+[[slang]]
+name = "뇌절"
+aliases = ["뇌절하다", "1절만 해"]
+category = "기타"
+year = "2017 추정 (2018년 이후 확산)"
+origin = "노래를 1절만 부르라는 '1절만 해'에서 이어진 말장난으로, 〈나루토〉 카카시의 기술 이름 '뇌절'을 붙인 것. 위키 설명으로는 2017년 무렵 디시인사이드 만화 갤러리에서 시작돼 2018년 롤(LoL) 방송·커뮤니티로 퍼졌다."
+meaning = "[신조어] 같은 드립이나 행동을 지나치게 반복해서 선을 넘는 것."
+use_when = "한 캐릭터가 같은 개그나 행동을 계속 반복해서 주변이 질려 하는 장면."
+food_fit = "소스나 토핑을 끝없이 더 뿌리는 캐릭터에게 \"그만해 뇌절이야\" 같은 대사로 잘 맞는다."
+fame = 4
+fame_evidence = "나무위키 단독 문서가 있고 네이버 지식백과 신조어 등재 언급이 있음. 다만 뉴스 기사 근거는 이번 검색에서 확인하지 못함."
+caution = "분류: 신조어. 단어만 쓰고 나루토·카카시 캐릭터 그림이나 치도리 연출 차용은 저작권 문제로 피할 것."
+verified = "partial"
+risk_checked = true
+notes = "유래 설명은 위키 자료에만 근거하며 원조 글 시점(2017년)은 추정이라 미확인."
+sources = ["https://namu.wiki/w/%EB%87%8C%EC%A0%88(%EC%9D%B8%ED%84%B0%EB%84%B7%20%EC%9A%A9%EC%96%B4)", "https://thewiki.kr/w/뇌절", "https://namu.moe/w/%EC%A0%88"]
 
 [[slang]]
 name = "뉴트로"
@@ -7951,6 +8248,23 @@ risk_checked = true
 notes = "제시된 출처에는 '벼락거지'가 나오지 않으므로 짝을 이루는 말이라는 설명은 이 출처로 확인되지 않았다. 출처의 정의는 대출에 한정하지 않고 '빚을 내서라도 가진 돈을 모두 모아 투자'하는 것으로 되어 있다."
 sources = ["https://www.kyeonggi.com/article/202012071148161"]
 caution_sources = ["https://www.khan.co.kr/article/202510231630011/", "https://www.heraldk.com/article/2025102221395030782", "https://www.dt.co.kr/article/12024779"]
+
+[[slang]]
+name = "점메추"
+aliases = ["점심 메뉴 추천", "저메추", "저녁 메뉴 추천"]
+category = "기타"
+year = "미확인 (2022년 무렵 기사에 신조어로 등장)"
+origin = "'점심 메뉴 추천'의 줄임말로, 오늘 점심 뭐 먹을지 남에게 추천해 달라고 할 때 쓴다. 2022년 노컷뉴스가 '저메추'와 함께 MZ세대 신조어로 소개했고, 잡플래닛 컴퍼니타임스는 같은 이름의 점심 메뉴 추천 코너를 연재 중이다. 최초 사용처는 미확인."
+meaning = "[신조어] \"점심 메뉴 추천 좀\"을 줄인 말."
+use_when = "점심시간에 뭘 먹을지 고민하는 장면의 첫 컷 대사."
+food_fit = "음식 캐릭터들이 \"점메추\" 요청에 서로 자기를 뽑아 달라고 어필하는 구도로 음식 만화와 가장 잘 맞는다."
+fame = 4
+fame_evidence = "2022년 노컷뉴스 신조어 기사, 우리말샘 풀이를 인용한 자료, 잡플래닛의 연재 코너 이름으로 쓰일 만큼 직장인 사이에 흔함."
+caution = "분류: 신조어. 일반 줄임말이라 권리 문제 없음."
+verified = "partial"
+risk_checked = true
+notes = "이전 메모는 인지도를 3으로 봤으나 언론 소개와 직장인 콘텐츠 코너명으로 쓰이는 점을 보아 20~30대 인지도는 4로 올림. 최초 사용 시점은 미확인."
+sources = ["https://www.nocutnews.co.kr/news/5669382", "https://www.jobplanet.co.kr/contents/news-4602/점메추-잘-쉬고-온-내게-주는-선물-같은-맛"]
 
 # 일부러 뺀 밈 (민감·정치·혐오·피해자 조롱·성적 내용 등). 다시 넣지 말 것.
 [[excluded]]
@@ -8583,10 +8897,6 @@ name = "명절 잔소리 메뉴판"
 reason = "시즌성이 강하고 인지도 4 미만."
 
 [[skipped]]
-name = "쿠크다스 멘탈"
-reason = "인지도 3."
-
-[[skipped]]
 name = "개죽이"
 reason = "2000년대 초 디시 밈으로 현재 젊은 층 인지가 약함."
 
@@ -8597,78 +8907,6 @@ reason = "2000년대 초 디시 밈으로 현재 인지가 약함."
 [[skipped]]
 name = "OTL"
 reason = "2000년대 초 이모티콘으로 지금은 낡은 표현."
-
-[[skipped]]
-name = "돈쭐"
-reason = "신조어, 인지도 4 미만."
-
-[[skipped]]
-name = "야민정음"
-reason = "글자 말장난 신조어라 장면·포즈형 고전 밈이 아님."
-
-[[skipped]]
-name = "존맛탱 (JMT)"
-reason = "일상 어휘가 돼서 밈으로 인식되지 않음."
-
-[[skipped]]
-name = "겉바속촉"
-reason = "일상 리뷰 어휘라 밈 요소가 약함."
-
-[[skipped]]
-name = "먹방"
-reason = "일상 어휘가 됨."
-
-[[skipped]]
-name = "떡상 / 떡락"
-reason = "일상 은어라 장면형 고전 밈이 아님."
-
-[[skipped]]
-name = "갑분싸"
-reason = "일상 신조어라 장면형 고전 밈이 아님."
-
-[[skipped]]
-name = "인싸 / 아싸 / 핵인싸"
-reason = "일상 신조어."
-
-[[skipped]]
-name = "국룰"
-reason = "일상 신조어."
-
-[[skipped]]
-name = "멘붕"
-reason = "일상어로 정착함."
-
-[[skipped]]
-name = "엄친아 / 엄친딸"
-reason = "일상어로 정착함."
-
-[[skipped]]
-name = "킹받네"
-reason = "일상 신조어이고 출처 근거도 약함."
-
-[[skipped]]
-name = "어쩔티비"
-reason = "10대 중심 일상 신조어."
-
-[[skipped]]
-name = "뇌절"
-reason = "일상 신조어."
-
-[[skipped]]
-name = "급식체"
-reason = "2015~2017년 말투 유행으로 현재 약함."
-
-[[skipped]]
-name = "오히려 좋아"
-reason = "일상 신조어."
-
-[[skipped]]
-name = "갓생"
-reason = "일상 신조어."
-
-[[skipped]]
-name = "점메추"
-reason = "일상 신조어, 인지도 3."
 
 [[skipped]]
 name = "꼬꼬면 대란"
