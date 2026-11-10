@@ -1,0 +1,3 @@
+# Optional: only for `[studio.llm] enabled = true` (paid Claude API calls from `plot write` / `script cast --polish`).
+# Everything also works without it through `--prompt-only`.
+anthropic>=2.7

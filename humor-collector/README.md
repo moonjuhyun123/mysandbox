@@ -6,6 +6,8 @@
 
 - 사이트별 조사 결과와 선정 근거: [docs/RESEARCH.md](docs/RESEARCH.md)
 - 수집한 원문은 **분석 참고자료**입니다. 그대로 재게시하지 마세요(아래 "정책 준수" 참고).
+- 수집한 글을 4컷 만화 대본으로 만드는 단계(`plot`, `script`): [docs/STUDIO.md](docs/STUDIO.md).
+  캐릭터 없는 플롯을 먼저 쓰고, 캐릭터 묶음을 파라미터로 받아 최종 대본을 냅니다.
 - 만화에 가끔 넣을 "모두가 아는" 고전 개그·밈 사전: [reference/CLASSICS.md](reference/CLASSICS.md)
   (데이터 `reference/classics.toml`, 개그·밈은 `[[classic]]`, 신조어·유행어는 `[[slang]]`). 수집기가 아니라 웹 조사로
   만든 정리본입니다. 항목마다 원본, 뜻, 쓰기 좋은 장면, 음식 캐릭터 활용, 주의 사항(출연자 논란·상표 등), 출처를
@@ -170,6 +172,22 @@ Bluesky 개발자 가이드라인은 삭제 요청 처리와 차단 수단을 �
 
 종료 코드는 모든 소스가 `ok`, `partial`, `skipped`이면 0, 실패나 차단이 있으면 1입니다.
 로그는 콘솔과 `data/logs/collector.log`(5MB씩 회전)에 남습니다.
+
+## 대본 만들기 (`plot`, `script`)
+
+```bash
+.venv/bin/python main.py plot candidates                      # 만화로 만들 만한 글
+.venv/bin/python main.py plot write 400 --prompt-only > 지시문.txt   # 채팅 LLM에 붙여 넣을 지시문(추가 비용 없음)
+.venv/bin/python main.py plot import 400 답.json              # LLM의 답을 검사하고 저장
+.venv/bin/python main.py script cast 1 --cast config/casts/example.toml   # 캐릭터 입히기
+.venv/bin/python main.py script show 1 --output 대본.md       # 컷별 대본 문서
+```
+
+- 플롯은 역할(A, B)로만 씁니다. 캐릭터는 `config/casts/*.toml` 파일로 줍니다. 같은 플롯을 다른 캐릭터로 다시 뽑을 수 있습니다.
+- 개그 사전의 목록이 지시문에 들어가고, 고전 개그는 자연스러울 때만 한 편에 최대 1개 씁니다.
+- 프로그램이 자동으로 검사합니다: 컷 수와 글자 수, 원문과 겹치는 정도, 금지 밈, 개인 정보, 참여를 요구하는 문구.
+- Claude API를 직접 부르는 방식도 있습니다(초안 3개 → 채점 → 고쳐 쓰기). 유료라서 기본은 꺼져 있습니다.
+- 자세한 사용법과 캐릭터 파일 형식: [docs/STUDIO.md](docs/STUDIO.md)
 
 ## 자동 실행
 

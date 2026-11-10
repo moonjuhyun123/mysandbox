@@ -101,3 +101,50 @@ archive_sorts = ["TopAll"]
 page_size = 20
 max_pages = 1
 # lemmy.world robots.txt Crawl-delay: 60 -> one request per minute (applied automatically)
+
+[studio]
+# `python main.py plot ...` / `script ...`: 수집한 글 -> 캐릭터 없는 4컷 플롯 -> 캐릭터를 입힌 대본.
+classics_path = "reference/classics.toml"   # 쓸 수 있는 개그·신조어와 쓰면 안 되는 밈
+panels = 4
+max_roles = 3
+max_lines_per_panel = 2       # 컷당 말풍선 수
+max_line_chars = 24           # 말풍선 하나의 글자 수(띄어쓰기 포함). 휴대폰에서 읽어 보고 조정하세요
+max_narration_chars = 30
+max_hook_chars = 20           # 1컷 위에 얹는 한 줄
+max_hashtags = 5              # 인스타그램이 2025년 12월에 게시물당 5개로 줄인다고 알림
+max_classics = 1              # 한 편에 쓰는 고전 개그 수(가끔만)
+max_slang = 2                 # 한 편에 쓰는 신조어 수
+classic_cooldown = 15         # 최근 N개 플롯에서 쓴 고전 개그는 피함
+variants = 3                  # 초안 수(반전형, 공감형, 대화형). API를 쓸 때만 해당
+max_fix_rounds = 2            # 자동 검사에 걸린 것을 다시 쓰게 하는 횟수
+max_source_chars = 3000       # 글 본문을 여기까지만 LLM에 보냄(넘으면 알림)
+min_body_chars = 60           # 이보다 짧은 글은 소재 후보에서 뺌
+# 원문과의 겹침: 이 값 이상이면 오류(베낀 것으로 봄)
+max_common_run = 12           # 띄어쓰기를 뺀 연속 일치 글자 수
+max_line_ratio = 85.0         # 대사 한 줄이 원문과 닮은 정도(0~100)
+warn_jaccard = 0.30           # 전체 글의 3글자 조각 겹침(경고만)
+# 금지 밈 목록의 낱말 중 평범한 말로도 쓰여서 막지 않을 것
+not_banned = ["합시다", "쓰레기", "골목식당"]
+
+[studio.llm]
+# 유료입니다. 켜기 전에는 어떤 API도 부르지 않습니다. 키는 환경변수 ANTHROPIC_API_KEY로 줍니다(이 파일에 쓰지 않음).
+# 끈 채로도 `--prompt-only`로 지시문을 받아 쓰던 채팅 LLM에 붙여 넣는 방식으로 전부 쓸 수 있습니다.
+enabled = false
+model = "claude-opus-5-5"
+effort = "high"
+max_tokens = 32000
+
+[studio.format]
+# 그림 규격. 대본 끝에 그대로 적혀 나갑니다. 플롯에는 들어가지 않습니다.
+layout = "carousel"           # carousel: 한 컷이 한 장 / single: 4컷을 한 장에
+canvas = "1080x1440"          # 3:4. 인스타그램이 2025년 5월부터 지원
+safe_margin_x = 34            # 글자와 중요한 그림을 가장자리에서 띄우는 여백(계산값, 공식 규격 아님)
+safe_margin_y = 45
+min_text_px = 48              # 추정값. 휴대폰에서 읽어 보고 조정하세요
+closing_slide = false         # 계정 안내 장을 마지막에 붙일지
+
+[studio.production]
+# 만드는 방식. 대본의 "올릴 때 확인"에 적혀 나갑니다.
+art = "ai"                    # ai | human | mixed
+script = "llm+human"
+disclosure = "그림과 글에 AI를 사용했습니다."   # 본문 끝에 붙일 문구. 빈 문자열이면 생략

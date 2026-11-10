@@ -27,7 +27,7 @@ from typing import Any, Iterable, Iterator
 
 from models.post import Metrics, PostRecord
 
-SCHEMA_VERSION = 5
+SCHEMA_VERSION = 6
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS posts (
@@ -174,6 +174,31 @@ CREATE TABLE IF NOT EXISTS youtube_files (
 );
 """
 
+V6_SCHEMA = """
+CREATE TABLE IF NOT EXISTS plots (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    post_id    INTEGER REFERENCES posts(id) ON DELETE SET NULL,   -- the post it was adapted from
+    created_at TEXT    NOT NULL,
+    status     TEXT    NOT NULL,             -- 'ready' | 'needs_fix'
+    origin     TEXT    NOT NULL,             -- 'api:<model>' | 'import'
+    angle      TEXT,
+    classics   TEXT    NOT NULL DEFAULT '[]',   -- names of dictionary gags used (JSON)
+    plot       TEXT    NOT NULL,             -- JSON, character-free
+    checks     TEXT    NOT NULL              -- JSON {errors, warnings, similarity}
+);
+CREATE INDEX IF NOT EXISTS idx_plots_post ON plots(post_id);
+CREATE TABLE IF NOT EXISTS scripts (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    plot_id    INTEGER NOT NULL REFERENCES plots(id) ON DELETE CASCADE,
+    cast_name  TEXT    NOT NULL,
+    created_at TEXT    NOT NULL,
+    origin     TEXT    NOT NULL,             -- 'bind' | 'api:<model>' | 'import'
+    script     TEXT    NOT NULL,             -- JSON, plot + characters
+    checks     TEXT    NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_scripts_plot ON scripts(plot_id);
+"""
+
 POST_COLUMNS_FOR_EXPORT = (
     "id", "source", "source_post_id", "url", "title", "body", "published_at",
     "published_at_approx", "collected_at", "category", "views", "likes", "dislikes",
@@ -236,6 +261,8 @@ class Database:
             self.conn.executescript(V4_SCHEMA)
         if version < 5:
             self.conn.execute("ALTER TABLE runs ADD COLUMN posts_deleted INTEGER NOT NULL DEFAULT 0")
+        if version < 6:
+            self.conn.executescript(V6_SCHEMA)
         if version < SCHEMA_VERSION:
             self.conn.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
             self.conn.commit()
@@ -740,6 +767,78 @@ class Database:
         for pid in ids:
             self.delete_post(pid)
         return len(ids)
+
+    # ------------------------------------------------------------------ plots and scripts
+    def plot_candidates(self, *, since: str | None, exclude_flags: Iterable[str], min_body_chars: int,
+                        source: str | None = None, content_category: str | None = None) -> list[sqlite3.Row]:
+        """Posts with enough text to adapt, best first, with how many plots each already has."""
+        where, params = ["LENGTH(COALESCE(p.body, '')) >= ?"], [min_body_chars]
+        if since:
+            where.append("COALESCE(p.published_at, p.first_seen_at) >= ?")
+            params.append(since)
+        if source:
+            where.append("p.source = ?")
+            params.append(source)
+        if content_category:
+            where.append("p.content_category = ?")
+            params.append(content_category)
+        for flag in exclude_flags:
+            where.append("NOT EXISTS (SELECT 1 FROM json_each(p.content_flags) WHERE value = ?)")
+            params.append(flag)
+        return self.conn.execute(
+            f"""
+            SELECT p.*, (SELECT COUNT(*) FROM plots WHERE plots.post_id = p.id) AS plot_count
+            FROM posts p WHERE {' AND '.join(where)}
+            ORDER BY p.popularity_score IS NULL, p.popularity_score DESC, p.id
+            """, params).fetchall()
+
+    def save_plot(self, *, post_id: int | None, status: str, origin: str, plot: dict[str, Any],
+                  checks: dict[str, Any], at: datetime) -> int:
+        cur = self.conn.execute(
+            "INSERT INTO plots(post_id, created_at, status, origin, angle, classics, plot, checks) VALUES (?,?,?,?,?,?,?,?)",
+            (post_id, utc_iso(at), status, origin, plot.get("angle"),
+             json.dumps([c["name"] for c in plot.get("classics", [])], ensure_ascii=False),
+             json.dumps(plot, ensure_ascii=False), json.dumps(checks, ensure_ascii=False)))
+        self.conn.commit()
+        return int(cur.lastrowid)
+
+    def get_plot(self, plot_id: int) -> sqlite3.Row | None:
+        return self.conn.execute("SELECT * FROM plots WHERE id = ?", (plot_id,)).fetchone()
+
+    def list_plots(self, limit: int = 30) -> list[sqlite3.Row]:
+        return self.conn.execute(
+            """
+            SELECT plots.*, posts.title AS post_title, posts.source AS post_source,
+                   (SELECT COUNT(*) FROM scripts WHERE scripts.plot_id = plots.id) AS script_count
+            FROM plots LEFT JOIN posts ON posts.id = plots.post_id ORDER BY plots.id DESC LIMIT ?
+            """, (limit,)).fetchall()
+
+    def recent_classics(self, last_plots: int) -> list[str]:
+        """Dictionary gags used in the most recent plots (to avoid repeating them)."""
+        if last_plots <= 0:
+            return []
+        rows = self.conn.execute("SELECT classics FROM plots ORDER BY id DESC LIMIT ?", (last_plots,)).fetchall()
+        out: list[str] = []
+        for row in rows:
+            for name in json.loads(row["classics"]):
+                if name not in out:
+                    out.append(name)
+        return out
+
+    def save_script(self, *, plot_id: int, cast_name: str, origin: str, script: dict[str, Any],
+                    checks: dict[str, Any], at: datetime) -> int:
+        cur = self.conn.execute(
+            "INSERT INTO scripts(plot_id, cast_name, created_at, origin, script, checks) VALUES (?,?,?,?,?,?)",
+            (plot_id, cast_name, utc_iso(at), origin, json.dumps(script, ensure_ascii=False),
+             json.dumps(checks, ensure_ascii=False)))
+        self.conn.commit()
+        return int(cur.lastrowid)
+
+    def get_script(self, script_id: int) -> sqlite3.Row | None:
+        return self.conn.execute("SELECT * FROM scripts WHERE id = ?", (script_id,)).fetchone()
+
+    def list_scripts(self, limit: int = 30) -> list[sqlite3.Row]:
+        return self.conn.execute("SELECT * FROM scripts ORDER BY id DESC LIMIT ?", (limit,)).fetchall()
 
     # ------------------------------------------------------------------ stats
     def stats(self) -> dict[str, Any]:

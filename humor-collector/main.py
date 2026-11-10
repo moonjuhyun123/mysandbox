@@ -14,6 +14,11 @@
     python main.py trends --days 7 --html trends.html          # recurring meme/짤 phrases
     python main.py youtube accept-terms                        # once, before using YouTube search
     python main.py youtube search "담배피는 눈사람"             # YouTube lookup (YOUTUBE_API_KEY)
+    python main.py plot candidates                             # posts worth turning into a comic
+    python main.py plot write 42 --prompt-only                 # prompt for a chat LLM (no API key)
+    python main.py plot import 42 answer.json                  # check + store the plot it wrote
+    python main.py script cast 1 --cast config/casts/example.toml   # put characters on plot #1
+    python main.py script show 1 --output script.md            # the final script
 """
 from __future__ import annotations
 
@@ -38,6 +43,7 @@ from processing.normalize import normalize_text, normalize_url
 from processing.trends import TrendConfig, find_trends
 from settings import load_settings
 from storage.db import Database, row_to_export, utc_iso
+from studio import cli as studio_cli
 
 log = logging.getLogger("humor_collector")
 
@@ -587,6 +593,7 @@ def build_parser() -> argparse.ArgumentParser:
     who.add_argument("--author", help="Bluesky author DID (did:plc:...)")
     f.add_argument("--note", help="why (e.g. 'removal request by the author')")
     f.set_defaults(func=cmd_forget)
+    studio_cli.add_parsers(sub)
     sh = sub.add_parser("show", help="show one post and its metric history")
     sh.add_argument("id", type=int)
     sh.set_defaults(func=cmd_show)
