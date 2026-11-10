@@ -17,8 +17,10 @@ from studio import prompts
 from studio.cast import CastError, CastWriter, assign, bind, food_options, load_cast
 from studio.checks import Limits, check_plot
 from studio.gags import GagBook
+from studio.imageprompt import image_prompts, panel_prompt, to_text
 from studio.llm import LLMError, make_llm
 from studio.render import to_markdown
+from studio.wording import scene_texts, with_josa, with_names
 from studio.writer import PlotWriter, Unsuitable, clean_plot
 
 NOW = datetime(2026, 11, 10, 3, 0, tzinfo=timezone.utc)
@@ -325,6 +327,97 @@ def test_markdown_shows_the_caution_of_a_used_classic():
     assert "**무야호** (4컷)" in text and BOOK.classic("무야호").caution in text and "역할만 있습니다" in text
 
 
+# ------------------------------------------------------------------ image prompts
+
+NAMES = {"A": "떡볶이", "B": "라면", "C": "만두"}
+
+
+@pytest.mark.parametrize("text, expected", [
+    ("A가 B를 본다. B는 웃는다.", "떡볶이가 라면을 본다. 라면은 웃는다."),          # particle follows the name's last sound
+    ("C와 A는 B로 간다. C로 간다.", "만두와 떡볶이는 라면으로 간다. 만두로 간다."),
+    ("A이랑 B랑, B의 자리, A에게", "떡볶이랑 라면이랑, 라면의 자리, 떡볶이에게"),
+    ("PC 앞의 A, TV를 보는 C", "PC 앞의 떡볶이, TV를 보는 만두"),                  # letters inside other words stay
+    ("A/S 센터, B급 영화, 비타민 C, A4 용지, 플랜 B, A형, A+", "A/S 센터, B급 영화, 비타민 C, A4 용지, 플랜 B, A형, A+"),
+    ("", ""),
+])
+def test_role_letters_become_names_with_the_right_particles(text, expected):
+    assert with_names(text, NAMES) == expected
+
+
+def test_particles_and_text_inside_the_picture():
+    assert [with_josa("라면", "는"), with_josa("만두", "은"), with_josa("쌀", "으로"), with_josa("김밥", "로")] == \
+        ["라면은", "만두는", "쌀로", "김밥으로"]
+    panel = {"scene": "모니터에 '이렇게 쓰면 안 됩니다'가 보인다. \"17쪽\" 표시", "action": "‘출입 금지’ 팻말 옆. '17쪽'을 가리킨다"}
+    assert scene_texts(panel) == ["이렇게 쓰면 안 됩니다", "17쪽", "출입 금지"]
+    assert scene_texts({"scene": "사무실", "action": ""}) == []
+    said = {"scene": "'고장' 쪽지", "action": "말풍선의 '올려'만 굵게. 효과음 '띠링!'은 크게",
+            "lines": [{"role": "A", "text": "위에 잘 올려 볼게요."}], "sfx": "띠링! 띠링!"}
+    assert scene_texts(said) == ["고장"]                      # quotes that repeat the lettering are not signs
+
+
+def cast_script(cast, **changes):
+    script, _ = CastWriter(BOOK, LIMITS).bind(clean_plot(plot(**changes)), cast, POST)
+    script["format"] = {"canvas": "1080x1440"}
+    return script
+
+
+def test_every_panel_prompt_stands_alone_and_names_only_who_is_in_it(cast):
+    script = cast_script(cast)
+    prompts_ = image_prompts(script)
+    assert [title for title, _ in prompts_] == ["0. 캐릭터 시트 (먼저 한 번)", "1컷", "2컷", "3컷", "4컷"]
+    sheet, first, second, _, last = (text for _, text in prompts_)
+    assert "왼쪽부터 만두, 라면 순서" in sheet and "글자는 하나도 넣지 않는다" in sheet      # the reference sheet carries no text
+    assert "세로로 긴 3:4 비율" in sheet and "1080" not in sheet                               # ratio in words, no pixels
+    for text in (first, second, last):                       # each image is generated on its own
+        assert "음식 동네" in text and "세로로 긴 3:4 비율" in text and "칸을 나누지 않는다" in text
+        assert "캐릭터를 새로 디자인하지 않는다" in text and "각각 한 번씩" in text and "그 밖의 글자는 넣지 않는다" in text
+    assert "- 만두:" in first and "- 라면:" not in first and "다른 캐릭터는 넣지 않는다" in first
+    assert "만두가 살금살금 문고리를 잡는다" in first and "A가" not in first
+    assert '굵고 큰 제목: "문 앞 3초 전"' in first and '설명 상자: "시계는 5시 59분"' in first
+    assert "굵고 큰 제목" not in second and '라면 옆 말풍선: "잠깐, 다들 모여 볼까?"' in second
+    assert "- 만두:" in last and "- 라면:" in last           # A is named in the action, B speaks
+    assert '효과음(말풍선 없이): "털썩"' in last and '적힌 글자: "금요일 저녁 메뉴"' in last
+    two = copy.deepcopy(script["panels"][1])
+    two["lines"].append({"role": "A", "text": "네…"})
+    assert "순서대로 위에서 아래로" in panel_prompt(script, two) and "순서대로 위에서 아래로" not in second
+
+
+def test_prompts_without_lettering_leave_room_and_list_the_text(cast):
+    script = cast_script(cast)
+    text = panel_prompt(script, script["panels"][3], with_text=False)
+    assert "글자는 하나도 넣지 않는다" in text and "흰 말풍선을 1개" in text and "고기냐 회냐" not in text
+    assert "글자가 들어갈 자리는 무늬 없이 비워 둔다" in text
+    first = panel_prompt(script, script["panels"][0], with_text=False)
+    assert "제목을 얹을 빈 띠" in first and "빈 네모 상자" in first and "말풍선을" not in first
+    doc = to_text(script, with_text=False)
+    assert "## 나중에 얹을 글자" in doc and "- 4컷: 라면: 고기냐 회냐, 그것이 문제야 / 효과음: 털썩 / 장면 속 글자: 금요일 저녁 메뉴" in doc
+    assert "나중에 얹을 글자" not in to_text(script)
+
+
+def test_image_prompts_need_a_cast_script():
+    with pytest.raises(ValueError, match="캐릭터를 입힌 대본"):
+        image_prompts(clean_plot(plot()))
+
+
+def test_script_document_names_the_characters_but_a_plot_keeps_its_roles(cast):
+    script, report = CastWriter(BOOK, LIMITS).bind(clean_plot(plot()), cast, POST)
+    text = to_markdown(script, book=BOOK, checks=report.as_dict(), source=POST)
+    assert "- 행동·표정: 만두가 살금살금 문고리를 잡는다" in text and "대체 텍스트: 사무실 문 앞 만두가 살금살금" in text
+    assert "- 행동·표정: A가 살금살금 문고리를 잡는다" in to_markdown(clean_plot(plot()), book=BOOK)
+
+
+def test_much_text_inside_the_picture_is_noted_not_refused():
+    panels = copy.deepcopy(plot()["panels"])
+    panels[0]["scene"] = "문에 '관계자 외 출입 금지' 팻말과 '오늘의 안건' 쪽지가 붙어 있다"
+    report = check_plot(plot(panels=panels), book=BOOK, limits=LIMITS)
+    assert report.ok and any("1컷 그림 속에 적히는 글자" in w for w in report.warnings)
+    assert not any("그림 속" in w for w in check_plot(plot(), book=BOOK, limits=LIMITS).warnings)
+    panels = copy.deepcopy(plot()["panels"])                 # hook + 2 bubbles + narration + sound effect on panel 1
+    panels[0].update(lines=[{"role": "A", "text": "간다."}, {"role": "B", "text": "어디?"}], sfx="살금")
+    report = check_plot(plot(panels=panels), book=BOOK, limits=LIMITS)
+    assert report.ok and any("1컷에 넣을 글자가 5덩어리" in w for w in report.warnings)
+
+
 # ------------------------------------------------------------------ storage and CLI
 
 def stored_post(db, body=POST["body"], flags=()):
@@ -397,6 +490,17 @@ def test_chat_workflow_from_prompt_to_script_file(cfg, tmp_path, capsys):
     assert '**만두**: "잠깐, 다들 모여 볼까?"' in text and "자동 검사" in text and "통과" in text
     assert main.main(["--config", cfg, "script", "cast", "1", "--cast", str(cast_file), "--prompt-only"]) == 0
     assert "캐릭터 묶음: 분식" in capsys.readouterr().out
+
+    capsys.readouterr()
+    assert main.main(["--config", cfg, "script", "prompts", "1"]) == 0
+    shown = capsys.readouterr().out
+    assert "## 0. 캐릭터 시트" in shown and "## 4컷" in shown and '만두 옆 말풍선: "잠깐, 다들 모여 볼까?"' in shown
+    assert "## 쓰는 법" in shown and "1080×1440으로 줄이거나 잘라" in shown
+    prompt_file = tmp_path / "prompts.md"
+    assert main.main(["--config", cfg, "script", "prompts", "1", "--no-text", "--output", str(prompt_file)]) == 0
+    assert "## 나중에 얹을 글자" in prompt_file.read_text(encoding="utf-8")
+    with pytest.raises(SystemExit, match="대본 #9"):
+        main.main(["--config", cfg, "script", "prompts", "9"])
 
 
 def test_broken_plot_is_stored_but_not_cast_without_force(cfg, tmp_path, capsys):

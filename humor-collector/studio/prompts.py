@@ -127,10 +127,16 @@ def system_prompt(book: GagBook, limits: Limits) -> str:
 - 내레이션은 {limits.max_narration_chars}자 이내. 없어도 됩니다.
 - 역할은 최대 {limits.max_roles}명. 적을수록 좋습니다.
 - hook은 1컷 위에 크게 얹는 한 줄입니다. {limits.max_hook_chars}자 이내. 후보 3개를 hooks에 쓰고 가장 센 것을 hook에 씁니다.
+- 한 컷에 들어가는 글자는 대사, 내레이션, 효과음, 그림 속 글자를 모두 합쳐 {limits.max_text_items}덩어리 이하로 합니다(1컷은 hook도 셉니다).
+  그림을 그림 생성 도구로 만들기 때문에, 글자가 적고 짧을수록 틀리지 않고 나옵니다. 내레이션과 효과음은 꼭 필요할 때만 씁니다.
 
 ## 필드
 - roles: 각 역할의 id(A, B, C), 이야기에서 맡는 일(role), 필요한 성격(traits, 2~3개). 생김새는 쓰지 않습니다.
 - panels[].scene: 장소와 보이는 것. panels[].action: 누가 무엇을 하는지와 표정. 그림 그리는 사람이 이것만 보고 그릴 수 있게 씁니다.
+  컷마다 그림을 따로 그리므로 장소를 매번 적습니다. '같은 사무실', '1컷과 같은 구도'처럼 앞 컷에 기대는 표현은 쓰지 않습니다.
+  그림 속 물건에 글자가 읽혀야 하면(간판, 화면, 쪽지) 그 글자를 작은따옴표로 감싸 씁니다. 꼭 필요할 때만,
+  한 컷에 {limits.max_scene_texts}개, {limits.max_scene_text_chars}자 이내로 씁니다. 그 밖의 곳에는 작은따옴표를 쓰지 않습니다.
+- A, B, C 글자는 역할을 가리킬 때만 씁니다(다른 뜻의 'B급', '플랜 B' 같은 말은 다른 말로 바꿉니다).
 - panels[].lines[].role: 반드시 roles의 id. panels[].seconds: 영상으로 만들 때 이 컷을 보여 줄 시간(초).
 - caption: 게시글 본문 1~2문장. 만화 내용과 직접 관련된 짧은 글로 독자에게 말을 겁니다.
   첫 문장에 상황을 가리키는 일상 낱말(예: 직장인, 자취, 회식)을 자연스럽게 1~2개 넣습니다.
@@ -270,7 +276,14 @@ def cast_prompt(plot: Mapping[str, Any], cast: Mapping[str, Any], *, options: Se
 - 이야기와 컷 구성은 바꾸지 않습니다. 컷 수는 {limits.panels}개 그대로입니다.
 - 대사는 뜻을 유지한 채 각 캐릭터의 말투로 다듬습니다. lines[].role에는 역할 id(A, B, C)를 그대로 씁니다.
 - scene과 action은 세계관에 맞게 장소·소품을 바꾸고, 캐릭터의 생김새와 표정이 드러나게 씁니다.
+  scene과 action에서는 역할 글자(A, B) 대신 캐릭터 이름을 씁니다.
+- 컷마다 그림을 따로 그립니다. scene에는 장소를 매번 적고, '같은 사무실', '1컷과 같은 구도'처럼 앞 컷에 기대는 표현은 쓰지 않습니다.
+  scene과 action에는 그림에 보이는 것만 적습니다. 말풍선 위치나 글자 크기 같은 편집 지시는 art_notes에 적습니다.
+- 그림 속 물건에 글자가 읽혀야 하면(간판, 화면, 쪽지) 작은따옴표로 감싸 씁니다. 한 컷에 {limits.max_scene_texts}개,
+  {limits.max_scene_text_chars}자 이내. 그 밖의 곳에는 작은따옴표를 쓰지 않습니다.
 - 글자 수 제한은 플롯과 같습니다(대사 {limits.max_line_chars}자, 컷당 {limits.max_lines_per_panel}개, hook {limits.max_hook_chars}자).
+  한 컷의 글자는 대사, 내레이션, 효과음, 그림 속 글자를 모두 합쳐 {limits.max_text_items}덩어리 이하입니다(1컷은 hook도 셉니다).
+  넘으면 내레이션이나 효과음부터 뺍니다.
 - 그림은 만화체로 지시합니다. 실제 사람처럼 사실적인 그림, 특정 작가·작품·기존 캐릭터를 흉내 내라는 지시는 쓰지 않습니다.
 - 플롯에 이미 고전 개그가 있으면 더 넣지 않습니다. classics와 slang에는 최종 대본에 실제로 쓴 것만 적습니다.
 - art_notes: 그림 그리는 사람이 알아야 할 것(캐릭터별 색, 반복 소품 등)을 2~3문장으로 씁니다.""")

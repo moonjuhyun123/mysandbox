@@ -15,6 +15,7 @@ from rapidfuzz import fuzz
 
 from processing.normalize import jaccard, normalize_text, shingles
 from studio.gags import GagBook
+from studio.wording import scene_texts
 
 _PERSONAL = (
     (re.compile(r"https?://|www\.", re.IGNORECASE), "링크"),
@@ -46,6 +47,9 @@ class Limits:
     max_hashtags: int = 5
     max_classics: int = 1
     max_slang: int = 2
+    max_scene_texts: int = 1       # words inside the picture (a sign, a screen); more is a note, not an error
+    max_scene_text_chars: int = 14
+    max_text_items: int = 4        # bubbles + narration + sound effect + words in the picture (+ the hook on panel 1)
     max_common_run: int = 12       # longest run of characters shared with the source (spaces ignored)
     max_line_ratio: float = 85.0   # rapidfuzz partial ratio of one line against the source
     min_line_len_for_ratio: int = 10
@@ -149,6 +153,16 @@ def check_plot(plot: Mapping[str, Any], *, book: GagBook, limits: Limits, source
                 err(f"{i}컷 대사가 {len(text)}자입니다(최대 {limits.max_line_chars}자): {text}")
         if len(narration) > limits.max_narration_chars:
             err(f"{i}컷 내레이션이 {len(narration)}자입니다(최대 {limits.max_narration_chars}자).")
+        shown = scene_texts(panel)
+        long = [t for t in shown if len(t) > limits.max_scene_text_chars]
+        if len(shown) > limits.max_scene_texts or long:
+            warn(f"{i}컷 그림 속에 적히는 글자가 많습니다({', '.join(repr(t) for t in shown)}). 그림 생성 도구는 "
+                 f"글자를 틀리기 쉬우니 컷당 {limits.max_scene_texts}개, {limits.max_scene_text_chars}자 이내가 좋습니다.")
+        pieces = (len(lines) + bool(str(narration).strip()) + bool(str(panel.get("sfx") or "").strip()) + len(shown)
+                  + (1 if i == 1 and str(plot.get("hook") or "").strip() else 0))
+        if pieces > limits.max_text_items:
+            warn(f"{i}컷에 넣을 글자가 {pieces}덩어리입니다(대사, 내레이션, 효과음, 그림 속 글자, 1컷은 첫 컷 문구 포함). "
+                 f"{limits.max_text_items}덩어리 이하면 그림 생성 도구가 글자를 덜 틀립니다.")
     hook = plot.get("hook", "")
     if not hook.strip():
         err("첫 컷 문구(hook)가 없습니다.")

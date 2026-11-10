@@ -1,0 +1,189 @@
+"""Image-generation prompts for a cast script: one prompt per panel, ready to paste into an
+image generator, plus a character-sheet prompt to fix the characters' looks first.
+
+Every panel prompt is self-contained (style, world, the characters in that panel, the scene,
+the exact lettering) because each image is generated separately. The wording follows what
+OpenAI's image prompting guide asks for (checked 2026-11-10, see docs/GROWTH.md): name the aspect
+ratio in words, quote the exact text and say where it goes, ask for no other text, repeat the
+character description every time, one scene per image.
+"""
+from __future__ import annotations
+
+import re
+from math import gcd
+from typing import Any, Mapping
+
+from studio.wording import scene_texts, with_names
+
+
+def _ratio(canvas: str) -> str:
+    """"1080x1440" -> "세로로 긴 3:4". Pixel sizes are not requested: chat image tools pick their own."""
+    try:
+        w, h = (int(x) for x in canvas.lower().split("x"))
+    except ValueError:
+        return canvas
+    g = gcd(w, h) or 1
+    shape = "세로로 긴" if h > w else "가로로 긴" if w > h else "정사각형"
+    return f"{shape} {w // g}:{h // g}"
+
+
+def _characters(doc: Mapping[str, Any]) -> dict[str, Mapping[str, Any]]:
+    return {c["role"]: c for c in doc.get("characters", [])}
+
+
+def _in_panel(panel: Mapping[str, Any], chars: Mapping[str, Mapping[str, Any]]) -> list[Mapping[str, Any]]:
+    """Characters that speak in the panel or are named in its scene/action (all of them if none is)."""
+    text = f"{panel.get('scene', '')} {panel.get('action', '')} {panel.get('narration', '')}"
+    speaking = {ln["role"] for ln in panel.get("lines", [])}
+    found = [c for role, c in chars.items()
+             if role in speaking or c["name"] in text or with_names(text, {role: "\0"}) != text]
+    return found or list(chars.values())
+
+
+def _style_block(doc: Mapping[str, Any], *, single_scene: bool = False) -> list[str]:
+    cast, fmt = doc.get("cast", {}), doc.get("format", {})
+    out = ["[그림 스타일]"]
+    if cast.get("style"):
+        out.append(cast["style"])
+    out += ["만화 그림체로 그린다. 사진처럼 사실적으로 그리지 않는다.",
+            f"{_ratio(fmt.get('canvas', '1080x1440'))} 비율의 그림 한 장.",
+            "글자와 캐릭터는 가장자리에 붙이지 말고 안쪽에 둔다. 가장자리는 나중에 조금 잘릴 수 있다."]
+    if single_scene:
+        out.append("한 장에 한 장면만 그린다. 칸을 나누지 않는다. 여러 컷을 한 장에 넣지 않는다.")
+    if cast.get("world"):
+        out += ["", "[세계관]", cast["world"]]
+    return out
+
+
+def _character_lines(chars: list[Mapping[str, Any]]) -> list[str]:
+    return [f"- {c['name']}: {c.get('look') or '(생김새 설명 없음)'}" for c in chars]
+
+
+CLOSING = "새로 만든 그림만 쓴다. 상표, 로고, 서명, 워터마크, 컷 번호는 넣지 않는다."
+
+
+def character_sheet_prompt(doc: Mapping[str, Any]) -> str:
+    chars = list(_characters(doc).values())
+    out = _style_block(doc)
+    order = ", ".join(c["name"] for c in chars)
+    out += ["", "[그릴 것: 캐릭터 시트]",
+            f"아래 캐릭터 {len(chars)}명을 한 장에 나란히 세워 그린다. 왼쪽부터 {order} 순서다. 무늬 없는 흰 배경. "
+            "캐릭터마다 전신 정면 모습 하나와, 그 옆에 작은 얼굴 표정 세 개(평소, 놀람, 시무룩)를 그린다. "
+            "이 그림을 뒤에 그릴 모든 컷의 기준으로 쓴다.",
+            *_character_lines(chars),
+            "", "[글자] 글자는 하나도 넣지 않는다.", CLOSING]
+    return "\n".join(out)
+
+
+def panel_prompt(doc: Mapping[str, Any], panel: Mapping[str, Any], *, with_text: bool = True) -> str:
+    chars = _characters(doc)
+    names = {role: c["name"] for role, c in chars.items()}
+    present = _in_panel(panel, chars)
+    out = _style_block(doc, single_scene=True)
+    out += ["", "[등장 캐릭터] 아래 생김새 그대로 그린다. 캐릭터 시트를 먼저 만들었다면 그 그림과 같은 캐릭터다. "
+                "캐릭터를 새로 디자인하지 않는다.",
+            *_character_lines(present)]
+    if len(present) < len(chars):
+        out.append("위 캐릭터만 그린다. 다른 캐릭터는 넣지 않는다.")
+    out += ["", f"[장면: {len(doc.get('panels', []))}컷 만화의 {panel.get('n', '?')}번째 컷]"]
+    if panel.get("scene"):
+        out.append(f"배경: {with_names(panel['scene'], names)}")
+    if panel.get("action"):
+        out.append(f"행동과 표정: {with_names(panel['action'], names)}")
+
+    hook = doc.get("hook") if panel.get("n") == 1 else ""
+    lines = [(names.get(ln["role"], ln["role"]), ln["text"]) for ln in panel.get("lines", [])]
+    in_scene = scene_texts(panel)
+    lettering = []
+    if hook:
+        lettering.append(f'그림 맨 위 가운데에 굵고 큰 제목: "{hook}"')
+    lettering += [f'{who} 옆 말풍선: "{text}"' for who, text in lines]
+    if panel.get("narration"):
+        lettering.append(f'그림 구석의 네모난 설명 상자: "{panel["narration"]}"')
+    if panel.get("sfx"):
+        lettering.append(f'손글씨 느낌의 효과음(말풍선 없이): "{panel["sfx"]}"')
+    lettering += [f'장면 속 물건(화면, 간판, 종이)에 적힌 글자: "{text}"' for text in in_scene]
+
+    out.append("")
+    if not lettering:
+        out.append("[글자] 글자는 하나도 넣지 않는다.")
+    elif with_text:
+        out += ["[글자] 아래 글자만, 각각 한 번씩 넣는다. 따옴표 안의 한글을 한 글자도 바꾸지 않는다. "
+                "굵은 고딕체로, 수평으로, 휴대폰에서도 읽히게 크게 쓴다.",
+                *[f"- {item}" for item in lettering]]
+        if len(lines) > 1:
+            out.append("말풍선은 위에 적힌 순서대로 위에서 아래로 놓는다.")
+        out.append("그 밖의 글자는 넣지 않는다.")
+    else:
+        out.append("[글자] 글자는 하나도 넣지 않는다. 글자는 나중에 따로 얹는다.")
+        if lines:
+            speakers = ", ".join(dict.fromkeys(who for who, _ in lines))
+            out.append(f"말하는 캐릭터({speakers}) 옆에 비어 있는 흰 말풍선을 {len(lines)}개 그린다. 말풍선 안은 비워 둔다.")
+        if hook:
+            out.append("그림 맨 위에 제목을 얹을 빈 띠를 남긴다.")
+        if panel.get("narration"):
+            out.append("설명 글을 얹을 빈 네모 상자를 하나 그린다.")
+        if in_scene:
+            out.append("장면 속 화면, 간판, 종이에 글자가 들어갈 자리는 무늬 없이 비워 둔다.")
+    out.append(CLOSING)
+    return "\n".join(out)
+
+
+def lettering_list(doc: Mapping[str, Any]) -> list[tuple[int, list[str]]]:
+    """Per panel, every piece of text that goes on the picture, for lettering by hand afterwards."""
+    names = {c["role"]: c["name"] for c in doc.get("characters", [])}
+    out = []
+    for panel in doc.get("panels", []):
+        items = []
+        if panel.get("n") == 1 and doc.get("hook"):
+            items.append(f"제목: {doc['hook']}")
+        items += [f"{names.get(ln['role'], ln['role'])}: {ln['text']}" for ln in panel.get("lines", [])]
+        if panel.get("narration"):
+            items.append(f"설명: {panel['narration']}")
+        if panel.get("sfx"):
+            items.append(f"효과음: {panel['sfx']}")
+        items += [f"장면 속 글자: {text}" for text in scene_texts(panel)]
+        out.append((panel.get("n", 0), items))
+    return out
+
+
+def image_prompts(doc: Mapping[str, Any], *, with_text: bool = True) -> list[tuple[str, str]]:
+    """(title, prompt) pairs: the character sheet first, then one per panel."""
+    if not doc.get("characters"):
+        raise ValueError("캐릭터를 입힌 대본에서만 그림 지시문을 만들 수 있습니다(`script cast` 먼저).")
+    out = [("0. 캐릭터 시트 (먼저 한 번)", character_sheet_prompt(doc))]
+    for panel in doc.get("panels", []):
+        out.append((f"{panel.get('n', '?')}컷", panel_prompt(doc, panel, with_text=with_text)))
+    return out
+
+
+def to_text(doc: Mapping[str, Any], *, with_text: bool = True) -> str:
+    canvas = doc.get("format", {}).get("canvas", "1080x1440").replace("x", "×")
+    first = (doc.get("characters") or [{}])[0].get("name", "캐릭터")
+    parts = [f"# 그림 지시문: {doc.get('title', '')}", "",
+             "## 쓰는 법", "",
+             "1. 만화 한 편마다 그림 생성 채팅(예: ChatGPT)을 새로 열고 0번(캐릭터 시트)을 먼저 붙여 넣습니다. "
+             "비율을 고르는 메뉴가 있으면 지시문에 적힌 비율과 같게 고릅니다.",
+             "2. 캐릭터 시트가 마음에 들면, 같은 대화에서 1컷부터 차례로 한 번에 하나씩 붙여 넣습니다. 지시문마다 캐릭터 생김새와 "
+             "그림 방향이 다시 적혀 있어서 대화가 끊겨도 이어 갈 수 있습니다. 새 대화에서 이어 가거나 캐릭터가 달라지기 시작하면 "
+             "캐릭터 시트 그림을 그 메시지에 함께 올립니다.",
+             "3. 그림이 나올 때마다 한글이 따옴표 안과 같은지 사람이 직접 읽어 봅니다. 그림 생성 도구는 글자를 틀릴 수 있고, "
+             "도구에게 철자 검사를 맡기는 것도 믿기 어렵습니다.",
+             f"4. 그림 크기는 도구가 정합니다(픽셀 수를 적어도 지켜지지 않습니다). 올리기 전에 {canvas}으로 줄이거나 잘라 맞춥니다.",
+             "5. 무료 요금제는 하루에 만들 수 있는 그림 수가 적습니다. 캐릭터 시트 1장과 컷 4장에 다시 그리기까지 하면 모자랄 수 있습니다.",
+             "",
+             "고칠 때는 한 번에 한 가지만 말합니다.", "",
+             '- 글자가 틀렸을 때: `말풍선 글자만 "(맞는 문장)"으로 고친다. 캐릭터, 배경, 구도는 그대로 둔다.`',
+             f"- 캐릭터가 달라졌을 때: `{first}만 캐릭터 시트와 같은 생김새로 고친다. 나머지는 그대로 둔다.`",
+             "- 글자가 계속 틀리면 `script prompts --no-text`로 글자 없는 그림을 만들고, 글자는 편집 앱에서 얹습니다.",
+             ""]
+    if doc.get("art_notes"):
+        parts += ["## 그림 메모 (사람이 읽는 참고)", "", doc["art_notes"], ""]
+    for title, prompt in image_prompts(doc, with_text=with_text):
+        parts += [f"## {title}", "", "```", prompt, "```", ""]
+    if not with_text:
+        parts += ["## 나중에 얹을 글자", ""]
+        for n, items in lettering_list(doc):
+            parts.append(f"- {n}컷: " + (" / ".join(items) if items else "(글자 없음)"))
+        parts.append("")
+    return "\n".join(parts)

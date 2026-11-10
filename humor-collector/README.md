@@ -181,6 +181,7 @@ Bluesky 개발자 가이드라인은 삭제 요청 처리와 차단 수단을 �
 .venv/bin/python main.py plot import 400 답.json              # LLM의 답을 검사하고 저장
 .venv/bin/python main.py script cast 1 --cast config/casts/example.toml   # 캐릭터 입히기
 .venv/bin/python main.py script show 1 --output 대본.md       # 컷별 대본 문서
+.venv/bin/python main.py script prompts 1 --output 그림지시문.md  # 그림 생성 도구에 붙여 넣을 컷별 지시문
 ```
 
 - 플롯은 역할(A, B)로만 씁니다. 캐릭터는 `config/casts/*.toml` 파일로 줍니다. 같은 플롯을 다른 캐릭터로 다시 뽑을 수 있습니다.

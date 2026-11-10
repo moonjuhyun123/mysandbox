@@ -12,6 +12,7 @@ from storage.db import Database, now_utc, utc_iso
 from studio.cast import CastError, CastWriter, load_cast
 from studio.checks import Limits
 from studio.gags import GagBook
+from studio.imageprompt import to_text as image_prompt_text
 from studio.llm import LLMError, make_llm
 from studio.render import to_markdown
 from studio.writer import PlotWriter, Unsuitable
@@ -260,15 +261,19 @@ def cmd_script(args, settings, db: Database) -> int:
             print(f"#{row['id']:<4} 플롯 #{row['plot_id']:<4} {row['cast_name']:<12} {row['origin']:<14} {script['title']}")
         return 0
 
-    if args.action == "show":
+    if args.action in ("show", "prompts"):
         row = db.get_script(args.id)
         if row is None:
             raise SystemExit(f"대본 #{args.id}이(가) 없습니다. `script list`로 번호를 확인하세요.")
         script = json.loads(row["script"])
-        plot_row = db.get_plot(row["plot_id"])
-        source = db.get_post(plot_row["post_id"]) if plot_row and plot_row["post_id"] else None
-        text = (json.dumps(script, ensure_ascii=False, indent=2) if args.json else
-                to_markdown(script, book=_book(studio), checks=json.loads(row["checks"]), source=source))
+        if args.action == "prompts":
+            text = image_prompt_text(script, with_text=not args.no_text)
+        elif args.json:
+            text = json.dumps(script, ensure_ascii=False, indent=2)
+        else:
+            plot_row = db.get_plot(row["plot_id"])
+            source = db.get_post(plot_row["post_id"]) if plot_row and plot_row["post_id"] else None
+            text = to_markdown(script, book=_book(studio), checks=json.loads(row["checks"]), source=source)
         if args.output:
             Path(args.output).write_text(text, encoding="utf-8")
             print(f"{args.output}에 저장했습니다.")
@@ -362,4 +367,8 @@ def add_parsers(sub) -> None:
     so.add_argument("id", type=int)
     so.add_argument("--json", action="store_true")
     so.add_argument("--output", help="write to this file instead of the screen")
+    sp = ss.add_parser("prompts", help="image-generation prompts for one script: character sheet + one per panel")
+    sp.add_argument("id", type=int)
+    sp.add_argument("--no-text", action="store_true", help="ask for pictures without lettering (empty speech bubbles)")
+    sp.add_argument("--output", help="write to this file instead of the screen")
     s.set_defaults(func=cmd_script)

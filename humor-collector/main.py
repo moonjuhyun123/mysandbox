@@ -19,6 +19,7 @@
     python main.py plot import 42 answer.json                  # check + store the plot it wrote
     python main.py script cast 1 --cast config/casts/example.toml   # put characters on plot #1
     python main.py script show 1 --output script.md            # the final script
+    python main.py script prompts 1 --output prompts.md        # per-panel prompts for an image generator
 """
 from __future__ import annotations
 
@@ -27,6 +28,7 @@ import fcntl
 import json
 import logging
 import logging.handlers
+import os
 import sys
 from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
@@ -614,4 +616,10 @@ def main(argv: list[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        code = main()
+        sys.stdout.flush()
+    except BrokenPipeError:              # e.g. `main.py script list | head`: the reader closed the pipe first
+        os.dup2(os.open(os.devnull, os.O_WRONLY), sys.stdout.fileno())
+        code = 0
+    sys.exit(code)

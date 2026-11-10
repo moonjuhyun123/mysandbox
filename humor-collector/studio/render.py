@@ -4,6 +4,7 @@ from __future__ import annotations
 from typing import Any, Mapping
 
 from studio.gags import GagBook
+from studio.wording import with_names
 
 
 def _speaker_names(doc: Mapping[str, Any]) -> dict[str, str]:
@@ -13,7 +14,7 @@ def _speaker_names(doc: Mapping[str, Any]) -> dict[str, str]:
 
 def alt_text(panel: Mapping[str, Any], names: Mapping[str, str]) -> str:
     """Plain description of one panel for the image's alternative text (accessibility)."""
-    parts = [panel.get("scene", ""), panel.get("action", "")]
+    parts = [with_names(panel.get("scene", ""), names), with_names(panel.get("action", ""), names)]
     parts += [f"{names.get(ln['role'], ln['role'])}: \"{ln['text']}\"" for ln in panel.get("lines", [])]
     if panel.get("narration"):
         parts.append(panel["narration"])
@@ -38,11 +39,12 @@ def _format_lines(fmt: Mapping[str, Any], panels: int) -> list[str]:
 def _upload_lines(production: Mapping[str, Any]) -> list[str]:
     out = ["## 올릴 때 확인", ""]
     if production.get("disclosure"):
-        out.append(f"- 제작 방식 표시(본문 끝에 붙이는 문구): {production['disclosure']}")
+        out.append(f"- 제작 방식 표시(본문 끝에 붙이는 문구. 붙일지는 운영자가 정합니다): {production['disclosure']}")
     out += [
-        "- 그림 도구가 넣은 AI 표시나 메타데이터는 지우지 않습니다.",
+        "- 그림 속 한글이 대본과 같은지 사람이 직접 읽어 확인합니다. 그림 생성 도구는 글자를 틀릴 수 있습니다.",
+        "- 그림 도구가 넣은 AI 표시나 메타데이터는 지우지 않습니다. 인스타그램이 그 정보를 읽어 AI 라벨을 붙일 수 있습니다.",
         "- 여러 장 게시물에 음악을 붙이면 릴스 탭에도 노출될 수 있습니다(선택). 쓸 수 있는 음악은 앱에서 확인합니다.",
-        "- 각 장의 대체 텍스트에 아래 '대체 텍스트' 줄을 넣습니다.",
+        "- 각 장의 대체 텍스트에 컷별 대본의 '대체 텍스트' 줄을 넣습니다.",
         "- 쓰인 개그의 주의 사항과 등장 인물·상표 소식을 올리기 직전에 한 번 더 확인합니다.",
         "",
     ]
@@ -54,6 +56,7 @@ def to_markdown(doc: Mapping[str, Any], *, book: GagBook, checks: Mapping[str, A
     """``doc`` is a plot (roles only) or a script (roles bound to characters)."""
     names = _speaker_names(doc)
     cast = doc.get("cast")
+    named = (lambda text: with_names(text, names)) if cast else (lambda text: text)   # a plot keeps A, B
     out = [f"# {heading or doc.get('title', '')}", ""]
     out += [f"- 한 줄 요약: {doc.get('logline', '')}",
             f"- 방향: {doc.get('angle', '')}",
@@ -87,9 +90,9 @@ def to_markdown(doc: Mapping[str, Any], *, book: GagBook, checks: Mapping[str, A
         if p["n"] == 1 and doc.get("hook"):
             out.append(f"- 위에 얹는 문구: **{doc['hook']}**")
         if p.get("scene"):
-            out.append(f"- 장면: {p['scene']}")
+            out.append(f"- 장면: {named(p['scene'])}")
         if p.get("action"):
-            out.append(f"- 행동·표정: {p['action']}")
+            out.append(f"- 행동·표정: {named(p['action'])}")
         for ln in p.get("lines", []):
             out.append(f"- **{names.get(ln['role'], ln['role'])}**: \"{ln['text']}\"")
         if p.get("narration"):
