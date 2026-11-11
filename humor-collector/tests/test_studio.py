@@ -128,6 +128,12 @@ def test_story_dialogue_may_mention_what_a_caption_may_not_ask_for():
     assert errors(plot(comment_prompt="여러분 집은 부먹인가요, 찍먹인가요?")) == []
 
 
+def test_an_adapted_story_is_not_introduced_as_a_true_one():
+    report = check_plot(plot(caption="실제 있었던 일입니다. 다들 이런 적 있죠?"), book=BOOK, limits=LIMITS)
+    assert report.ok and any("실제 있었던" in w for w in report.warnings)
+    assert not any("실제 있었던 일로" in w for w in check_plot(plot(), book=BOOK, limits=LIMITS).warnings)
+
+
 def test_line_rules():
     p = plot()
     p["panels"][1]["lines"] = [{"role": "B", "text": "가"}, {"role": "B", "text": "나"}, {"role": "A", "text": "다"}]
@@ -142,6 +148,14 @@ def test_copying_the_source_is_caught():
     p["panels"][2]["lines"] = [{"role": "A", "text": "가방까지 다 쌌는데 다시 풀었다"}]      # lifted from the post
     found = errors(p)
     assert any("연속으로 같습니다" in e for e in found) and any("거의 같은 문장" in e for e in found)
+
+
+def test_an_english_source_cannot_be_compared_and_says_so():
+    english = "My boss called a meeting ten minutes before the end of the day. It was about where to eat next week."
+    report = check_plot(plot(), book=BOOK, limits=LIMITS, source_text=english)
+    assert report.ok and any("한국어가 아니어서" in w for w in report.warnings)
+    korean = check_plot(plot(), book=BOOK, limits=LIMITS, source_text=POST["body"])
+    assert not any("한국어가 아니어서" in w for w in korean.warnings)
 
 
 def test_ordinary_words_listed_in_settings_are_not_banned():
@@ -350,9 +364,11 @@ def test_particles_and_text_inside_the_picture():
     panel = {"scene": "모니터에 '이렇게 쓰면 안 됩니다'가 보인다. \"17쪽\" 표시", "action": "‘출입 금지’ 팻말 옆. '17쪽'을 가리킨다"}
     assert scene_texts(panel) == ["이렇게 쓰면 안 됩니다", "17쪽", "출입 금지"]
     assert scene_texts({"scene": "사무실", "action": ""}) == []
-    said = {"scene": "'고장' 쪽지", "action": "말풍선의 '올려'만 굵게. 효과음 '띠링!'은 크게",
-            "lines": [{"role": "A", "text": "위에 잘 올려 볼게요."}], "sfx": "띠링! 띠링!"}
-    assert scene_texts(said) == ["고장"]                      # quotes that repeat the lettering are not signs
+    said = {"scene": "'고장' 쪽지", "action": "말풍선의 '올려'만 굵게. 효과음 '띠링!'은 크게. A가 '어이'라고 외친다. '털썩'",
+            "lines": [{"role": "A", "text": "위에 잘 올려 볼게요."}], "sfx": "털썩"}
+    assert scene_texts(said) == ["고장"]                      # talk about the lettering, or speech, is not a sign
+    screen = {"scene": "휴대폰 화면에 '41보'가 크게 떠 있다", "action": "", "lines": [{"role": "B", "text": "41보… 목표 달성."}]}
+    assert scene_texts(screen) == ["41보"]                    # a screen may show a word that is also spoken
 
 
 def cast_script(cast, **changes):
@@ -367,10 +383,11 @@ def test_every_panel_prompt_stands_alone_and_names_only_who_is_in_it(cast):
     assert [title for title, _ in prompts_] == ["0. 캐릭터 시트 (먼저 한 번)", "1컷", "2컷", "3컷", "4컷"]
     sheet, first, second, _, last = (text for _, text in prompts_)
     assert "왼쪽부터 만두, 라면 순서" in sheet and "글자는 하나도 넣지 않는다" in sheet      # the reference sheet carries no text
-    assert "세로로 긴 3:4 비율" in sheet and "1080" not in sheet                               # ratio in words, no pixels
+    assert "세로로 긴 3:4 비율(가로 3, 세로 4)" in sheet and "1080" not in sheet                # ratio in words, no pixels
     for text in (first, second, last):                       # each image is generated on its own
-        assert "음식 동네" in text and "세로로 긴 3:4 비율" in text and "칸을 나누지 않는다" in text
-        assert "캐릭터를 새로 디자인하지 않는다" in text and "각각 한 번씩" in text and "그 밖의 글자는 넣지 않는다" in text
+        assert "음식 동네" in text and "세로로 긴 3:4 비율" in text and "칸을 나누지 않고" in text
+        assert "4컷" not in text and "번째 컷" not in text      # naming the strip makes the model draw a grid of panels
+        assert "새로 디자인하지 않는다" in text and "각각 한 번씩" in text and "그 밖의 글자는 넣지 않는다" in text
     assert "- 만두:" in first and "- 라면:" not in first and "다른 캐릭터는 넣지 않는다" in first
     assert "만두가 살금살금 문고리를 잡는다" in first and "A가" not in first
     assert '굵고 큰 제목: "문 앞 3초 전"' in first and '설명 상자: "시계는 5시 59분"' in first

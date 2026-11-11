@@ -51,15 +51,23 @@ def with_names(text: str, names: Mapping[str, str]) -> str:
 _QUOTED = re.compile(r"'([^'\n]{1,80})'|‘([^’\n]{1,80})’|\"([^\"\n]{1,80})\"|“([^”\n]{1,80})”")
 
 
+_LETTERING_BEFORE = re.compile(r"(말풍선|대사|효과음|내레이션)[^.!?]{0,10}$")       # "효과음 '띠링'은 크게"
+_SPOKEN_AFTER = re.compile(r"^\s*(이?라고|이?라며|하고)\s*(말|외치|외친|묻|물|답|중얼|소리)")   # "'어이'라고 외친다"
+
+
 def scene_texts(panel: Mapping[str, Any]) -> list[str]:
     """Words that must be readable inside the picture (a sign, a screen, a note): whatever the
-    scene and action put in quotes, except quotes that only repeat the panel's own lettering
-    (a word of a speech bubble, the sound effect)."""
-    lettered = [ln.get("text", "") for ln in panel.get("lines", [])] + [panel.get("narration", ""), panel.get("sfx", "")]
+    scene and action put in quotes. A quote that only talks about the panel's own lettering
+    (a word of a speech bubble to stress, the sound effect) or that is something said is left out."""
+    lettered = {ln.get("text", "").strip() for ln in panel.get("lines", [])}
+    lettered |= {str(panel.get("narration") or "").strip(), str(panel.get("sfx") or "").strip()}
     found: list[str] = []
     for field in ("scene", "action"):
-        for match in _QUOTED.finditer(panel.get(field, "") or ""):
+        source = panel.get(field, "") or ""
+        for match in _QUOTED.finditer(source):
             text = next(g for g in match.groups() if g).strip()
-            if text and text not in found and not any(text in other for other in lettered if other):
-                found.append(text)
+            if (not text or text in found or text in lettered
+                    or _LETTERING_BEFORE.search(source[:match.start()]) or _SPOKEN_AFTER.match(source[match.end():])):
+                continue
+            found.append(text)
     return found

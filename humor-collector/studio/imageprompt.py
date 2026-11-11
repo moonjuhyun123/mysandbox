@@ -24,7 +24,7 @@ def _ratio(canvas: str) -> str:
         return canvas
     g = gcd(w, h) or 1
     shape = "세로로 긴" if h > w else "가로로 긴" if w > h else "정사각형"
-    return f"{shape} {w // g}:{h // g}"
+    return f"{shape} {w // g}:{h // g} 비율(가로 {w // g}, 세로 {h // g})"
 
 
 def _characters(doc: Mapping[str, Any]) -> dict[str, Mapping[str, Any]]:
@@ -46,10 +46,10 @@ def _style_block(doc: Mapping[str, Any], *, single_scene: bool = False) -> list[
     if cast.get("style"):
         out.append(cast["style"])
     out += ["만화 그림체로 그린다. 사진처럼 사실적으로 그리지 않는다.",
-            f"{_ratio(fmt.get('canvas', '1080x1440'))} 비율의 그림 한 장.",
-            "글자와 캐릭터는 가장자리에 붙이지 말고 안쪽에 둔다. 가장자리는 나중에 조금 잘릴 수 있다."]
-    if single_scene:
-        out.append("한 장에 한 장면만 그린다. 칸을 나누지 않는다. 여러 컷을 한 장에 넣지 않는다.")
+            f"{_ratio(fmt.get('canvas', '1080x1440'))}의 그림 한 장.",
+            "글자와 캐릭터는 네 가장자리에 붙이지 말고 안쪽에 둔다. 가장자리는 나중에 조금 잘릴 수 있다."]
+    if single_scene:      # never call it "panel 2 of a 4-panel comic": the model then draws a grid of panels
+        out.append("한 장면만 그린 그림 한 장이다. 칸을 나누지 않고, 칸 테두리도 그리지 않는다.")
     if cast.get("world"):
         out += ["", "[세계관]", cast["world"]]
     return out
@@ -80,12 +80,12 @@ def panel_prompt(doc: Mapping[str, Any], panel: Mapping[str, Any], *, with_text:
     names = {role: c["name"] for role, c in chars.items()}
     present = _in_panel(panel, chars)
     out = _style_block(doc, single_scene=True)
-    out += ["", "[등장 캐릭터] 아래 생김새 그대로 그린다. 캐릭터 시트를 먼저 만들었다면 그 그림과 같은 캐릭터다. "
-                "캐릭터를 새로 디자인하지 않는다.",
+    out += ["", "[등장 캐릭터] 앞에서 만들었거나 함께 올린 캐릭터 시트 그림이 기준이다. 그 그림과 같은 캐릭터로 그리고, "
+                "새로 디자인하지 않는다. 생김새는 아래와 같다.",
             *_character_lines(present)]
     if len(present) < len(chars):
         out.append("위 캐릭터만 그린다. 다른 캐릭터는 넣지 않는다.")
-    out += ["", f"[장면: {len(doc.get('panels', []))}컷 만화의 {panel.get('n', '?')}번째 컷]"]
+    out += ["", "[장면]"]
     if panel.get("scene"):
         out.append(f"배경: {with_names(panel['scene'], names)}")
     if panel.get("action"):
@@ -113,12 +113,15 @@ def panel_prompt(doc: Mapping[str, Any], panel: Mapping[str, Any], *, with_text:
                 *[f"- {item}" for item in lettering]]
         if len(lines) > 1:
             out.append("말풍선은 위에 적힌 순서대로 위에서 아래로 놓는다.")
+        if lines:
+            out.append("말풍선은 얼굴을 가리지 않게 둔다.")
         out.append("그 밖의 글자는 넣지 않는다.")
     else:
         out.append("[글자] 글자는 하나도 넣지 않는다. 글자는 나중에 따로 얹는다.")
         if lines:
             speakers = ", ".join(dict.fromkeys(who for who, _ in lines))
-            out.append(f"말하는 캐릭터({speakers}) 옆에 비어 있는 흰 말풍선을 {len(lines)}개 그린다. 말풍선 안은 비워 둔다.")
+            out.append(f"말하는 캐릭터({speakers}) 옆에 비어 있는 흰 말풍선을 {len(lines)}개 그린다. 말풍선 안은 비워 둔다. "
+                       "글자 두 줄이 들어갈 크기로, 얼굴과 손을 가리지 않게 둔다.")
         if hook:
             out.append("그림 맨 위에 제목을 얹을 빈 띠를 남긴다.")
         if panel.get("narration"):
@@ -164,17 +167,20 @@ def to_text(doc: Mapping[str, Any], *, with_text: bool = True) -> str:
              "## 쓰는 법", "",
              "1. 만화 한 편마다 그림 생성 채팅(예: ChatGPT)을 새로 열고 0번(캐릭터 시트)을 먼저 붙여 넣습니다. "
              "비율을 고르는 메뉴가 있으면 지시문에 적힌 비율과 같게 고릅니다.",
-             "2. 캐릭터 시트가 마음에 들면, 같은 대화에서 1컷부터 차례로 한 번에 하나씩 붙여 넣습니다. 지시문마다 캐릭터 생김새와 "
-             "그림 방향이 다시 적혀 있어서 대화가 끊겨도 이어 갈 수 있습니다. 새 대화에서 이어 가거나 캐릭터가 달라지기 시작하면 "
-             "캐릭터 시트 그림을 그 메시지에 함께 올립니다.",
-             "3. 그림이 나올 때마다 한글이 따옴표 안과 같은지 사람이 직접 읽어 봅니다. 그림 생성 도구는 글자를 틀릴 수 있고, "
-             "도구에게 철자 검사를 맡기는 것도 믿기 어렵습니다.",
-             f"4. 그림 크기는 도구가 정합니다(픽셀 수를 적어도 지켜지지 않습니다). 올리기 전에 {canvas}으로 줄이거나 잘라 맞춥니다.",
-             "5. 무료 요금제는 하루에 만들 수 있는 그림 수가 적습니다. 캐릭터 시트 1장과 컷 4장에 다시 그리기까지 하면 모자랄 수 있습니다.",
+             "2. 캐릭터 시트가 마음에 들면 그 그림을 저장해 둡니다. 그다음 1컷부터 차례로, 한 번에 하나씩 붙여 넣습니다. "
+             "같은 대화에서 이어 그려도 되고, 컷마다 캐릭터 시트 그림을 함께 올려도 됩니다. 어느 쪽이 캐릭터가 덜 달라지는지는 "
+             "해 보고 정하세요. 지시문마다 캐릭터 생김새와 그림 방향이 다시 적혀 있어서 대화가 끊겨도 이어 갈 수 있습니다.",
+             "3. 그림이 나올 때마다 한글이 따옴표 안과 같은지 사람이 대본과 대조해 읽어 봅니다. 그림 생성 도구는 글자를 틀릴 수 있습니다. "
+             "도구에게 철자를 물어본 답은 참고만 합니다.",
+             f"4. 그림 크기는 도구가 정합니다(픽셀 수를 적어도 지켜지지 않습니다). 올리기 전에 {canvas}으로 줄이거나 잘라 맞춥니다. "
+             "비율이 다르게 나오면 `비율만 지시문대로 다시 맞춘다. 그림 내용은 그대로 둔다.`라고 다시 요청하거나, 남는 쪽을 잘라 냅니다.",
+             "5. 요금제마다 만들 수 있는 그림 수에 한도가 있습니다(숫자는 공개돼 있지 않습니다). 캐릭터 시트 1장과 컷 4장에 "
+             "다시 그리기까지 하면 무료 요금제로는 하루에 다 못 만들 수 있습니다.",
              "",
              "고칠 때는 한 번에 한 가지만 말합니다.", "",
              '- 글자가 틀렸을 때: `말풍선 글자만 "(맞는 문장)"으로 고친다. 캐릭터, 배경, 구도는 그대로 둔다.`',
-             f"- 캐릭터가 달라졌을 때: `{first}만 캐릭터 시트와 같은 생김새로 고친다. 나머지는 그대로 둔다.`",
+             f"- 캐릭터가 달라졌을 때: 캐릭터 시트 그림을 함께 올리고 `{first}만 캐릭터 시트와 같은 생김새로 고친다. 나머지는 그대로 둔다.`",
+             "- 캐릭터끼리 생김새가 섞일 때: 캐릭터 시트를 캐릭터마다 한 장씩 따로 만들어 봅니다.",
              "- 글자가 계속 틀리면 `script prompts --no-text`로 글자 없는 그림을 만들고, 글자는 편집 앱에서 얹습니다.",
              ""]
     if doc.get("art_notes"):

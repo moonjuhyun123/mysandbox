@@ -36,6 +36,9 @@ DEFAULT_BAIT = (
 )
 
 
+_TRUE_STORY = re.compile(r"실화|실제\s*(?:사연|있었던|겪은|상황)")   # an adapted story is not sold as a true one
+
+
 @dataclass
 class Limits:
     panels: int = 4
@@ -185,6 +188,9 @@ def check_plot(plot: Mapping[str, Any], *, book: GagBook, limits: Limits, source
         found = re.search(pattern, asks)
         if found:
             err(f"참여를 요구하는 문구가 있습니다: '{found.group(0)}'. 태그·좋아요·팔로우 요구, 정해진 댓글 요청, 추첨은 쓰지 않습니다.")
+    claim = _TRUE_STORY.search("\n".join((plot.get("caption", ""), plot.get("hook", ""))))
+    if claim:
+        warn(f"본문이나 첫 컷 문구에 '{claim.group(0)}'이(가) 있습니다. 각색한 이야기를 실제 있었던 일로 소개하지 않습니다.")
     if not plot.get("changes_from_source", "").strip():
         err("자료에서 무엇을 바꾸고 더했는지(changes_from_source)가 비어 있습니다.")
     if not plot.get("share_target", "").strip():
@@ -217,6 +223,10 @@ def check_plot(plot: Mapping[str, Any], *, book: GagBook, limits: Limits, source
             warn(f"신조어 '{word}'은(는) 사전의 신조어 목록에 없습니다.")
 
     if source_text:
+        hangul = sum("가" <= ch <= "힣" for ch in source_text)
+        latin = sum(ch.isascii() and ch.isalpha() for ch in source_text)
+        if latin > 3 * hangul:               # an English post: a translated copy shares no characters with it
+            warn("원문이 한국어가 아니어서 문장 겹침 검사가 번역해 옮긴 문장을 잡지 못합니다. 사람이 원문과 대조하세요.")
         sim = rep.similarity = similarity(plot, source_text, limits)
         if sim["common_run"] >= limits.max_common_run:
             err(f"원문과 {sim['common_run']}자가 연속으로 같습니다: '{sim['common_text']}'. 문장을 새로 쓰세요.")
