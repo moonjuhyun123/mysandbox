@@ -148,8 +148,8 @@ closing_slide = false         # 계정 안내 장을 마지막에 붙일지
 
 [studio.production]
 # 만드는 방식. 대본의 "올릴 때 확인"에 적혀 나갑니다.
-art = "ai"                    # ai | human | mixed
-script = "llm+human"
+art = "ai"                    # ai: 그림 생성 도구 / human: 사람이 그림 / mixed: 사람이 그리고 AI로 손봄
+script = "llm+human"          # llm | llm+human | human. 그림도 글도 사람이 하면 AI 관련 확인 항목과 표시 문구가 빠집니다
 # 본문 끝에 붙일 문구. 빈 문자열이면 생략합니다. 2026-11-10 기준으로 개인 창작자에게 법적 의무는 아니고(인공지능기본법의
 # 의무 주체는 AI 사업자), 인스타그램도 만화풍 이미지에는 AI 라벨을 요구하지 않습니다. 게시자 표시 의무 법안이 국회에
 # 올라와 있으니 통과되면 반드시 켜세요. 근거: docs/GROWTH.md 4장

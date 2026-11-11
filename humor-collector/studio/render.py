@@ -36,13 +36,21 @@ def _format_lines(fmt: Mapping[str, Any], panels: int) -> list[str]:
     return out + [""]
 
 
+_ART = {"ai": "그림 생성 도구로 만듦", "human": "사람이 그림", "mixed": "사람이 그리고 AI로 손봄"}
+_SCRIPT = {"llm": "LLM이 씀", "llm+human": "LLM이 쓰고 사람이 고침", "human": "사람이 씀"}
+
+
 def _upload_lines(production: Mapping[str, Any]) -> list[str]:
-    out = ["## 올릴 때 확인", ""]
-    if production.get("disclosure"):
+    art, script = str(production.get("art", "ai")), str(production.get("script", "llm+human"))
+    ai_art, ai_any = art != "human", art != "human" or "llm" in script
+    out = ["## 올릴 때 확인", "",
+           f"- 만드는 방식(설정값): 그림은 {_ART.get(art, art)}, 글은 {_SCRIPT.get(script, script)}."]
+    if production.get("disclosure") and ai_any:
         out.append(f"- 제작 방식 표시(본문 끝에 붙이는 문구. 붙일지는 운영자가 정합니다): {production['disclosure']}")
+    if ai_art:
+        out += ["- 그림 속 한글이 대본과 같은지 사람이 직접 읽어 확인합니다. 그림 생성 도구는 글자를 틀릴 수 있습니다.",
+                "- 그림 도구가 넣은 AI 표시나 메타데이터는 지우지 않습니다. 인스타그램이 그 정보를 읽어 AI 라벨을 붙일 수 있습니다."]
     out += [
-        "- 그림 속 한글이 대본과 같은지 사람이 직접 읽어 확인합니다. 그림 생성 도구는 글자를 틀릴 수 있습니다.",
-        "- 그림 도구가 넣은 AI 표시나 메타데이터는 지우지 않습니다. 인스타그램이 그 정보를 읽어 AI 라벨을 붙일 수 있습니다.",
         "- 여러 장 게시물에 음악을 붙이면 릴스 탭에도 노출될 수 있습니다(선택). 쓸 수 있는 음악은 앱에서 확인합니다.",
         "- 각 장의 대체 텍스트에 컷별 대본의 '대체 텍스트' 줄을 넣습니다.",
         "- 쓰인 개그의 주의 사항과 등장 인물·상표 소식을 올리기 직전에 한 번 더 확인합니다.",

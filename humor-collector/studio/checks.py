@@ -244,6 +244,7 @@ def check_plot(plot: Mapping[str, Any], *, book: GagBook, limits: Limits, source
         warn("누구에게 보내고 싶은 만화인지(share_target)가 비어 있습니다.")
 
     declared = []
+    recent_classics = book.canonical(recent_classics)      # older rows may hold a short form or an alias
     for item in plot.get("classics") or []:
         gag = book.classic(item.get("name", ""))
         if gag is None:

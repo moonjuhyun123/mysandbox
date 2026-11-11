@@ -578,6 +578,73 @@ def test_cooldown_skips_the_plot_being_repaired_and_sees_gags_added_while_castin
     db.close()
 
 
+def test_deleting_a_post_takes_its_wording_out_of_plots_and_scripts(tmp_path):
+    db = Database(tmp_path / "d.db")
+    post_id = stored_post(db)
+    copied = "가방까지 다 쌌는데 다시 풀었다"
+    bad = clean_plot(plot(caption=copied))
+    report = check_plot(bad, book=BOOK, limits=LIMITS, source_text=POST["body"])
+    assert not report.ok and copied.replace(" ", "") in json.dumps(report.as_dict(), ensure_ascii=False)
+    bad_id = db.save_plot(post_id=post_id, status="needs_fix", origin="import", plot=bad, checks=report.as_dict(), at=NOW)
+    good = clean_plot(plot())
+    good_checks = {"errors": [], "warnings": [], "similarity": {"common_run": 3, "common_text": "다들모", "closest_line": "잠깐"}}
+    good_id = db.save_plot(post_id=post_id, status="ready", origin="import", plot=good, checks=good_checks, at=NOW)
+    db.save_script(plot_id=good_id, cast_name="분식", origin="import", script=good, checks=good_checks, at=NOW)
+    failed_script = db.save_script(plot_id=good_id, cast_name="분식", origin="import", script=bad,
+                                   checks=report.as_dict(), at=NOW)
+
+    db.delete_post(post_id)
+    assert db.get_plot(bad_id) is None and db.get_script(failed_script) is None      # may hold copied sentences
+    kept = db.get_plot(good_id)
+    assert kept is not None and kept["post_id"] is None
+    everything = " ".join(row[0] + row[1] for row in db.conn.execute("SELECT plot, checks FROM plots").fetchall()
+                          + db.conn.execute("SELECT script, checks FROM scripts").fetchall())
+    assert copied not in everything and "다들모" not in everything and "잠깐\"" not in everything.replace("잠깐, 다들", "")
+    db.close()
+
+
+def test_a_reupload_of_a_story_that_has_a_plot_is_not_offered_again(tmp_path):
+    db = Database(tmp_path / "s.db")
+    first = stored_post(db)
+    rec = PostRecord(source="ruliweb", source_post_id="8", url="https://example.test/8", title=POST["title"] + " (재업)",
+                     body=POST["body"], published_at=NOW, published_at_approx=False, collected_at=NOW, category=None,
+                     metrics=Metrics(likes=3), ranking=None, listing="best", media_urls=[], detail_status="ok",
+                     content_category="직장·학교", content_labels=["직장·학교"], content_flags=[], classifier="keyword")
+    again = db.insert_post(rec, url_normalized="example.test/8", title_norm="t2", seen_at=NOW)
+    db.conn.execute("UPDATE posts SET cluster_id = ? WHERE id IN (?, ?)", (first, first, again))
+    db.conn.commit()
+    rows = db.plot_candidates(since=None, exclude_flags=[], min_body_chars=10)
+    assert [r["story_plot_count"] for r in rows] == [0, 0]
+    db.save_plot(post_id=first, status="ready", origin="import", plot=clean_plot(plot()),
+                 checks={"errors": [], "warnings": []}, at=NOW)
+    rows = db.plot_candidates(since=None, exclude_flags=[], min_body_chars=10)
+    assert {r["id"]: (r["plot_count"], r["story_plot_count"]) for r in rows} == {first: (1, 1), again: (0, 1)}
+    db.close()
+
+
+def test_a_gag_named_by_a_short_form_is_stored_under_its_dictionary_name():
+    full = BOOK.classic("무야호").name
+    alias = next((a for g in BOOK.classics for a in g.aliases if BOOK.classic(a) is g and a != g.name), None)
+    assert alias is not None
+    target = BOOK.classic(alias)
+    result = writer().accept(plot(classics=[{"name": alias, "panel": 4, "how": "환호"}]), POST)
+    assert [c["name"] for c in result.plot["classics"]] == [target.name]
+    second = check_plot(plot(classics=[{"name": target.name, "panel": 4, "how": "환호"}]), book=BOOK, limits=LIMITS,
+                        recent_classics=[alias])                    # an old row that still holds the alias
+    assert any("최근 플롯에서 이미 썼습니다" in w for w in second.warnings) and full
+
+
+def test_the_upload_checklist_follows_the_production_settings(cast):
+    script, report = CastWriter(BOOK, LIMITS).bind(clean_plot(plot()), cast, POST)
+    script["production"] = {"art": "ai", "script": "llm+human", "disclosure": "그림과 글에 AI를 사용했습니다."}
+    with_ai = to_markdown(script, book=BOOK, checks=report.as_dict(), source=POST)
+    assert "그림은 그림 생성 도구로 만듦" in with_ai and "제작 방식 표시" in with_ai and "메타데이터는 지우지" in with_ai
+    script["production"] = {"art": "human", "script": "human", "disclosure": "그림과 글에 AI를 사용했습니다."}
+    by_hand = to_markdown(script, book=BOOK, checks=report.as_dict(), source=POST)
+    assert "그림은 사람이 그림, 글은 사람이 씀" in by_hand
+    assert "제작 방식 표시" not in by_hand and "메타데이터" not in by_hand and "대체 텍스트에" in by_hand
+
+
 def test_candidates_need_text_and_respect_flags(tmp_path):
     db = Database(tmp_path / "c.db")
     stored_post(db, body="짧음")
@@ -693,6 +760,29 @@ def test_an_answer_split_by_a_fallback_is_read_as_one_text(monkeypatch):
 
     monkeypatch.setattr(llm.client.beta.messages, "stream", lambda **kwargs: Stream())
     assert llm.complete_json("system", "user", {"type": "object"}) == {"title": "칼퇴 직전"}
+
+
+def test_a_script_that_failed_its_checks_is_marked_and_gives_no_prompts(cfg, tmp_path, capsys):
+    answer = tmp_path / "answer.json"
+    answer.write_text(json.dumps(plot(), ensure_ascii=False), encoding="utf-8")
+    assert main.main(["--config", cfg, "plot", "import", "1", str(answer)]) == 0
+    cast_file = tmp_path / "cast.toml"
+    cast_file.write_text('name = "분식"\n[[character]]\nid = "m"\nname = "만두"\n[[character]]\nid = "r"\nname = "라면"\n',
+                         encoding="utf-8")
+    copied = copy.deepcopy(plot()["panels"])
+    copied[1]["lines"] = [{"role": "B", "text": "가방까지 다 쌌는데 다시 풀었다"}]          # a sentence of the source post
+    reply = tmp_path / "reply.json"
+    reply.write_text(json.dumps({"assignment": [], "panels": copied}, ensure_ascii=False), encoding="utf-8")
+    capsys.readouterr()
+    assert main.main(["--config", cfg, "script", "import", "1", "--cast", str(cast_file), str(reply)]) == 1
+    out = capsys.readouterr().out
+    assert "고칠 것 있음" in out and "script show" not in out and "그림 지시문을 만들지 않습니다" in out
+    assert main.main(["--config", cfg, "script", "list"]) == 0
+    assert "고칠 것 있음" in capsys.readouterr().out
+    with pytest.raises(SystemExit, match="자동 검사를 통과하지 못했습니다"):
+        main.main(["--config", cfg, "script", "prompts", "1"])
+    assert "원문과" in capsys.readouterr().err
+    assert main.main(["--config", cfg, "script", "prompts", "1", "--force"]) == 0
 
 
 def test_paid_llm_calls_are_off_until_enabled(cfg):

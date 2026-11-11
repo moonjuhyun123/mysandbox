@@ -21,7 +21,7 @@ from settings import tomllib
 from studio import prompts
 from studio.checks import Limits, Report, check_plot
 from studio.gags import Gag, GagBook
-from studio.writer import LLM, clean_plot, source_text
+from studio.writer import LLM, canonical_classics, clean_plot, source_text
 
 
 class CastError(Exception):
@@ -124,7 +124,7 @@ def food_options(plot: Mapping[str, Any], cast: Cast, book: GagBook, *, limit: i
     """Dictionary gags that fit this cast's foods. Offered only when the plot has no classic yet."""
     if plot.get("classics"):
         return []
-    seen, out = set(avoid), []
+    seen, out = set(book.canonical(avoid)), []
     for char in cast.characters:
         for gag in sorted(book.for_food(char.food), key=lambda g: -g.fame) if char.food else []:
             if gag.name not in seen and gag.risk_checked:
@@ -177,6 +177,7 @@ class CastWriter:
             if answer[key]:
                 script[key] = answer[key]
         script["art_notes"] = str(raw.get("art_notes") or "").strip()
+        canonical_classics(script, self.book)
         report = self.check(script, post)
         if len(script["panels"]) != len(plot.get("panels", [])):
             report.errors.append("캐릭터를 입히면서 컷 수가 바뀌었습니다.")

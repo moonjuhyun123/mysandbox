@@ -119,6 +119,17 @@ class GagBook:
     def classic(self, name: str) -> Gag | None:
         return self._lookup(name, self.classics)
 
+    def canonical(self, names) -> list[str]:
+        """Dictionary names for whatever spelling was used ("상상도 못한 정체" -> "상상도 못한 정체 (ㄴㅇㄱ)"),
+        so that the same gag is recognised when it is used again. Unknown names stay as they are."""
+        out: list[str] = []
+        for name in names:
+            gag = self.classic(str(name))
+            fixed = gag.name if gag is not None else str(name)
+            if fixed and fixed not in out:
+                out.append(fixed)
+        return out
+
     def slang_word(self, name: str) -> Gag | None:
         return self._lookup(name, self.slang)
 

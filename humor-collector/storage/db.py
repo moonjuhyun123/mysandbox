@@ -412,7 +412,27 @@ class Database:
 
     def delete_post(self, post_id: int) -> None:
         """Remove a post (e.g. deleted at the source). Its re-upload cluster is re-pointed to
-        the oldest remaining member so other copies stay linked."""
+        the oldest remaining member so other copies stay linked.
+
+        Nothing of the post's wording may stay behind. A plot that failed its checks may still
+        hold copied sentences, so it goes with the post (its scripts cascade), and so does a script
+        that failed. Plots and scripts that passed are kept, but the parts of their stored check
+        results that quote the source are blanked."""
+        self.conn.execute("DELETE FROM plots WHERE post_id = ? AND status != 'ready'", (post_id,))
+        for table, key in (("plots", "id"), ("scripts", "plot_id")):
+            rows = self.conn.execute(
+                f"SELECT {table}.id, {table}.checks FROM {table} WHERE {key} IN (SELECT id FROM plots WHERE post_id = ?)",
+                (post_id,)).fetchall()
+            for row in rows:
+                checks = json.loads(row["checks"])
+                if checks.get("errors"):
+                    self.conn.execute(f"DELETE FROM {table} WHERE id = ?", (row["id"],))
+                    continue
+                sim = checks.get("similarity") or {}
+                if sim.get("common_text") or sim.get("closest_line") or sim.get("copied_short"):
+                    sim.update(common_text="", closest_line="", copied_short=[])
+                    self.conn.execute(f"UPDATE {table} SET checks = ? WHERE id = ?",
+                                      (json.dumps(checks, ensure_ascii=False), row["id"]))
         self.conn.execute("DELETE FROM posts WHERE id = ?", (post_id,))
         self.conn.execute(
             """
@@ -771,7 +791,8 @@ class Database:
     # ------------------------------------------------------------------ plots and scripts
     def plot_candidates(self, *, since: str | None, exclude_flags: Iterable[str], min_body_chars: int,
                         source: str | None = None, content_category: str | None = None) -> list[sqlite3.Row]:
-        """Posts with enough text to adapt, best first, with how many plots each already has."""
+        """Posts with enough text to adapt, best first, with how many plots each already has
+        (``plot_count``) and how many the whole story has, re-uploads included (``story_plot_count``)."""
         where, params = ["LENGTH(COALESCE(p.body, '')) >= ?"], [min_body_chars]
         if since:
             where.append("COALESCE(p.published_at, p.first_seen_at) >= ?")
@@ -787,7 +808,9 @@ class Database:
             params.append(flag)
         return self.conn.execute(
             f"""
-            SELECT p.*, (SELECT COUNT(*) FROM plots WHERE plots.post_id = p.id) AS plot_count
+            SELECT p.*, (SELECT COUNT(*) FROM plots WHERE plots.post_id = p.id) AS plot_count,
+                   (SELECT COUNT(*) FROM plots JOIN posts q ON q.id = plots.post_id
+                     WHERE COALESCE(q.cluster_id, q.id) = COALESCE(p.cluster_id, p.id)) AS story_plot_count
             FROM posts p WHERE {' AND '.join(where)}
             ORDER BY p.popularity_score IS NULL, p.popularity_score DESC, p.id
             """, params).fetchall()

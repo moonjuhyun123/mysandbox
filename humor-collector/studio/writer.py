@@ -75,6 +75,16 @@ def clean_plot(raw: Mapping[str, Any]) -> dict[str, Any]:
     }
 
 
+def canonical_classics(plot: dict[str, Any], book: GagBook) -> dict[str, Any]:
+    """Write each used gag under its dictionary name, whatever short form or alias the LLM used.
+    The cooldown list is built from these names."""
+    for item in plot.get("classics") or []:
+        gag = book.classic(str(item.get("name", "")))
+        if gag is not None:
+            item["name"] = gag.name
+    return plot
+
+
 def is_unsuitable(plot: Mapping[str, Any]) -> bool:
     return "부적합" in plot.get("title", "")
 
@@ -110,7 +120,7 @@ class PlotWriter:
 
     def accept(self, raw: Mapping[str, Any], post: Mapping[str, Any], *, origin: str = "import",
                recent_classics: Sequence[str] = ()) -> PlotResult:
-        plot = clean_plot(raw)
+        plot = canonical_classics(clean_plot(raw), self.book)
         if is_unsuitable(plot):
             raise Unsuitable(plot["why_funny"] or "작성자가 부적합하다고 판단했습니다.")
         return PlotResult(plot, self.check(plot, post, recent_classics), origin)
@@ -133,7 +143,7 @@ class PlotWriter:
             user = prompts.draft_prompt(post, angle=angle, today=self.today, limits=self.limits,
                                         recent_classics=recent_classics, allow_classics=allow_classics,
                                         max_source_chars=self.max_source_chars)
-            drafts.append(clean_plot(llm.complete_json(self.system, user, prompts.PLOT_SCHEMA)))
+            drafts.append(canonical_classics(clean_plot(llm.complete_json(self.system, user, prompts.PLOT_SCHEMA)), self.book))
         usable = [d for d in drafts if not is_unsuitable(d)]
         if not usable:
             raise Unsuitable(drafts[0]["why_funny"] or "모든 초안이 부적합 판정을 받았습니다.")
@@ -161,7 +171,7 @@ class PlotWriter:
             nonlocal plot, report
             user = prompts.revise_prompt(post, plot, fixes=fixes, errors=report.errors, gags=self.gags_used(plot),
                                          drop_classics=drop, limits=self.limits, max_source_chars=self.max_source_chars)
-            revised = clean_plot(llm.complete_json(self.system, user, prompts.PLOT_SCHEMA))
+            revised = canonical_classics(clean_plot(llm.complete_json(self.system, user, prompts.PLOT_SCHEMA)), self.book)
             if is_unsuitable(revised):
                 raise Unsuitable(revised["why_funny"])
             plot, report = revised, self.check(revised, post, recent_classics)

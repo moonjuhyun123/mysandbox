@@ -100,11 +100,11 @@ def cmd_plot(args, settings, db: Database) -> int:
         seen, shown = set(), 0
         for row in rows:
             key = row["cluster_id"] or row["id"]
-            if key in seen or (row["plot_count"] and not args.all):
+            if key in seen or (row["story_plot_count"] and not args.all):     # per story: a re-upload is the same story
                 continue
             seen.add(key)
             score = "-" if row["popularity_score"] is None else f"{row['popularity_score']:.0f}"
-            done = f" [플롯 {row['plot_count']}개]" if row["plot_count"] else ""
+            done = f" [플롯 {row['story_plot_count']}개]" if row["story_plot_count"] else ""
             print(f"#{row['id']:<5} {row['source']:<10} 점수 {score:>3} {row['content_category'] or '기타':<8} "
                   f"본문 {len(row['body'] or ''):>4}자{done}  {row['title'][:60]}")
             shown += 1
@@ -122,7 +122,7 @@ def cmd_plot(args, settings, db: Database) -> int:
         seen, posts = set(), []
         for row in rows:
             key = row["cluster_id"] or row["id"]
-            if key not in seen and not row["plot_count"]:
+            if key not in seen and not row["story_plot_count"]:
                 seen.add(key)
                 posts.append(row)
         posts = posts[: args.limit]
@@ -251,7 +251,10 @@ def _save_script(db: Database, plot_id: int, cast_name: str, origin: str, script
                                checks=report.as_dict(), at=now_utc())
     print(f"대본 #{script_id} 저장 ({'통과' if report.ok else '고칠 것 있음'}): {script['title']} · 캐릭터 묶음 {cast_name}")
     _print_report(report.as_dict())
-    print(f"다음: python main.py script show {script_id} --output 대본.md")
+    if report.ok:
+        print(f"다음: python main.py script show {script_id} --output 대본.md")
+    else:
+        print("다음: 위 오류를 고친 답으로 `script import`를 다시 하세요. 이 대본으로는 그림 지시문을 만들지 않습니다.")
     return script_id
 
 
@@ -260,7 +263,8 @@ def cmd_script(args, settings, db: Database) -> int:
     if args.action == "list":
         for row in db.list_scripts(args.limit):
             script = json.loads(row["script"])
-            print(f"#{row['id']:<4} 플롯 #{row['plot_id']:<4} {row['cast_name']:<12} {row['origin']:<14} {script['title']}")
+            status = "고칠 것 있음" if json.loads(row["checks"]).get("errors") else "통과"
+            print(f"#{row['id']:<4} 플롯 #{row['plot_id']:<4} {status:<7} {row['cast_name']:<12} {row['origin']:<14} {script['title']}")
         return 0
 
     if args.action in ("show", "prompts"):
@@ -269,6 +273,11 @@ def cmd_script(args, settings, db: Database) -> int:
             raise SystemExit(f"대본 #{args.id}이(가) 없습니다. `script list`로 번호를 확인하세요.")
         script = json.loads(row["script"])
         if args.action == "prompts":
+            failed = json.loads(row["checks"]).get("errors") or []
+            if failed and not args.force:          # same gate as casting a plot that failed its checks
+                for line in failed:
+                    print(f"오류: {line}", file=sys.stderr)
+                raise SystemExit(f"대본 #{args.id}은(는) 자동 검사를 통과하지 못했습니다. 고친 대본으로 다시 만들거나 --force를 쓰세요.")
             text = image_prompt_text(script, with_text=not args.no_text)
         elif args.json:
             text = json.dumps(script, ensure_ascii=False, indent=2)
@@ -288,6 +297,9 @@ def cmd_script(args, settings, db: Database) -> int:
     if plot_row["status"] != "ready" and not args.force:
         raise SystemExit(f"플롯 #{args.plot_id}에 고칠 것이 남아 있습니다. `plot show {args.plot_id}`로 확인하거나 --force를 쓰세요.")
     post = db.get_post(plot_row["post_id"]) if plot_row["post_id"] else None
+    if post is None and plot_row["status"] != "ready":
+        # without the source the overlap cannot be checked again, so --force cannot vouch for it
+        raise SystemExit(f"플롯 #{args.plot_id}은(는) 검사를 통과하지 못했고 원본 글도 삭제됐습니다. 이 플롯은 쓸 수 없습니다.")
     try:
         cast = load_cast(args.cast)
         writer = CastWriter(_book(studio), Limits.from_settings(studio))
@@ -375,5 +387,6 @@ def add_parsers(sub) -> None:
     sp = ss.add_parser("prompts", help="image-generation prompts for one script: character sheet + one per panel")
     sp.add_argument("id", type=int)
     sp.add_argument("--no-text", action="store_true", help="ask for pictures without lettering (empty speech bubbles)")
+    sp.add_argument("--force", action="store_true", help="make prompts from a script that failed its checks")
     sp.add_argument("--output", help="write to this file instead of the screen")
     s.set_defaults(func=cmd_script)
