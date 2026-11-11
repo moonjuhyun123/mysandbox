@@ -7,6 +7,7 @@ personal information, and how close the wording is to the source post.
 from __future__ import annotations
 
 import re
+import unicodedata
 from dataclasses import dataclass, field
 from difflib import SequenceMatcher
 from typing import Any, Mapping, Sequence
@@ -17,21 +18,28 @@ from processing.normalize import jaccard, normalize_text, shingles
 from studio.gags import GagBook
 from studio.wording import scene_texts
 
-_PERSONAL = (
-    (re.compile(r"https?://|www\.", re.IGNORECASE), "링크"),
+_TLD = "com|net|org|kr|io|me|ly|gg|tv|co|shop|store|link|app"
+_PERSONAL = (     # matched on NFKC-folded text, so full-width digits and "＠" count too
+    (re.compile(rf"https?://|www\.|(?<![\w@.])(?:[a-z0-9-]+\.)+(?:{_TLD})(?:/\S*)?(?![\w.])", re.IGNORECASE), "링크"),
     (re.compile(r"(?<![\w.])@[A-Za-z0-9_.]{2,}"), "계정 이름(@)"),
     (re.compile(r"[\w.+-]+@[\w-]+\.[A-Za-z]{2,}"), "이메일"),
-    (re.compile(r"(?<!\d)01[016789][-\s.]?\d{3,4}[-\s.]?\d{4}(?!\d)"), "전화번호"),
+    (re.compile(r"(?<!\d)(?:\+?82[-\s.]*1[016789]|01[016789])(?:\s*[-.)\s]\s*)?\d{3,4}(?:\s*[-.\s]\s*)?\d{4}(?!\d)"   # mobile
+                r"|(?<!\d)0\d{1,2}\s*[-.)]\s*\d{3,4}\s*[-.]\s*\d{4}(?!\d)"                                      # landline
+                r"|(?<!\d)1[568]\d{2}\s*-\s*\d{4}(?!\d)"), "전화번호"),                                           # 1588-0000
 )
 
 
 # Requests that platforms treat as engagement bait (tag / like / follow-gate / keyword-comment / giveaway).
+# Each pattern needs request or reward wording next to the keyword: "저장 안 하면 생기는 일" is a story,
+# "저장 안 하면 손해" is a request.
 DEFAULT_BAIT = (
-    r"태그\s*(해|하|걸|부탁)|소환\s*(해|하)",
-    r"좋아요\s*(를\s*)?(누르|눌러|부탁|꾹)",
-    r"팔로우\s*(를\s*)?(하면|해야|하시면|하고\s*댓글|부탁|꾹)",
+    r"(?<!해시)태그\s*(해\s*(주|줘|봐)|하고\s*가|하면|걸어|부탁|필수)|소환\s*(해\s*(주|줘|봐)|하세요|하면|부탁)",
+    r"좋아요\s*(를\s*)?(눌러\s*(주|줘)|누르면|누르고\s*가|부탁|꾹|필수)",
+    r"팔로우\s*(를\s*)?((하면|해야|하시면)\s*[^.?!]{0,12}(드려|드립|추첨|공개|갑니다|볼\s*수|보여|알려|보내)"
+    r"|하고\s*(댓글|가)|해\s*(주|줘)|부탁|꾹|필수)",
     r"댓글(로|에)\s*[^.?!]{0,12}(이라고|라고|번호|이모지)[^.?!]{0,8}(남겨|달아|적어|써)",
-    r"저장\s*(안\s*하면|필수|부탁)|공유\s*(하면|부탁)",
+    r"저장\s*(안\s*하면\s*(손해|후회)|필수|부탁|해\s*(두세요|둬|주세요))"
+    r"|공유\s*(하면\s*[^.?!]{0,10}(드려|드립|추첨|공개|갑니다)|부탁|필수|해\s*(주세요|줘))",
     r"(추첨|경품|기프티콘)[^.?!]{0,12}(드려|드립|드릴|증정|쏩니다|쏜다)",
 )
 
@@ -91,35 +99,70 @@ def spoken_text(plot: Mapping[str, Any]) -> list[str]:
     return [t for t in out if t]
 
 
-def all_text(plot: Mapping[str, Any]) -> str:
+def lettering(plot: Mapping[str, Any]) -> list[str]:
+    """Every sentence that is lettered or posted: the spoken text plus the other hook candidates,
+    sound effects and the words written inside the picture."""
+    out = spoken_text(plot) + [h for h in plot.get("hooks") or [] if isinstance(h, str)]
+    for panel in plot.get("panels", []):
+        out += [str(panel.get("sfx") or "")] + scene_texts(panel)
+    return list(dict.fromkeys(t for t in out if t))
+
+
+def text_fields(plot: Mapping[str, Any]) -> list[str]:
+    """Each piece of text on its own (title, lines, scene, action, hashtags ...), nothing joined."""
     extra = [plot.get("title", ""), plot.get("logline", "")]
     for panel in plot.get("panels", []):
-        extra += [panel.get("scene", ""), panel.get("action", ""), panel.get("sfx", "")]
-    return "\n".join(spoken_text(plot) + [t for t in extra if t] + list(plot.get("hashtags", [])))
+        extra += [panel.get("scene", ""), panel.get("action", "")]
+    fields = lettering(plot) + extra + [h for h in plot.get("hashtags") or [] if isinstance(h, str)]
+    return list(dict.fromkeys(str(t) for t in fields if t))
+
+
+def all_text(plot: Mapping[str, Any]) -> str:
+    return "\n".join(text_fields(plot))
 
 
 def similarity(plot: Mapping[str, Any], source_text: str, limits: Limits) -> dict[str, Any]:
-    """How much wording the plot shares with the source post (higher = closer to copying)."""
+    """How much wording the plot shares with the source post (higher = closer to copying).
+
+    Every text that leaves the program is compared: bubbles and captions, but also sound effects,
+    words inside the picture, scene and action (they become alt text and image prompts), the title,
+    all hook candidates and the hashtags. Fields are compared one by one, so a match cannot be
+    glued together from the end of one field and the start of the next.
+    """
     src = normalize_text(source_text)
-    texts = spoken_text(plot)
-    joined = normalize_text(" ".join(texts))
+    letters = lettering(plot)
+    joined = normalize_text(" ".join(spoken_text(plot)))
+    empty = {"common_run": 0, "common_text": "", "max_line_ratio": 0.0, "closest_line": "", "jaccard": 0.0,
+             "copied_short": []}
     if not src or not joined:
-        return {"common_run": 0, "common_text": "", "max_line_ratio": 0.0, "closest_line": "", "jaccard": 0.0}
-    match = SequenceMatcher(None, joined, src, autojunk=False).find_longest_match(0, len(joined), 0, len(src))
-    worst, worst_line = 0.0, ""
-    for text in texts:
+        return empty
+    hashtags = {str(h) for h in plot.get("hashtags") or []}
+    matcher = SequenceMatcher(None, autojunk=False)
+    matcher.set_seq2(src)
+    run, run_text, worst, worst_line, short = 0, "", 0.0, "", []
+    for text in text_fields(plot):
         norm = normalize_text(text)
-        if len(norm) < limits.min_line_len_for_ratio:
+        if len(norm) < 4:
             continue
-        ratio = fuzz.partial_ratio(norm, src)
-        if ratio > worst:
-            worst, worst_line = ratio, text
+        matcher.set_seq1(norm)
+        match = matcher.find_longest_match(0, len(norm), 0, len(src))
+        if match.size > run:
+            run, run_text = match.size, norm[match.a : match.a + match.size]
+        if text in hashtags:                      # a hashtag is a topic word; only the run rule applies
+            continue
+        if len(norm) >= limits.min_line_len_for_ratio:
+            ratio = fuzz.partial_ratio(norm, src)
+            if ratio > worst:
+                worst, worst_line = ratio, text
+        elif text in letters and len(norm) >= 6 and norm in src:     # a short line taken over whole
+            short.append(text)
     return {
-        "common_run": match.size,
-        "common_text": joined[match.a : match.a + match.size],
+        "common_run": run,
+        "common_text": run_text,
         "max_line_ratio": round(worst, 1),
         "closest_line": worst_line,
         "jaccard": round(jaccard(shingles(joined), shingles(src)), 3),
+        "copied_short": short,
     }
 
 
@@ -175,11 +218,14 @@ def check_plot(plot: Mapping[str, Any], *, book: GagBook, limits: Limits, source
     if len(plot.get("hashtags") or []) > limits.max_hashtags:
         err(f"해시태그가 {len(plot['hashtags'])}개입니다. 최대 {limits.max_hashtags}개입니다.")
 
-    text = all_text(plot)
-    allowed = {normalize_text(t) for t in limits.not_banned}
-    for hit in book.banned_in(text):
-        if hit.key not in allowed:
-            err(f"쓰면 안 되는 밈이 들어 있습니다: '{hit.term}' ({hit.reason})")
+    fields = text_fields(plot)
+    hits = {}
+    for piece in fields:                         # field by field: a blocked word cannot span two fields
+        for hit in book.banned_in(piece, limits.not_banned):
+            hits.setdefault(hit.key, hit)
+    for hit in hits.values():
+        err(f"쓰면 안 되는 밈이 들어 있습니다: '{hit.term}' ({hit.reason})")
+    text = unicodedata.normalize("NFKC", "\n".join(fields))
     for pattern, label in _PERSONAL:
         if pattern.search(text):
             err(f"{label}처럼 보이는 내용이 있습니다. 개인 정보와 링크는 넣지 않습니다.")
@@ -233,6 +279,9 @@ def check_plot(plot: Mapping[str, Any], *, book: GagBook, limits: Limits, source
             err(f"원문과 {sim['common_run']}자가 연속으로 같습니다: '{sim['common_text']}'. 문장을 새로 쓰세요.")
         if sim["max_line_ratio"] >= limits.max_line_ratio:
             err(f"원문과 거의 같은 문장이 있습니다({sim['max_line_ratio']}점): {sim['closest_line']}")
+        for line in sim["copied_short"]:
+            report_it = err if len(normalize_text(line)) >= 8 else warn
+            report_it(f"원문에 있는 말을 그대로 썼습니다: '{line}'. 새로 쓰세요.")
         if sim["jaccard"] >= limits.warn_jaccard:
             warn(f"원문과 겹치는 표현이 많습니다(3글자 조각 겹침 {sim['jaccard']}).")
     return rep

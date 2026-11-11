@@ -7,8 +7,10 @@
 from __future__ import annotations
 
 import re
+import unicodedata
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Sequence
 
 from processing.normalize import normalize_text, shingles
 from settings import PROJECT_DIR, tomllib
@@ -17,6 +19,7 @@ DEFAULT_PATH = PROJECT_DIR / "reference" / "classics.toml"
 _PAREN = re.compile(r"\([^)]*\)")
 _SPLIT = re.compile(r"[/·,]| - ")
 MIN_KEY = 3          # shorter keys ("찐", "홍어") match ordinary words far too often
+_WORD = "0-9a-z가-힣"
 
 
 @dataclass(frozen=True)
@@ -44,6 +47,21 @@ class Banned:
     key: str         # normalized, space-free
     name: str        # the excluded entry it comes from
     reason: str
+    pattern: re.Pattern = field(compare=False, repr=False, default=re.compile(r"(?!)"))
+
+
+def _fold(text: str) -> str:
+    """Full-width letters and digits become plain ones, case is ignored; spacing is kept."""
+    return unicodedata.normalize("NFKC", text).lower()
+
+
+def _banned_pattern(term: str) -> re.Pattern:
+    """The term at the start of a word. A gap is allowed only where the term itself has one, so
+    "큰일 났다, 나 카드" is not "다나카" and "작심삼일 한 번" is not "삼일한"."""
+    tokens = [t for t in re.split(rf"[^{_WORD}]+", _fold(term)) if t]
+    body = rf"[^{_WORD}]{{0,3}}".join(re.escape(t) for t in tokens)
+    tail = r"(?![0-9a-z])" if all(t.isascii() for t in tokens) else ""
+    return re.compile(rf"(?<![{_WORD}]){body}{tail}")
 
 
 def _keys(name: str, aliases: tuple[str, ...] | list[str] = ()) -> set[str]:
@@ -71,14 +89,18 @@ class GagBook:
         allowed = set().union(*(g.keys() for g in classics + slang)) if classics or slang else set()
         banned, seen = [], set()
         for entry in data.get("excluded", []):
-            for part in _SPLIT.split(_PAREN.sub("", entry["name"])):
+            # ``terms`` lists the words to block when the entry's name is a description
+            # ("느금마 등 패드립"); without it the name itself is split into its alternatives.
+            explicit = entry.get("terms")
+            parts = explicit if explicit else _SPLIT.split(_PAREN.sub("", entry["name"]))
+            for part in parts:
                 term = part.strip(" '\"“”‘’")
                 key = normalize_text(term)
                 # a word that is itself an allowed entry (or part of one) is not banned by a broader exclusion
-                if len(key) < MIN_KEY or key in seen or any(key in a or a in key for a in allowed):
+                if len(key) < (2 if explicit else MIN_KEY) or key in seen or any(key in a or a in key for a in allowed):
                     continue
                 seen.add(key)
-                banned.append(Banned(term, key, entry["name"], entry["reason"]))
+                banned.append(Banned(term, key, entry["name"], entry["reason"], _banned_pattern(term)))
         return cls(classics, slang, banned)
 
     def _lookup(self, name: str, pool: list[Gag]) -> Gag | None:
@@ -106,9 +128,14 @@ class GagBook:
         flat = normalize_text(text)
         return [g for g in self.classics if any(k in flat for k in g.keys())]
 
-    def banned_in(self, text: str) -> list[Banned]:
-        flat = normalize_text(text)
-        return [b for b in self.banned if b.key in flat]
+    def banned_in(self, text: str, allow: Sequence[str] = ()) -> list[Banned]:
+        """Excluded memes in one piece of text. ``allow`` lists ordinary words that contain or equal
+        a blocked word (집게손가락, 쓰레기): they are taken out before looking."""
+        flat = _fold(text)
+        for word in allow:
+            if _fold(word).strip():
+                flat = flat.replace(_fold(word).strip(), " ")
+        return [b for b in self.banned if b.pattern.search(flat)]
 
     def ranked(self, text: str, kind: str = "classic") -> list[Gag]:
         """Entries ordered by rough relevance to a text (shared 2-character pieces), then fame."""

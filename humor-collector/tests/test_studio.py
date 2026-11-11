@@ -107,6 +107,8 @@ def test_a_sound_plot_passes():
     ({"comment_prompt": "공감하면 친구를 태그해 주세요"}, "참여를 요구하는 문구"),
     ({"caption": "좋아요 눌러 주면 2편 갑니다"}, "참여를 요구하는 문구"),
     ({"caption": "댓글 단 분 중 추첨해서 기프티콘 드려요"}, "참여를 요구하는 문구"),
+    ({"caption": "팔로우 하면 결말 공개합니다"}, "참여를 요구하는 문구"),
+    ({"caption": "저장 안 하면 손해인 만화"}, "참여를 요구하는 문구"),
     ({"changes_from_source": ""}, "changes_from_source"),
     ({"hashtags": list("abcdef")}, "해시태그가 6개"),
     ({"caption": "문의는 010-1234-5678로"}, "전화번호"),
@@ -160,10 +162,76 @@ def test_an_english_source_cannot_be_compared_and_says_so():
 
 
 def test_ordinary_words_listed_in_settings_are_not_banned():
-    p = plot(caption="자, 이제 퇴근합시다")
+    p = plot(caption="합시다, 퇴근")
     assert any("쓰면 안 되는 밈" in e for e in errors(p))
     relaxed = check_plot(p, book=BOOK, limits=Limits(not_banned=["합시다"]), source_text="")
     assert relaxed.ok
+    finger = plot(caption="집게손가락으로 가리키는 중")                 # contains a blocked word, is an ordinary one
+    assert any("집게손" in e for e in errors(finger))
+    assert check_plot(finger, book=BOOK, limits=Limits(not_banned=["집게손가락"])).ok
+
+
+@pytest.mark.parametrize("caption", [
+    "큰일 났다, 나 카드 두고 왔어",        # not 다나카
+    "또 야근했어. 열받네",                 # not the 어? 열받네? meme
+    "급식 충분히 먹었어?",                 # not 급식충
+    "작심삼일 한 번 더 해 보자",           # not 삼일한
+    "자, 이제 퇴근합시다",                 # a blocked word inside a longer word
+])
+def test_blocked_words_are_not_glued_together_from_ordinary_sentences(caption):
+    assert not any("쓰면 안 되는 밈" in e for e in errors(plot(caption=caption)))
+
+
+def test_a_blocked_word_cannot_span_two_fields():
+    panels = copy.deepcopy(plot()["panels"])
+    panels[0]["lines"] = [{"role": "A", "text": "나 카드 찍고 갈게요"}]
+    assert not any("쓰면 안 되는 밈" in e for e in errors(plot(hook="오늘도 망했다", panels=panels)))
+
+
+@pytest.mark.parametrize("caption, word", [
+    ("다나카 상이 왔다", "다나카"), ("어? 열받네? 하고 나왔다", "열받네"), ("느금마 소리 금지", "느금마"),
+    ("틀딱 소리는 하지 말자", "틀딱"), ("MC무현 합성 짤", "MC무현"), ("급식충이라니", "급식충"),
+])
+def test_blocked_words_are_caught_at_the_start_of_a_word(caption, word):
+    assert any(word in e for e in errors(plot(caption=caption)))
+
+
+def test_the_copy_check_reads_every_text_that_is_published():
+    sentence = "가방까지 다 쌌는데 다시 풀었다"                           # a sentence of the source post
+    for field in ("sfx", "scene", "action"):
+        panels = copy.deepcopy(plot()["panels"])
+        panels[2][field] = sentence if field != "scene" else f"화이트보드에 '{sentence}'라고 적혀 있다"
+        assert any("원문과" in e for e in errors(plot(panels=panels))), field
+    assert any("원문과" in e for e in errors(plot(hooks=[sentence, "문 앞 3초 전", "신발까지 신었는데"])))
+    assert any("원문과" in e for e in errors(plot(hashtags=["가방까지다쌌는데다시풀었다"])))
+
+
+def test_a_short_line_taken_over_whole_is_caught():
+    panels = copy.deepcopy(plot()["panels"])
+    panels[1]["lines"] = [{"role": "B", "text": "다시 풀었다. 가방을"}]      # 9 characters without spaces, all from the source
+    found = check_plot(plot(panels=panels), book=BOOK, limits=LIMITS, source_text="가방까지 다 쌌는데 다시 풀었다 가방을 풀었다")
+    assert any("그대로 썼습니다" in e for e in found.errors)
+    panels[1]["lines"] = [{"role": "B", "text": "네, 부장님"}]              # a short everyday reply is fine
+    assert check_plot(plot(panels=panels), book=BOOK, limits=LIMITS, source_text=POST["body"] + " 네, 부장님").ok
+
+
+@pytest.mark.parametrize("caption", [
+    "문의는 open.kakao.com/o/gAbCdE 로", "bit.ly/3xYzAb 여기서 신청", "인스타 instagram.com/some_one 놀러와",
+    "연락처 010 - 1234 - 5678", "연락처 +82 10-1234-5678", "연락처 ０１０－１２３４－５６７８", "대표번호 1588-1234",
+    "사무실 02-123-4567", "계정은 ＠some_one",
+])
+def test_links_and_numbers_in_other_spellings_are_personal_information(caption):
+    assert any("개인 정보와 링크" in e for e in errors(plot(caption=caption)))
+
+
+@pytest.mark.parametrize("hook, caption", [
+    ("저장 안 하면 생기는 일", "파일을 날린 직장인의 하루"), ("계정 공유하면 생기는 일", "넷이서 쓰는 계정"),
+    ("좋아요 누르다 생긴 일", "전 애인 사진에 좋아요 눌러 버린 새벽"), ("해시태그 하나의 무게", "회사 계정에 올린 그 글"),
+    ("택배 1,900개의 날", "편의점까지 600보, 합계 3,000보"), ("팀장님 계정 팔로우 하면 생기는 일", "실수로 누른 그 버튼"),
+])
+def test_a_story_about_saving_or_liking_is_not_a_request(hook, caption):
+    found = errors(plot(hook=hook, hooks=[hook], caption=caption))
+    assert not any("참여를 요구" in e or "개인 정보" in e for e in found), found
 
 
 def test_classic_warnings_cooldown_and_undeclared_mentions():

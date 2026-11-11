@@ -51,7 +51,7 @@ DEFAULTS: dict[str, Any] = {
         "max_common_run": 12,
         "max_line_ratio": 85.0,
         "warn_jaccard": 0.30,
-        "not_banned": ["합시다", "쓰레기", "골목식당"],
+        "not_banned": ["합시다", "쓰레기", "골목식당", "집게손가락"],
         "variants": 3,
         "max_fix_rounds": 2,
         "max_source_chars": 3000,

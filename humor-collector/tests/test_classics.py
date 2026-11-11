@@ -38,3 +38,5 @@ def test_names_are_unique_and_excluded_memes_are_not_listed():
     excluded = {x["name"] for x in data.get("excluded", [])}
     assert excluded and not excluded & set(names)
     assert all(x["reason"] for x in data["excluded"] + data.get("skipped", []))
+    for entry in data["excluded"]:                      # optional: the exact words to block for a descriptive name
+        assert all(isinstance(t, str) and len(t.strip()) >= 2 for t in entry.get("terms", []))
