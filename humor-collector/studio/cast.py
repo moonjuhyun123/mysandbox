@@ -21,6 +21,7 @@ from settings import tomllib
 from studio import prompts
 from studio.checks import Limits, Report, check_plot
 from studio.gags import Gag, GagBook
+from studio.wording import with_names
 from studio.writer import LLM, canonical_classics, clean_plot, source_text
 
 
@@ -116,6 +117,22 @@ def bind(plot: Mapping[str, Any], cast: Cast, assignment: Mapping[str, str]) -> 
         char = cast.get(assignment[role["id"]])
         script["characters"].append({"role": role["id"], "plays": role.get("role", ""), **char.as_dict()})
     script.setdefault("art_notes", "")
+    return name_reader_text(script)
+
+
+def name_reader_text(script: dict[str, Any]) -> dict[str, Any]:
+    """Put the characters' names where a role letter was left in text the reader reads (hook,
+    bubbles, narration, caption, comment question). It is done once, here, so that the stored
+    script, its checks (a name is longer than a letter), the document and the image prompts
+    all show the same words. Scene and action keep their letters; they are named when shown."""
+    names = {c["role"]: c["name"] for c in script.get("characters", [])}
+    for key in ("hook", "caption", "comment_prompt"):
+        script[key] = with_names(str(script.get(key) or ""), names)
+    script["hooks"] = [with_names(str(h), names) for h in script.get("hooks") or []]
+    for panel in script.get("panels") or []:
+        for line in panel.get("lines") or []:
+            line["text"] = with_names(str(line.get("text") or ""), names)
+        panel["narration"] = with_names(str(panel.get("narration") or ""), names)
     return script
 
 
@@ -177,6 +194,7 @@ class CastWriter:
             if answer[key]:
                 script[key] = answer[key]
         script["art_notes"] = str(raw.get("art_notes") or "").strip()
+        name_reader_text(script)
         canonical_classics(script, self.book)
         report = self.check(script, post)
         if len(script["panels"]) != len(plot.get("panels", [])):

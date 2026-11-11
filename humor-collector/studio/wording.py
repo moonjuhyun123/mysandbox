@@ -73,16 +73,19 @@ def scene_texts(panel: Mapping[str, Any]) -> list[str]:
     return found
 
 
-_OTHER_PANEL = re.compile(
-    r"\d\s*컷|[일이삼사첫둘셋넷]\s*번째\s*컷|(?:앞|이전|전|지난|다음)\s*컷"
-    r"|같은\s*(?:장소|구도|자세|배경|사무실|회의실|거실|방|자리|곳|화면)|아까(?:와|의|처럼|\s)|위와\s*같은")
+_OTHER_PANEL = re.compile(r"\d\s*컷|(?:앞|이전|지난|다음)\s*컷|(?:똑)?같은\s*(?:구도|자세)")
+_SAME_PLACE = re.compile(r"^\s*같은\s[^.,]{1,20}")          # a scene that opens with "같은 사무실", "같은 책상"
 
 
 def panel_references(panel: Mapping[str, Any]) -> list[str]:
-    """Phrases in scene/action that lean on another panel ("같은 사무실", "1컷과 같은 구도"). Each
-    picture is generated on its own, so such a scene cannot be drawn from its prompt alone."""
-    text = f"{panel.get('scene', '') or ''} {panel.get('action', '') or ''}"
-    return list(dict.fromkeys(m.group(0).strip() for m in _OTHER_PANEL.finditer(text)))
+    """Phrases in scene/action that lean on another panel ("같은 사무실." as the whole place,
+    "1컷과 같은 구도"). Each picture is generated on its own, so such a scene cannot be drawn from
+    its prompt alone. Words on signs and screens are not looked at ("'4컷 만화 공모전' 포스터")."""
+    scene = _QUOTED.sub(" ", panel.get("scene", "") or "")
+    action = _QUOTED.sub(" ", panel.get("action", "") or "")
+    found = [m.group(0).strip() for m in _SAME_PLACE.finditer(scene)]
+    found += [m.group(0).strip() for m in _OTHER_PANEL.finditer(f"{scene} {action}")]
+    return list(dict.fromkeys(found))
 
 
 def role_letters(text: str, role_ids) -> list[str]:

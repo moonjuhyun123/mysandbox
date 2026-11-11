@@ -181,7 +181,7 @@ class PlotWriter:
         for _ in range(self.max_fix_rounds):  # repair rounds: only what the checks still reject
             if report.ok:
                 break
-            rewrite([], False)
+            rewrite(list(report.warnings), False)      # while it is being rewritten anyway, pass the notes too
         return PlotResult(plot, report, f"api:{llm.name}", drafts, judge)
 
 

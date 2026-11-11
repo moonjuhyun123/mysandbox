@@ -79,7 +79,7 @@ class Limits:
 @dataclass
 class Report:
     errors: list[str] = field(default_factory=list)
-    warnings: list[str] = field(default_factory=list)      # the writer can act on these; they go back to the LLM
+    warnings: list[str] = field(default_factory=list)      # the writer can act on these; sent along when a plot is repaired
     notes: list[str] = field(default_factory=list)         # only a person can act on these; never sent to the LLM
     similarity: dict[str, Any] = field(default_factory=dict)
 

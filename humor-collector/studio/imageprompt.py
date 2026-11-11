@@ -31,7 +31,9 @@ def _characters(doc: Mapping[str, Any]) -> dict[str, Mapping[str, Any]]:
     return {c["role"]: c for c in doc.get("characters", [])}
 
 
-_TOGETHER = re.compile(r"둘|두\s*(?:사람|명|캐릭터)|셋|세\s*(?:사람|명|캐릭터)|모두|다\s*같이|다들|함께|서로|마주|나란히|일행")
+# Words that mean "more than one of them": whole words only (not 둘 in 서둘러, 그만둘, 둘러본다).
+_TOGETHER = re.compile(r"(?<![가-힣])(?:(?:둘|셋)(?=이|은|의|을|도|만|\s+다|[\s.,!?]|$)|(?:두|세)\s*(?:사람|명|캐릭터)"
+                       r"|서로|마주\s*(?:보|앉|서)|나란히|다\s*같이)")
 
 
 def _in_panel(panel: Mapping[str, Any], chars: Mapping[str, Mapping[str, Any]]) -> tuple[list[Mapping[str, Any]], bool]:
@@ -102,7 +104,12 @@ def panel_prompt(doc: Mapping[str, Any], panel: Mapping[str, Any], *, with_text:
     chars = _characters(doc)
     names = {role: c["name"] for role, c in chars.items()}
     present, complete = _in_panel(panel, chars)
-    in_scene = scene_texts(panel)
+    # names first, then the words on signs: the scene line and the lettering list must agree
+    shown = {**panel, "scene": with_names(panel.get("scene") or "", names),
+             "action": with_names(panel.get("action") or "", names),
+             "narration": with_names(panel.get("narration") or "", names),
+             "lines": [{**ln, "text": with_names(ln.get("text") or "", names)} for ln in panel.get("lines", [])]}
+    in_scene = scene_texts(shown)
     out = _style_block(doc, single_scene=True)
     out += ["", "[등장 캐릭터] 앞에서 만들었거나 함께 올린 캐릭터 시트 그림이 기준이다. 그 그림과 같은 캐릭터로 그리고, "
                 "새로 디자인하지 않는다. 생김새는 아래와 같다.",
@@ -111,8 +118,8 @@ def panel_prompt(doc: Mapping[str, Any], panel: Mapping[str, Any], *, with_text:
         out.append("위 캐릭터만 그린다. 다른 캐릭터는 넣지 않는다.")
     out += ["", "[장면]"]
     for label, field in (("배경", "scene"), ("행동과 표정", "action")):
-        if panel.get(field):
-            line = with_names(panel[field], names)
+        if shown[field]:
+            line = shown[field]
             out.append(f"{label}: {line if with_text else _without_scene_text(line, in_scene)}")
 
     hook = with_names(doc.get("hook") or "", names) if panel.get("n") == 1 else ""
@@ -172,7 +179,9 @@ def lettering_list(doc: Mapping[str, Any]) -> list[tuple[int, list[str]]]:
             items.append(f"설명: {with_names(panel['narration'], names)}")
         if panel.get("sfx"):
             items.append(f"효과음: {panel['sfx']}")
-        items += [f"장면 속 글자: {text}" for text in scene_texts(panel)]
+        named = {**panel, "scene": with_names(panel.get("scene") or "", names),
+                 "action": with_names(panel.get("action") or "", names)}
+        items += [f"장면 속 글자: {text}" for text in scene_texts(named)]
         out.append((panel.get("n", 0), items))
     return out
 
