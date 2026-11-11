@@ -156,16 +156,22 @@ class PlotWriter:
             winner, fixes, drop = usable[pick - 1], list(judge.get("fixes") or []), bool(judge.get("drop_classics"))
 
         plot, report = winner, self.check(winner, post, recent_classics)
-        for _ in range(self.max_fix_rounds):
-            if not fixes and not drop and report.ok:
-                break
+
+        def rewrite(fixes: list[str], drop: bool) -> None:
+            nonlocal plot, report
             user = prompts.revise_prompt(post, plot, fixes=fixes, errors=report.errors, gags=self.gags_used(plot),
                                          drop_classics=drop, limits=self.limits, max_source_chars=self.max_source_chars)
             revised = clean_plot(llm.complete_json(self.system, user, prompts.PLOT_SCHEMA))
             if is_unsuitable(revised):
                 raise Unsuitable(revised["why_funny"])
             plot, report = revised, self.check(revised, post, recent_classics)
-            fixes, drop = [], False          # later rounds only repair what the checks still reject
+
+        if fixes or drop:                    # the editor's rewrite; it does not use up a repair round
+            rewrite(fixes, drop)
+        for _ in range(self.max_fix_rounds):  # repair rounds: only what the checks still reject
+            if report.ok:
+                break
+            rewrite([], False)
         return PlotResult(plot, report, f"api:{llm.name}", drafts, judge)
 
 

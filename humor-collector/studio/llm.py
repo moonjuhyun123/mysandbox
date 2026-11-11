@@ -26,6 +26,11 @@ class ClaudeLLM:
             self.client = anthropic.Anthropic()
         except anthropic.AnthropicError as exc:
             raise LLMError(f"Claude API 인증 정보를 찾지 못했습니다: {exc}") from exc
+        # The client is built without credentials too; the first request would then die with a
+        # TypeError. Say it here, before any work is done.
+        if all(getattr(self.client, name, None) is None for name in ("api_key", "auth_token", "credentials")):
+            raise LLMError("Claude API 인증 정보가 없습니다. ANTHROPIC_API_KEY 환경 변수를 설정하거나 "
+                           "`ant auth login`으로 로그인하세요. (키는 설정 파일에 적지 않습니다.)")
 
     def complete_json(self, system: str, user: str, schema: Mapping[str, Any]) -> dict[str, Any]:
         sdk = self._sdk
@@ -56,18 +61,34 @@ class ClaudeLLM:
             raise LLMError(f"Claude API 오류({exc.status_code}): {exc.message}") from exc
         except sdk.APIConnectionError as exc:
             raise LLMError(f"Claude API에 연결하지 못했습니다: {exc}") from exc
+        except _transport_errors() as exc:      # a connection dropped while the answer was streaming
+            raise LLMError(f"답을 받는 중에 연결이 끊겼습니다. 다시 실행하세요: {exc}") from exc
 
         if message.stop_reason == "refusal":
             raise LLMError("모델이 이 요청을 거절했습니다. 다른 글을 고르세요.")
         if message.stop_reason == "max_tokens":
             raise LLMError("답이 길이 제한에서 잘렸습니다. [studio.llm] max_tokens를 늘리세요.")
-        text = next((block.text for block in message.content if block.type == "text"), None)
-        if text is None:
+        # After a decline in mid-answer the fallback model continues the partial text: the answer is
+        # every text block in order, on both sides of the "fallback" block, not just the first one.
+        text = "".join(block.text for block in message.content if block.type == "text")
+        if not text.strip():
             raise LLMError("모델의 답에 글이 없습니다.")
         try:
             return json.loads(text)
         except json.JSONDecodeError as exc:
             raise LLMError(f"모델의 답이 JSON이 아닙니다: {exc}") from exc
+
+
+def _transport_errors() -> tuple[type[BaseException], ...]:
+    """The HTTP library's own error base: the SDK does not wrap errors raised while a stream is read."""
+    try:
+        import httpx2 as http                # anthropic 1.x and later
+    except ModuleNotFoundError:
+        try:
+            import httpx as http             # anthropic 0.x
+        except ModuleNotFoundError:
+            return ()
+    return (http.HTTPError,)
 
 
 def make_llm(studio: Mapping[str, Any]) -> ClaudeLLM:

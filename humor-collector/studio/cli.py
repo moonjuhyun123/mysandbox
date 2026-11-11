@@ -194,6 +194,7 @@ def cmd_plot(args, settings, db: Database) -> int:
 
     if args.action == "import":
         post = _post_or_exit(db, args.post_id)
+        recent = db.recent_classics(int(studio["classic_cooldown"]), exclude_post_id=post["id"])   # may be a re-import
         try:
             result = _writer(studio).accept(_read_json(args.file), post, recent_classics=recent)
         except Unsuitable as exc:
@@ -208,6 +209,7 @@ def cmd_plot(args, settings, db: Database) -> int:
             raise SystemExit("원본 글이 삭제돼 고칠 수 없습니다. 새 글로 다시 쓰세요.")
         post, plot = _post_or_exit(db, row["post_id"]), json.loads(row["plot"])
         writer = _writer(studio)
+        recent = db.recent_classics(int(studio["classic_cooldown"]), exclude_post_id=post["id"])   # not its own gag
         report = writer.check(plot, post, recent)
         if args.prompt_only:
             print(writer.fix_prompt_for_chat(post, plot, report))
@@ -289,21 +291,23 @@ def cmd_script(args, settings, db: Database) -> int:
     try:
         cast = load_cast(args.cast)
         writer = CastWriter(_book(studio), Limits.from_settings(studio))
-        avoid = db.recent_classics(int(studio["classic_cooldown"]))
+        avoid = db.recent_classics(int(studio["classic_cooldown"]), exclude_post_id=plot_row["post_id"])
+        fixed = _fixed_roles(args.roles)
         if args.action == "import":
-            script, report = writer.accept(_read_json(args.file), plot, cast, post)
+            script, report = writer.accept(_read_json(args.file), plot, cast, post, fixed)
             origin = "import"
         elif args.prompt_only:
-            print(writer.prompt_for_chat(plot, cast, avoid))
-            print(f"\n받은 JSON을 저장한 뒤: python main.py script import {args.plot_id} --cast {args.cast} 답.json",
+            print(writer.prompt_for_chat(plot, cast, avoid, fixed))
+            pins = f" --as {args.roles}" if args.roles else ""
+            print(f"\n받은 JSON을 저장한 뒤: python main.py script import {args.plot_id} --cast {args.cast}{pins} 답.json",
                   file=sys.stderr)
             return 0
         elif args.polish:
             llm = make_llm(studio)
-            script, report = writer.polish(llm, plot, cast, post, avoid)
+            script, report = writer.polish(llm, plot, cast, post, avoid, fixed)
             origin = f"api:{llm.name}"
         else:
-            script, report = writer.bind(plot, cast, post, _fixed_roles(args.roles))
+            script, report = writer.bind(plot, cast, post, fixed)
             origin = "bind"
     except CastError as exc:
         raise SystemExit(str(exc))
@@ -358,6 +362,7 @@ def add_parsers(sub) -> None:
     si = ss.add_parser("import", help="check and store a cast script JSON written by a chat LLM")
     si.add_argument("plot_id", type=int)
     si.add_argument("--cast", required=True)
+    si.add_argument("--as", dest="roles", help="pin roles, e.g. A=tteok,B=ramen (wins over the LLM's choice)")
     si.add_argument("file")
     si.add_argument("--force", action="store_true")
     si.add_argument("--dry-run", action="store_true", help="run the checks without storing the script")

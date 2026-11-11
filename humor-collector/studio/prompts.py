@@ -261,7 +261,8 @@ def revise_prompt(post: Mapping[str, Any], draft: Mapping[str, Any], *, fixes: S
     return "\n\n".join(parts)
 
 
-def cast_prompt(plot: Mapping[str, Any], cast: Mapping[str, Any], *, options: Sequence[Gag], limits: Limits) -> str:
+def cast_prompt(plot: Mapping[str, Any], cast: Mapping[str, Any], *, options: Sequence[Gag], limits: Limits,
+                fixed: Mapping[str, str] | None = None) -> str:
     people = []
     for c in cast["characters"]:
         people.append(f"- id: {c['id']} / 이름: {c['name']} / 생김새: {c.get('look', '')} / "
@@ -273,8 +274,12 @@ def cast_prompt(plot: Mapping[str, Any], cast: Mapping[str, Any], *, options: Se
     if options:
         parts.append("### 이 캐릭터들에게만 맞는 사전 개그 (정말 자연스러울 때 하나만, 아니면 쓰지 않음)\n"
                      + "\n".join(f"{gag_detail(g)}\n  캐릭터 활용: {g.food_fit}" for g in options))
+    pinned = ""
+    if fixed:
+        pairs = ", ".join(f"{role}={char}" for role, char in fixed.items())
+        pinned = f"\n  이미 정해진 배정이 있습니다: {pairs}. 이 배정은 바꾸지 않고, 남은 역할만 고릅니다."
     parts.append(f"""이 플롯에 캐릭터를 입혀 최종 대본을 JSON으로 쓰세요.
-- assignment: 역할마다 가장 어울리는 캐릭터 id를 하나씩 배정합니다. 한 캐릭터는 한 역할만 맡습니다.
+- assignment: 역할마다 가장 어울리는 캐릭터 id를 하나씩 배정합니다. 한 캐릭터는 한 역할만 맡습니다.{pinned}
 - 이야기와 컷 구성은 바꾸지 않습니다. 컷 수는 {limits.panels}개 그대로입니다.
 - 대사는 뜻을 유지한 채 각 캐릭터의 말투로 다듬습니다. lines[].role에는 역할 id(A, B, C)를 그대로 씁니다.
 - scene과 action은 세계관에 맞게 장소·소품을 바꾸고, 캐릭터의 생김새와 표정이 드러나게 씁니다.

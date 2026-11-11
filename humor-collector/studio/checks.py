@@ -69,7 +69,8 @@ class Limits:
 @dataclass
 class Report:
     errors: list[str] = field(default_factory=list)
-    warnings: list[str] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)      # the writer can act on these; they go back to the LLM
+    notes: list[str] = field(default_factory=list)         # only a person can act on these; never sent to the LLM
     similarity: dict[str, Any] = field(default_factory=dict)
 
     @property
@@ -77,7 +78,7 @@ class Report:
         return not self.errors
 
     def as_dict(self) -> dict[str, Any]:
-        return {"errors": self.errors, "warnings": self.warnings, "similarity": self.similarity}
+        return {"errors": self.errors, "warnings": self.warnings + self.notes, "similarity": self.similarity}
 
 
 def spoken_text(plot: Mapping[str, Any]) -> list[str]:
@@ -125,7 +126,7 @@ def similarity(plot: Mapping[str, Any], source_text: str, limits: Limits) -> dic
 def check_plot(plot: Mapping[str, Any], *, book: GagBook, limits: Limits, source_text: str = "",
                recent_classics: Sequence[str] = ()) -> Report:
     rep = Report()
-    err, warn = rep.errors.append, rep.warnings.append
+    err, warn, note = rep.errors.append, rep.warnings.append, rep.notes.append
 
     panels = plot.get("panels") or []
     if len(panels) != limits.panels:
@@ -208,7 +209,7 @@ def check_plot(plot: Mapping[str, Any], *, book: GagBook, limits: Limits, source
         if gag.name in recent_classics:
             warn(f"개그 '{gag.name}'은(는) 최근 플롯에서 이미 썼습니다.")
         if not gag.risk_checked:
-            warn(f"개그 '{gag.name}'은(는) 아직 위험 점검 전입니다.")
+            note(f"개그 '{gag.name}'은(는) 아직 위험 점검 전입니다.")
     if len(declared) > limits.max_classics:
         err(f"고전 개그를 {len(declared)}개 썼습니다. 한 편에 최대 {limits.max_classics}개입니다.")
     declared_names = {g.name for g in declared}
@@ -226,7 +227,7 @@ def check_plot(plot: Mapping[str, Any], *, book: GagBook, limits: Limits, source
         hangul = sum("가" <= ch <= "힣" for ch in source_text)
         latin = sum(ch.isascii() and ch.isalpha() for ch in source_text)
         if latin > 3 * hangul:               # an English post: a translated copy shares no characters with it
-            warn("원문이 한국어가 아니어서 문장 겹침 검사가 번역해 옮긴 문장을 잡지 못합니다. 사람이 원문과 대조하세요.")
+            note("원문이 한국어가 아니어서 문장 겹침 검사가 번역해 옮긴 문장을 잡지 못합니다. 사람이 원문과 대조하세요.")
         sim = rep.similarity = similarity(plot, source_text, limits)
         if sim["common_run"] >= limits.max_common_run:
             err(f"원문과 {sim['common_run']}자가 연속으로 같습니다: '{sim['common_text']}'. 문장을 새로 쓰세요.")

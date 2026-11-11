@@ -813,16 +813,26 @@ class Database:
             FROM plots LEFT JOIN posts ON posts.id = plots.post_id ORDER BY plots.id DESC LIMIT ?
             """, (limit,)).fetchall()
 
-    def recent_classics(self, last_plots: int) -> list[str]:
-        """Dictionary gags used in the most recent plots (to avoid repeating them)."""
+    def recent_classics(self, last_plots: int, *, exclude_post_id: int | None = None) -> list[str]:
+        """Dictionary gags used in the most recent plots and scripts (to avoid repeating them).
+
+        ``exclude_post_id`` leaves out the plots of one post and their scripts: a plot being
+        repaired or re-imported must not count its own gag as "used recently".
+        """
         if last_plots <= 0:
             return []
-        rows = self.conn.execute("SELECT classics FROM plots ORDER BY id DESC LIMIT ?", (last_plots,)).fetchall()
+        skip = -1 if exclude_post_id is None else exclude_post_id
         out: list[str] = []
-        for row in rows:
-            for name in json.loads(row["classics"]):
-                if name not in out:
-                    out.append(name)
+        plots = self.conn.execute(
+            "SELECT classics FROM plots WHERE COALESCE(post_id, 0) != ? ORDER BY id DESC LIMIT ?", (skip, last_plots))
+        for row in plots.fetchall():
+            out += [name for name in json.loads(row["classics"]) if name not in out]
+        scripts = self.conn.execute(      # a gag can be added while casting; it is only in the script
+            "SELECT s.script FROM scripts s JOIN plots p ON p.id = s.plot_id WHERE COALESCE(p.post_id, 0) != ? "
+            "ORDER BY s.id DESC LIMIT ?", (skip, last_plots))
+        for row in scripts.fetchall():
+            names = [str(c.get("name", "")) for c in json.loads(row["script"]).get("classics") or [] if isinstance(c, dict)]
+            out += [name for name in names if name and name not in out]
         return out
 
     def save_script(self, *, plot_id: int, cast_name: str, origin: str, script: dict[str, Any],

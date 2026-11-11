@@ -11,6 +11,7 @@ talk. The same plot can be cast again with a different file.
 from __future__ import annotations
 
 import copy
+from itertools import permutations
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping, Sequence
@@ -96,12 +97,14 @@ def assign(plot: Mapping[str, Any], cast: Cast, fixed: Mapping[str, str] | None 
         if char_id in out.values():
             raise CastError(f"캐릭터 {char_id!r}을(를) 두 역할에 배정했습니다.")
         out[role_id] = char_id
-    for role in roles:
-        if role["id"] in out:
-            continue
-        free = [c for c in cast.characters if c.id not in out.values()]
-        out[role["id"]] = max(free, key=lambda c: _fit(role, c)).id      # ties keep the cast file's order
-    return out
+    open_roles = [r for r in roles if r["id"] not in out]
+    free = [c for c in cast.characters if c.id not in out.values()]
+    # Best total fit over all open roles, not role by role: a role that fits nobody must not take
+    # the only character that fits a later role. Ties keep the cast file's order.
+    best = max(permutations(free, len(open_roles)),
+               key=lambda chars: sum(_fit(r, c) for r, c in zip(open_roles, chars)), default=())
+    out.update({role["id"]: char.id for role, char in zip(open_roles, best)})
+    return {r["id"]: out[r["id"]] for r in roles}
 
 
 def bind(plot: Mapping[str, Any], cast: Cast, assignment: Mapping[str, str]) -> dict[str, Any]:
@@ -139,7 +142,7 @@ class CastWriter:
         report = check_plot(script, book=self.book, limits=self.limits,
                             source_text=source_text(post) if post is not None else "")
         if post is None:
-            report.warnings.append("원본 글이 삭제돼 원문과의 겹침은 검사하지 못했습니다.")
+            report.notes.append("원본 글이 삭제돼 원문과의 겹침은 검사하지 못했습니다.")
         return report
 
     def bind(self, plot: Mapping[str, Any], cast: Cast, post: Mapping[str, Any] | None,
@@ -147,23 +150,28 @@ class CastWriter:
         script = bind(plot, cast, assign(plot, cast, fixed))
         return script, self.check(script, post)
 
-    def prompt(self, plot: Mapping[str, Any], cast: Cast, avoid: Sequence[str] = ()) -> str:
-        return prompts.cast_prompt(plot, cast.as_dict(), limits=self.limits,
+    def prompt(self, plot: Mapping[str, Any], cast: Cast, avoid: Sequence[str] = (),
+               fixed: Mapping[str, str] | None = None) -> str:
+        if fixed:
+            assign(plot, cast, fixed)                # a wrong pin is an error here, not a silent drop
+        return prompts.cast_prompt(plot, cast.as_dict(), limits=self.limits, fixed=fixed or {},
                                    options=food_options(plot, cast, self.book, avoid=avoid))
 
-    def prompt_for_chat(self, plot: Mapping[str, Any], cast: Cast, avoid: Sequence[str] = ()) -> str:
-        return prompts.single_prompt(self.system, self.prompt(plot, cast, avoid), prompts.SCRIPT_SCHEMA)
+    def prompt_for_chat(self, plot: Mapping[str, Any], cast: Cast, avoid: Sequence[str] = (),
+                        fixed: Mapping[str, str] | None = None) -> str:
+        return prompts.single_prompt(self.system, self.prompt(plot, cast, avoid, fixed), prompts.SCRIPT_SCHEMA)
 
     def accept(self, raw: Mapping[str, Any], plot: Mapping[str, Any], cast: Cast,
-               post: Mapping[str, Any] | None) -> tuple[dict[str, Any], Report]:
-        """Merge an LLM's cast answer onto the plot. The story fields of the plot stay as they were."""
+               post: Mapping[str, Any] | None, fixed: Mapping[str, str] | None = None) -> tuple[dict[str, Any], Report]:
+        """Merge an LLM's cast answer onto the plot. The story fields of the plot stay as they were.
+        Roles pinned by the owner (``fixed``) win over the LLM's choice."""
         role_ids = {r["id"] for r in plot.get("roles", [])}
-        fixed = {}
+        chosen = dict(fixed or {})
         for pair in raw.get("assignment") or []:
             role, char = str(pair.get("role", "")), str(pair.get("character", ""))
-            if role in role_ids and cast.get(char) is not None and char not in fixed.values() and role not in fixed:
-                fixed[role] = char
-        script = bind(plot, cast, assign(plot, cast, fixed))
+            if role in role_ids and cast.get(char) is not None and char not in chosen.values() and role not in chosen:
+                chosen[role] = char
+        script = bind(plot, cast, assign(plot, cast, chosen))
         answer = clean_plot(raw)
         for key in ("hook", "panels", "caption", "comment_prompt", "hashtags", "classics", "slang"):
             if answer[key]:
@@ -175,6 +183,6 @@ class CastWriter:
         return script, report
 
     def polish(self, llm: LLM, plot: Mapping[str, Any], cast: Cast, post: Mapping[str, Any] | None,
-               avoid: Sequence[str] = ()) -> tuple[dict[str, Any], Report]:
-        raw = llm.complete_json(self.system, self.prompt(plot, cast, avoid), prompts.SCRIPT_SCHEMA)
-        return self.accept(raw, plot, cast, post)
+               avoid: Sequence[str] = (), fixed: Mapping[str, str] | None = None) -> tuple[dict[str, Any], Report]:
+        raw = llm.complete_json(self.system, self.prompt(plot, cast, avoid, fixed), prompts.SCRIPT_SCHEMA)
+        return self.accept(raw, plot, cast, post, fixed)

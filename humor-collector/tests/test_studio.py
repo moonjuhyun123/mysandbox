@@ -153,9 +153,10 @@ def test_copying_the_source_is_caught():
 def test_an_english_source_cannot_be_compared_and_says_so():
     english = "My boss called a meeting ten minutes before the end of the day. It was about where to eat next week."
     report = check_plot(plot(), book=BOOK, limits=LIMITS, source_text=english)
-    assert report.ok and any("한국어가 아니어서" in w for w in report.warnings)
+    assert report.ok and any("한국어가 아니어서" in w for w in report.notes)
+    assert report.warnings == [] and any("한국어가 아니어서" in w for w in report.as_dict()["warnings"])   # shown, not sent back
     korean = check_plot(plot(), book=BOOK, limits=LIMITS, source_text=POST["body"])
-    assert not any("한국어가 아니어서" in w for w in korean.warnings)
+    assert not any("한국어가 아니어서" in w for w in korean.notes)
 
 
 def test_ordinary_words_listed_in_settings_are_not_banned():
@@ -205,6 +206,15 @@ def test_plot_that_stays_broken_is_stored_as_needs_fix():
     bad = plot(hook="")
     result = writer(variants=1, max_fix_rounds=1).write(ScriptedLLM(bad, bad), POST)
     assert result.status == "needs_fix"
+
+
+def test_the_editors_rewrite_does_not_use_up_a_repair_round():
+    bad = plot(caption="문의는 010-1234-5678")                       # the rewrite itself breaks a rule
+    judge = {"scores": [], "winner": 1, "fixes": ["2컷 대사를 더 짧게"], "drop_classics": False}
+    llm = ScriptedLLM(plot(), plot(title="둘째"), judge, bad, bad, plot())
+    result = writer(variants=2, max_fix_rounds=2).write(llm, POST)
+    assert result.report.ok and len(llm.calls) == 6                 # 2 drafts, judge, rewrite, 2 repairs
+    assert "2컷 대사를 더 짧게" in llm.calls[3][1] and "2컷 대사를 더 짧게" not in llm.calls[4][1]
 
 
 def test_forced_classic_is_dropped_on_the_editors_word():
@@ -296,6 +306,29 @@ def test_binding_keeps_the_plot_wording_and_names_the_speakers(cast):
     assert '**라면**: "잠깐, 다들 모여 볼까?"' in text and "| A | 만두 |" in text and "참고한 글: #7" in text
 
 
+def test_a_role_that_fits_nobody_does_not_take_the_only_match_of_a_later_role(cast):
+    roles = [{"id": "A", "role": "지나가는 쪽", "traits": ["무색무취"]},          # fits no character
+             {"id": "B", "role": "밀어붙이는 쪽", "traits": ["직설적", "화끈함"]}]   # fits only tteok, first in the file
+    assert assign(plot(roles=roles), cast) == {"A": "ramen", "B": "tteok"}
+
+
+def test_pinned_roles_reach_the_prompt_and_win_over_the_llms_choice(cast):
+    writer = CastWriter(BOOK, LIMITS)
+    pins = {"A": "tteok"}
+    assert "이미 정해진 배정이 있습니다: A=tteok" in writer.prompt(clean_plot(plot()), cast, fixed=pins)
+    assert "이미 정해진 배정" not in writer.prompt(clean_plot(plot()), cast)
+    answer = {"assignment": [{"role": "A", "character": "mandu"}, {"role": "B", "character": "ramen"}],
+              "panels": copy.deepcopy(plot()["panels"])}
+    script, _ = writer.accept(answer, clean_plot(plot()), cast, POST, pins)
+    assert {c["role"]: c["id"] for c in script["characters"]} == {"A": "tteok", "B": "ramen"}
+    llm = ScriptedLLM(answer)
+    script, _ = writer.polish(llm, clean_plot(plot()), cast, POST, fixed=pins)
+    assert {c["role"]: c["id"] for c in script["characters"]} == {"A": "tteok", "B": "ramen"}
+    assert "A=tteok" in llm.calls[0][1]
+    with pytest.raises(CastError, match="없습니다"):
+        writer.prompt(clean_plot(plot()), cast, fixed={"Z": "tteok"})
+
+
 def test_same_plot_can_be_cast_with_other_characters(cast, tmp_path):
     other = tmp_path / "other.toml"
     other.write_text('name = "과일"\n[[character]]\nid = "a"\nname = "사과"\n[[character]]\nid = "b"\nname = "배"\n',
@@ -332,7 +365,7 @@ def test_character_specific_gags_are_offered_only_when_the_plot_has_none(cast):
 
 def test_script_without_its_source_post_says_so(cast):
     _, report = CastWriter(BOOK, LIMITS).bind(plot(), cast, None)
-    assert any("원문과의 겹침은 검사하지 못했습니다" in w for w in report.warnings)
+    assert any("원문과의 겹침은 검사하지 못했습니다" in w for w in report.notes)
 
 
 def test_markdown_shows_the_caution_of_a_used_classic():
@@ -460,6 +493,23 @@ def test_plots_survive_their_post_and_remember_used_classics(tmp_path):
     db.close()
 
 
+def test_cooldown_skips_the_plot_being_repaired_and_sees_gags_added_while_casting(tmp_path):
+    db = Database(tmp_path / "g.db")
+    post_id = stored_post(db)
+    p = clean_plot(plot(classics=[{"name": "무야호", "panel": 4, "how": "환호"}]))
+    plot_id = db.save_plot(post_id=post_id, status="needs_fix", origin="import", plot=p,
+                           checks={"errors": [], "warnings": []}, at=NOW)
+    assert db.recent_classics(15) == ["무야호"]
+    assert db.recent_classics(15, exclude_post_id=post_id) == []      # its own gag is not "used recently"
+
+    script = dict(p, classics=p["classics"] + [{"name": "이름표 뜯기", "panel": 2, "how": "소품"}])
+    db.save_script(plot_id=plot_id, cast_name="분식", origin="import", script=script,
+                   checks={"errors": [], "warnings": []}, at=NOW)
+    assert db.recent_classics(15) == ["무야호", "이름표 뜯기"]        # the gag added at the cast stage counts too
+    assert db.recent_classics(15, exclude_post_id=post_id) == []
+    db.close()
+
+
 def test_candidates_need_text_and_respect_flags(tmp_path):
     db = Database(tmp_path / "c.db")
     stored_post(db, body="짧음")
@@ -519,6 +569,20 @@ def test_chat_workflow_from_prompt_to_script_file(cfg, tmp_path, capsys):
     with pytest.raises(SystemExit, match="대본 #9"):
         main.main(["--config", cfg, "script", "prompts", "9"])
 
+    # a pin given with --as also holds on the chat path: in the prompt, in the hint, and on import
+    assert main.main(["--config", cfg, "script", "cast", "1", "--cast", str(cast_file), "--as", "A=r", "--prompt-only"]) == 0
+    out = capsys.readouterr()
+    assert "이미 정해진 배정이 있습니다: A=r" in out.out and "--as A=r" in out.err
+    reply = tmp_path / "cast_answer.json"
+    reply.write_text(json.dumps({"assignment": [{"role": "A", "character": "m"}, {"role": "B", "character": "r"}],
+                                 "panels": plot()["panels"]}, ensure_ascii=False), encoding="utf-8")
+    assert main.main(["--config", cfg, "script", "import", "1", "--cast", str(cast_file), "--as", "A=r", str(reply)]) == 0
+    capsys.readouterr()
+    assert main.main(["--config", cfg, "script", "show", "2", "--json"]) == 0
+    assert [(c["role"], c["id"]) for c in json.loads(capsys.readouterr().out)["characters"]] == [("A", "r"), ("B", "m")]
+    with pytest.raises(SystemExit, match="캐릭터 묶음에 'x'"):
+        main.main(["--config", cfg, "script", "cast", "1", "--cast", str(cast_file), "--as", "A=x", "--prompt-only"])
+
 
 def test_broken_plot_is_stored_but_not_cast_without_force(cfg, tmp_path, capsys):
     answer = tmp_path / "bad.json"
@@ -531,6 +595,36 @@ def test_broken_plot_is_stored_but_not_cast_without_force(cfg, tmp_path, capsys)
         main.main(["--config", cfg, "script", "cast", "1", "--cast", str(cast_file)])
     assert main.main(["--config", cfg, "plot", "fix", "1", "--prompt-only"]) == 0
     assert "첫 컷 문구(hook)가 없습니다" in capsys.readouterr().out
+
+
+def test_a_missing_api_key_is_one_plain_sentence(monkeypatch):
+    pytest.importorskip("anthropic")
+    from studio.llm import ClaudeLLM
+    for name in ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_PROFILE", "ANTHROPIC_IDENTITY_TOKEN_FILE",
+                 "ANTHROPIC_IDENTITY_TOKEN", "ANTHROPIC_FEDERATION_RULE_ID"):
+        monkeypatch.delenv(name, raising=False)
+    monkeypatch.setenv("HOME", "/nonexistent")                       # no `ant auth login` profile either
+    monkeypatch.setenv("XDG_CONFIG_HOME", "/nonexistent")
+    with pytest.raises(LLMError, match="인증 정보가 없습니다"):
+        ClaudeLLM("claude-opus-5-5")
+
+
+def test_an_answer_split_by_a_fallback_is_read_as_one_text(monkeypatch):
+    pytest.importorskip("anthropic")
+    from types import SimpleNamespace as NS
+    from studio.llm import ClaudeLLM
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key-not-real")
+    llm = ClaudeLLM("claude-opus-5-5")
+    blocks = [NS(type="thinking", thinking=""), NS(type="text", text='{"title": "칼'), NS(type="fallback"),
+              NS(type="text", text='퇴 직전"}')]
+
+    class Stream:
+        def __enter__(self): return self
+        def __exit__(self, *exc): return False
+        def get_final_message(self): return NS(stop_reason="end_turn", content=blocks)
+
+    monkeypatch.setattr(llm.client.beta.messages, "stream", lambda **kwargs: Stream())
+    assert llm.complete_json("system", "user", {"type": "object"}) == {"title": "칼퇴 직전"}
 
 
 def test_paid_llm_calls_are_off_until_enabled(cfg):
