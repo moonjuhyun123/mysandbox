@@ -55,12 +55,14 @@ def _fold(text: str) -> str:
     return unicodedata.normalize("NFKC", text).lower()
 
 
-def _banned_pattern(term: str) -> re.Pattern:
+def _banned_pattern(term: str, spare: Sequence[str] = ()) -> re.Pattern:
     """The term at the start of a word. A gap is allowed only where the term itself has one, so
-    "큰일 났다, 나 카드" is not "다나카" and "작심삼일 한 번" is not "삼일한"."""
+    "큰일 났다, 나 카드" is not "다나카" and "작심삼일 한 번" is not "삼일한". ``spare`` lists what
+    follows the term inside an allowed entry (밤티 + 라미수): those continuations are not a match."""
     tokens = [t for t in re.split(rf"[^{_WORD}]+", _fold(term)) if t]
     body = rf"[^{_WORD}]{{0,3}}".join(re.escape(t) for t in tokens)
     tail = r"(?![0-9a-z])" if all(t.isascii() for t in tokens) else ""
+    tail += "".join(rf"(?![^{_WORD}]{{0,3}}{re.escape(rest)})" for rest in spare)
     return re.compile(rf"(?<![{_WORD}]){body}{tail}")
 
 
@@ -96,11 +98,26 @@ class GagBook:
             for part in parts:
                 term = part.strip(" '\"“”‘’")
                 key = normalize_text(term)
-                # a word that is itself an allowed entry (or part of one) is not banned by a broader exclusion
-                if len(key) < (2 if explicit else MIN_KEY) or key in seen or any(key in a or a in key for a in allowed):
+                if len(key) < (2 if explicit else MIN_KEY) or key in seen:
+                    continue
+                spare: list[str] = []
+                if explicit:
+                    # A listed word is always enforced. Where it is the start or the middle of an allowed
+                    # entry (밤티 in 밤티라미수), that longer word is spared; where it IS an allowed entry
+                    # or ends one, the dictionary contradicts itself and must be fixed.
+                    for a in allowed:
+                        if key not in a:
+                            continue
+                        rest = a[a.index(key) + len(key):]
+                        if not rest:
+                            raise ValueError(f"사전이 스스로 어긋납니다: 막을 낱말 {term!r}이(가) 허용 항목 {a!r}과 겹칩니다.")
+                        if rest[:3] not in spare:
+                            spare.append(rest[:3])
+                # a name-derived word that is itself an allowed entry (or part of one) is not banned
+                elif any(key in a or a in key for a in allowed):
                     continue
                 seen.add(key)
-                banned.append(Banned(term, key, entry["name"], entry["reason"], _banned_pattern(term)))
+                banned.append(Banned(term, key, entry["name"], entry["reason"], _banned_pattern(term, spare)))
         return cls(classics, slang, banned)
 
     def _lookup(self, name: str, pool: list[Gag]) -> Gag | None:

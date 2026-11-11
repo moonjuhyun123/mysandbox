@@ -71,3 +71,20 @@ def scene_texts(panel: Mapping[str, Any]) -> list[str]:
                 continue
             found.append(text)
     return found
+
+
+_OTHER_PANEL = re.compile(
+    r"\d\s*컷|[일이삼사첫둘셋넷]\s*번째\s*컷|(?:앞|이전|전|지난|다음)\s*컷"
+    r"|같은\s*(?:장소|구도|자세|배경|사무실|회의실|거실|방|자리|곳|화면)|아까(?:와|의|처럼|\s)|위와\s*같은")
+
+
+def panel_references(panel: Mapping[str, Any]) -> list[str]:
+    """Phrases in scene/action that lean on another panel ("같은 사무실", "1컷과 같은 구도"). Each
+    picture is generated on its own, so such a scene cannot be drawn from its prompt alone."""
+    text = f"{panel.get('scene', '') or ''} {panel.get('action', '') or ''}"
+    return list(dict.fromkeys(m.group(0).strip() for m in _OTHER_PANEL.finditer(text)))
+
+
+def role_letters(text: str, role_ids) -> list[str]:
+    """Role ids (A, B) that are used as words in a text the reader will read."""
+    return [r for r in role_ids if with_names(text or "", {r: "\0"}) != (text or "")]

@@ -15,9 +15,9 @@ def _speaker_names(doc: Mapping[str, Any]) -> dict[str, str]:
 def alt_text(panel: Mapping[str, Any], names: Mapping[str, str]) -> str:
     """Plain description of one panel for the image's alternative text (accessibility)."""
     parts = [with_names(panel.get("scene", ""), names), with_names(panel.get("action", ""), names)]
-    parts += [f"{names.get(ln['role'], ln['role'])}: \"{ln['text']}\"" for ln in panel.get("lines", [])]
+    parts += [f"{names.get(ln['role'], ln['role'])}: \"{with_names(ln['text'], names)}\"" for ln in panel.get("lines", [])]
     if panel.get("narration"):
-        parts.append(panel["narration"])
+        parts.append(with_names(panel["narration"], names))
     return " ".join(p.strip() for p in parts if p and p.strip())
 
 
@@ -66,14 +66,14 @@ def to_markdown(doc: Mapping[str, Any], *, book: GagBook, checks: Mapping[str, A
     cast = doc.get("cast")
     named = (lambda text: with_names(text, names)) if cast else (lambda text: text)   # a plot keeps A, B
     out = [f"# {heading or doc.get('title', '')}", ""]
-    out += [f"- 한 줄 요약: {doc.get('logline', '')}",
+    out += [f"- 한 줄 요약: {named(doc.get('logline', ''))}",
             f"- 방향: {doc.get('angle', '')}",
-            f"- 첫 컷 문구: **{doc.get('hook', '')}**"]
+            f"- 첫 컷 문구: **{named(doc.get('hook', ''))}**"]
     others = [h for h in doc.get("hooks", []) if h != doc.get("hook")]
     if others:
         out.append(f"- 첫 컷 문구 다른 후보: {' / '.join(others)}")
-    out += [f"- 웃음 구조: {doc.get('why_funny', '')}",
-            f"- 보내고 싶은 사람: {doc.get('share_target', '')}", ""]
+    out += [f"- 웃음 구조: {named(doc.get('why_funny', ''))}",
+            f"- 보내고 싶은 사람: {named(doc.get('share_target', ''))}", ""]
 
     out.append("## 등장인물")
     out.append("")
@@ -83,7 +83,7 @@ def to_markdown(doc: Mapping[str, Any], *, book: GagBook, checks: Mapping[str, A
             out.append(f"그림 방향: {cast['style']}")
         out += ["", "| 역할 | 캐릭터 | 맡은 일 | 생김새 | 말투 |", "|---|---|---|---|---|"]
         for c in doc.get("characters", []):
-            out.append(f"| {c['role']} | {c['name']} | {c.get('plays', '')} | {c.get('look', '')} | {c.get('speech', '')} |")
+            out.append(f"| {c['role']} | {c['name']} | {named(c.get('plays', ''))} | {c.get('look', '')} | {c.get('speech', '')} |")
     else:
         out += ["아직 캐릭터를 입히지 않은 플롯입니다. 역할만 있습니다.", "", "| 역할 | 맡은 일 | 필요한 성격 |", "|---|---|---|"]
         for r in doc.get("roles", []):
@@ -96,15 +96,15 @@ def to_markdown(doc: Mapping[str, Any], *, book: GagBook, checks: Mapping[str, A
         out.append(f"### {p['n']}컷 · {p.get('beat', '')} ({p.get('seconds', 2.5):g}초)")
         out.append("")
         if p["n"] == 1 and doc.get("hook"):
-            out.append(f"- 위에 얹는 문구: **{doc['hook']}**")
+            out.append(f"- 위에 얹는 문구: **{named(doc['hook'])}**")
         if p.get("scene"):
             out.append(f"- 장면: {named(p['scene'])}")
         if p.get("action"):
             out.append(f"- 행동·표정: {named(p['action'])}")
         for ln in p.get("lines", []):
-            out.append(f"- **{names.get(ln['role'], ln['role'])}**: \"{ln['text']}\"")
+            out.append(f"- **{names.get(ln['role'], ln['role'])}**: \"{named(ln['text'])}\"")
         if p.get("narration"):
-            out.append(f"- 내레이션: {p['narration']}")
+            out.append(f"- 내레이션: {named(p['narration'])}")
         if p.get("sfx"):
             out.append(f"- 효과음: {p['sfx']}")
         if cast:
@@ -115,7 +115,7 @@ def to_markdown(doc: Mapping[str, Any], *, book: GagBook, checks: Mapping[str, A
     if doc.get("format"):
         out += _format_lines(doc["format"], len(doc.get("panels", [])))
 
-    out += ["## 게시글", "", f"- 본문: {doc.get('caption', '')}", f"- 댓글 질문: {doc.get('comment_prompt', '')}",
+    out += ["## 게시글", "", f"- 본문: {named(doc.get('caption', ''))}", f"- 댓글 질문: {named(doc.get('comment_prompt', ''))}",
             "- 해시태그: " + " ".join(f"#{h}" for h in doc.get("hashtags", [])), ""]
 
     used = [(c, book.classic(c["name"])) for c in doc.get("classics", [])]

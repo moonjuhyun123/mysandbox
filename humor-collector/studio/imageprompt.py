@@ -13,7 +13,7 @@ import re
 from math import gcd
 from typing import Any, Mapping
 
-from studio.wording import scene_texts, with_names
+from studio.wording import panel_references, scene_texts, with_names
 
 
 def _ratio(canvas: str) -> str:
@@ -31,13 +31,24 @@ def _characters(doc: Mapping[str, Any]) -> dict[str, Mapping[str, Any]]:
     return {c["role"]: c for c in doc.get("characters", [])}
 
 
-def _in_panel(panel: Mapping[str, Any], chars: Mapping[str, Mapping[str, Any]]) -> list[Mapping[str, Any]]:
-    """Characters that speak in the panel or are named in its scene/action (all of them if none is)."""
+_TOGETHER = re.compile(r"둘|두\s*(?:사람|명|캐릭터)|셋|세\s*(?:사람|명|캐릭터)|모두|다\s*같이|다들|함께|서로|마주|나란히|일행")
+
+
+def _in_panel(panel: Mapping[str, Any], chars: Mapping[str, Mapping[str, Any]]) -> tuple[list[Mapping[str, Any]], bool]:
+    """(characters to describe, whether that list is certainly complete).
+
+    A character is in the panel when it speaks, when its role letter is used, or when its name
+    stands as a word of its own (만두 in "만두가", not in "그만두는"; 라면 not in "아니라면").
+    A word for a group ("둘이", "서로", "모두") means others are there too: then everyone is
+    described and the prompt does not say "draw no one else"."""
     text = f"{panel.get('scene', '')} {panel.get('action', '')} {panel.get('narration', '')}"
     speaking = {ln["role"] for ln in panel.get("lines", [])}
     found = [c for role, c in chars.items()
-             if role in speaking or c["name"] in text or with_names(text, {role: "\0"}) != text]
-    return found or list(chars.values())
+             if role in speaking or with_names(text, {role: "\0"}) != text
+             or re.search(rf"(?<![가-힣A-Za-z0-9]){re.escape(c['name'])}", text)]
+    if not found or _TOGETHER.search(text):
+        return list(chars.values()), False
+    return found, True
 
 
 def _style_block(doc: Mapping[str, Any], *, single_scene: bool = False) -> list[str]:
@@ -75,31 +86,45 @@ def character_sheet_prompt(doc: Mapping[str, Any]) -> str:
     return "\n".join(out)
 
 
+BLANK = "[글자 없이 빈 자리]"
+
+
+def _without_scene_text(text: str, shown: list[str]) -> str:
+    """A scene line for the no-lettering variant: the words on signs and screens are taken out,
+    so the prompt does not ask for "no letters" and spell the letters out at the same time."""
+    for words in shown:
+        for left, right in (("'", "'"), ("‘", "’"), ('"', '"'), ("“", "”")):
+            text = text.replace(f"{left}{words}{right}", BLANK)
+    return text
+
+
 def panel_prompt(doc: Mapping[str, Any], panel: Mapping[str, Any], *, with_text: bool = True) -> str:
     chars = _characters(doc)
     names = {role: c["name"] for role, c in chars.items()}
-    present = _in_panel(panel, chars)
+    present, complete = _in_panel(panel, chars)
+    in_scene = scene_texts(panel)
     out = _style_block(doc, single_scene=True)
     out += ["", "[등장 캐릭터] 앞에서 만들었거나 함께 올린 캐릭터 시트 그림이 기준이다. 그 그림과 같은 캐릭터로 그리고, "
                 "새로 디자인하지 않는다. 생김새는 아래와 같다.",
             *_character_lines(present)]
-    if len(present) < len(chars):
+    if complete and len(present) < len(chars):
         out.append("위 캐릭터만 그린다. 다른 캐릭터는 넣지 않는다.")
     out += ["", "[장면]"]
-    if panel.get("scene"):
-        out.append(f"배경: {with_names(panel['scene'], names)}")
-    if panel.get("action"):
-        out.append(f"행동과 표정: {with_names(panel['action'], names)}")
+    for label, field in (("배경", "scene"), ("행동과 표정", "action")):
+        if panel.get(field):
+            line = with_names(panel[field], names)
+            out.append(f"{label}: {line if with_text else _without_scene_text(line, in_scene)}")
 
-    hook = doc.get("hook") if panel.get("n") == 1 else ""
-    lines = [(names.get(ln["role"], ln["role"]), ln["text"]) for ln in panel.get("lines", [])]
-    in_scene = scene_texts(panel)
+    hook = with_names(doc.get("hook") or "", names) if panel.get("n") == 1 else ""
+    lines = [(names.get(ln["role"], ln["role"]), with_names(ln["text"], names)) for ln in panel.get("lines", [])]
+    narration = with_names(panel.get("narration") or "", names)
     lettering = []
     if hook:
         lettering.append(f'그림 맨 위 가운데에 굵고 큰 제목: "{hook}"')
     lettering += [f'{who} 옆 말풍선: "{text}"' for who, text in lines]
-    if panel.get("narration"):
-        lettering.append(f'그림 구석의 네모난 설명 상자: "{panel["narration"]}"')
+    if narration:
+        lettering.append(f'그림 구석의 네모난 설명 상자: "{narration}"')
+    typeset = bool(lettering)                 # title, bubbles and caption box share one plain typeface
     if panel.get("sfx"):
         lettering.append(f'손글씨 느낌의 효과음(말풍선 없이): "{panel["sfx"]}"')
     lettering += [f'장면 속 물건(화면, 간판, 종이)에 적힌 글자: "{text}"' for text in in_scene]
@@ -109,8 +134,10 @@ def panel_prompt(doc: Mapping[str, Any], panel: Mapping[str, Any], *, with_text:
         out.append("[글자] 글자는 하나도 넣지 않는다.")
     elif with_text:
         out += ["[글자] 아래 글자만, 각각 한 번씩 넣는다. 따옴표 안의 한글을 한 글자도 바꾸지 않는다. "
-                "굵은 고딕체로, 수평으로, 휴대폰에서도 읽히게 크게 쓴다.",
+                "휴대폰에서도 읽히게 크게 쓴다.",
                 *[f"- {item}" for item in lettering]]
+        if typeset:
+            out.append("제목, 말풍선, 설명 상자의 글자는 굵은 고딕체로, 수평으로 쓴다.")
         if len(lines) > 1:
             out.append("말풍선은 위에 적힌 순서대로 위에서 아래로 놓는다.")
         if lines:
@@ -124,10 +151,10 @@ def panel_prompt(doc: Mapping[str, Any], panel: Mapping[str, Any], *, with_text:
                        "글자 두 줄이 들어갈 크기로, 얼굴과 손을 가리지 않게 둔다.")
         if hook:
             out.append("그림 맨 위에 제목을 얹을 빈 띠를 남긴다.")
-        if panel.get("narration"):
+        if narration:
             out.append("설명 글을 얹을 빈 네모 상자를 하나 그린다.")
         if in_scene:
-            out.append("장면 속 화면, 간판, 종이에 글자가 들어갈 자리는 무늬 없이 비워 둔다.")
+            out.append(f"장면 설명의 {BLANK}는 화면, 간판, 종이에서 글자가 들어갈 곳이다. 무늬 없이 비워 둔다.")
     out.append(CLOSING)
     return "\n".join(out)
 
@@ -139,10 +166,10 @@ def lettering_list(doc: Mapping[str, Any]) -> list[tuple[int, list[str]]]:
     for panel in doc.get("panels", []):
         items = []
         if panel.get("n") == 1 and doc.get("hook"):
-            items.append(f"제목: {doc['hook']}")
-        items += [f"{names.get(ln['role'], ln['role'])}: {ln['text']}" for ln in panel.get("lines", [])]
+            items.append(f"제목: {with_names(doc['hook'], names)}")
+        items += [f"{names.get(ln['role'], ln['role'])}: {with_names(ln['text'], names)}" for ln in panel.get("lines", [])]
         if panel.get("narration"):
-            items.append(f"설명: {panel['narration']}")
+            items.append(f"설명: {with_names(panel['narration'], names)}")
         if panel.get("sfx"):
             items.append(f"효과음: {panel['sfx']}")
         items += [f"장면 속 글자: {text}" for text in scene_texts(panel)]
@@ -183,6 +210,11 @@ def to_text(doc: Mapping[str, Any], *, with_text: bool = True) -> str:
              "- 캐릭터끼리 생김새가 섞일 때: 캐릭터 시트를 캐릭터마다 한 장씩 따로 만들어 봅니다.",
              "- 글자가 계속 틀리면 `script prompts --no-text`로 글자 없는 그림을 만들고, 글자는 편집 앱에서 얹습니다.",
              ""]
+    leaning = [(p.get("n", "?"), panel_references(p)) for p in doc.get("panels", [])]
+    if any(found for _, found in leaning):
+        parts += ["**주의:** 아래 컷의 장면 설명이 다른 컷에 기대고 있습니다. 그 컷만 따로 그리면 그림 도구가 무엇을 가리키는지 "
+                  "알 수 없습니다. 같은 대화에서 이어 그리거나, 장면 설명에 장소와 구도를 직접 적어 고치세요.", ""]
+        parts += [f"- {n}컷: {', '.join(found)}" for n, found in leaning if found] + [""]
     if doc.get("art_notes"):
         parts += ["## 그림 메모 (사람이 읽는 참고)", "", doc["art_notes"], ""]
     for title, prompt in image_prompts(doc, with_text=with_text):

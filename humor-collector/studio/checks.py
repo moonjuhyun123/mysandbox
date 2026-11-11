@@ -16,7 +16,7 @@ from rapidfuzz import fuzz
 
 from processing.normalize import jaccard, normalize_text, shingles
 from studio.gags import GagBook
-from studio.wording import scene_texts
+from studio.wording import panel_references, role_letters, scene_texts
 
 _TLD = "com|net|org|kr|io|me|ly|gg|tv|co|shop|store|link|app"
 _PERSONAL = (     # matched on NFKC-folded text, so full-width digits and "＠" count too
@@ -25,22 +25,24 @@ _PERSONAL = (     # matched on NFKC-folded text, so full-width digits and "＠" 
     (re.compile(r"[\w.+-]+@[\w-]+\.[A-Za-z]{2,}"), "이메일"),
     (re.compile(r"(?<!\d)(?:\+?82[-\s.]*1[016789]|01[016789])(?:\s*[-.)\s]\s*)?\d{3,4}(?:\s*[-.\s]\s*)?\d{4}(?!\d)"   # mobile
                 r"|(?<!\d)0\d{1,2}\s*[-.)]\s*\d{3,4}\s*[-.]\s*\d{4}(?!\d)"                                      # landline
-                r"|(?<!\d)1[568]\d{2}\s*-\s*\d{4}(?!\d)"), "전화번호"),                                           # 1588-0000
+                r"|(?<![\d(])1[568]\d{2}\s*-\s*\d{4}(?!\d|\s*(?:원|년|명|개|점|보|걸음))"), "전화번호"),         # 1588-0000, not 1500-2000원
 )
 
 
 # Requests that platforms treat as engagement bait (tag / like / follow-gate / keyword-comment / giveaway).
-# Each pattern needs request or reward wording next to the keyword: "저장 안 하면 생기는 일" is a story,
-# "저장 안 하면 손해" is a request.
+# A keyword alone is not a request: it needs a request ending or a reward clause next to it.
+# "저장 안 하면 손해" and "좋아요 누르면 2편 공개" are requests; "저장 안 하면 생기는 일" is a story.
+_REWARD = r"[^.?!]{0,12}(드려요|드립니다|드릴게|추첨|공개|갑니다|볼\s*수|보여|알려\s*(드|줄)|보내\s*(드|줄))"
+_PLEASE = r"(주세요|주면|주실|주시면|줘)"
 DEFAULT_BAIT = (
-    r"(?<!해시)태그\s*(해\s*(주|줘|봐)|하고\s*가|하면|걸어|부탁|필수)|소환\s*(해\s*(주|줘|봐)|하세요|하면|부탁)",
-    r"좋아요\s*(를\s*)?(눌러\s*(주|줘)|누르면|누르고\s*가|부탁|꾹|필수)",
-    r"팔로우\s*(를\s*)?((하면|해야|하시면)\s*[^.?!]{0,12}(드려|드립|추첨|공개|갑니다|볼\s*수|보여|알려|보내)"
-    r"|하고\s*(댓글|가)|해\s*(주|줘)|부탁|꾹|필수)",
+    rf"(?<!해시)태그\s*(해\s*({_PLEASE}|봐)|하고\s*가|하면{_REWARD}|걸어\s*{_PLEASE}|부탁|필수)"
+    rf"|소환\s*(해\s*({_PLEASE}|봐)|하세요|하면{_REWARD}|부탁)",
+    rf"좋아요\s*(를\s*)?(눌러\s*{_PLEASE}|누르면{_REWARD}|누르고\s*가|부탁|꾹|필수)",
+    rf"팔로우\s*(를\s*)?((하면|해야|하시면){_REWARD}|하고\s*(댓글|가)|해\s*{_PLEASE}|부탁|꾹|필수)",
     r"댓글(로|에)\s*[^.?!]{0,12}(이라고|라고|번호|이모지)[^.?!]{0,8}(남겨|달아|적어|써)",
-    r"저장\s*(안\s*하면\s*(손해|후회)|필수|부탁|해\s*(두세요|둬|주세요))"
-    r"|공유\s*(하면\s*[^.?!]{0,10}(드려|드립|추첨|공개|갑니다)|부탁|필수|해\s*(주세요|줘))",
-    r"(추첨|경품|기프티콘)[^.?!]{0,12}(드려|드립|드릴|증정|쏩니다|쏜다)",
+    rf"저장\s*(안\s*하면\s*(손해|후회)|필수|부탁|해\s*(두세요|둬(?!야)|{_PLEASE}))"
+    rf"|공유\s*(하면{_REWARD}|부탁|필수|해\s*{_PLEASE})",
+    r"(추첨|경품|기프티콘)[^.?!]{0,12}(드려요|드립니다|드릴|증정|쏩니다|쏜다)",
 )
 
 
@@ -110,7 +112,7 @@ def lettering(plot: Mapping[str, Any]) -> list[str]:
 
 def text_fields(plot: Mapping[str, Any]) -> list[str]:
     """Each piece of text on its own (title, lines, scene, action, hashtags ...), nothing joined."""
-    extra = [plot.get("title", ""), plot.get("logline", "")]
+    extra = [plot.get("title", ""), plot.get("logline", ""), plot.get("art_notes", "")]    # art notes: written at cast time
     for panel in plot.get("panels", []):
         extra += [panel.get("scene", ""), panel.get("action", "")]
     fields = lettering(plot) + extra + [h for h in plot.get("hashtags") or [] if isinstance(h, str)]
@@ -205,11 +207,20 @@ def check_plot(plot: Mapping[str, Any], *, book: GagBook, limits: Limits, source
         if len(shown) > limits.max_scene_texts or long:
             warn(f"{i}컷 그림 속에 적히는 글자가 많습니다({', '.join(repr(t) for t in shown)}). 그림 생성 도구는 "
                  f"글자를 틀리기 쉬우니 컷당 {limits.max_scene_texts}개, {limits.max_scene_text_chars}자 이내가 좋습니다.")
+        leaning = panel_references(panel)
+        if leaning:
+            warn(f"{i}컷의 장면 설명이 다른 컷에 기대고 있습니다({', '.join(repr(t) for t in leaning)}). "
+                 "그림을 컷마다 따로 만들므로 장소와 구도를 이 컷 안에 다시 적으세요.")
         pieces = (len(lines) + bool(str(narration).strip()) + bool(str(panel.get("sfx") or "").strip()) + len(shown)
                   + (1 if i == 1 and str(plot.get("hook") or "").strip() else 0))
         if pieces > limits.max_text_items:
             warn(f"{i}컷에 넣을 글자가 {pieces}덩어리입니다(대사, 내레이션, 효과음, 그림 속 글자, 1컷은 첫 컷 문구 포함). "
                  f"{limits.max_text_items}덩어리 이하면 그림 생성 도구가 글자를 덜 틀립니다.")
+    read_by_reader = spoken_text(plot)
+    letters = sorted({r for text in read_by_reader for r in role_letters(text, [i for i in role_ids if i])})
+    if letters:
+        warn(f"독자가 읽는 글(첫 컷 문구, 대사, 내레이션, 본문)에 역할 글자 {', '.join(letters)}이(가) 그대로 있습니다. "
+             "이름이나 호칭으로 바꾸세요.")
     hook = plot.get("hook", "")
     if not hook.strip():
         err("첫 컷 문구(hook)가 없습니다.")
@@ -230,9 +241,9 @@ def check_plot(plot: Mapping[str, Any], *, book: GagBook, limits: Limits, source
         if pattern.search(text):
             err(f"{label}처럼 보이는 내용이 있습니다. 개인 정보와 링크는 넣지 않습니다.")
 
-    asks = "\n".join((plot.get("caption", ""), plot.get("comment_prompt", ""), plot.get("hook", "")))
+    asks = [str(plot.get(k) or "") for k in ("caption", "comment_prompt", "hook")]
     for pattern in limits.bait_patterns:       # the story's own dialogue may mention tags or raffles
-        found = re.search(pattern, asks)
+        found = next((m for m in (re.search(pattern, ask) for ask in asks) if m), None)   # one field at a time
         if found:
             err(f"참여를 요구하는 문구가 있습니다: '{found.group(0)}'. 태그·좋아요·팔로우 요구, 정해진 댓글 요청, 추첨은 쓰지 않습니다.")
     claim = _TRUE_STORY.search("\n".join((plot.get("caption", ""), plot.get("hook", ""))))
