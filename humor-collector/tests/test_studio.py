@@ -17,7 +17,7 @@ from studio import prompts
 from studio.cast import CastError, CastWriter, assign, bind, food_options, load_cast
 from studio.checks import Limits, check_plot
 from studio.gags import GagBook
-from studio.imageprompt import image_prompts, panel_prompt, to_text
+from studio.imageprompt import image_prompts, one_image_prompt, panel_prompt, to_text
 from studio.llm import LLMError, make_llm
 from studio.render import to_markdown
 from studio.wording import scene_texts, with_josa, with_names
@@ -623,9 +623,39 @@ def test_only_real_references_to_another_panel_are_noted():
         assert panel_references(fine) == [], fine
 
 
+def test_the_whole_strip_can_be_one_picture(cast):
+    script = cast_script(cast)
+    text = one_image_prompt(script)
+    assert "가로 2칸, 세로 2칸으로 똑같이 나눈 4컷 만화다" in text and "맨 위에 제목 띠를 두고" in text
+    assert "칸을 나누지 않고" not in text and "세로로 긴 3:4 비율" in text
+    assert "- 만두:" in text and "- 라면:" in text and '[제목 띠] 굵고 큰 글자: "문 앞 3초 전"' in text
+    cells = [text.index(f"[{name} 칸]") for name in ("왼쪽 위", "오른쪽 위", "왼쪽 아래", "오른쪽 아래")]
+    assert cells == sorted(cells)                                              # panels in reading order
+    last = text[cells[3]:]
+    assert '라면 옆 말풍선: "고기냐 회냐, 그것이 문제야"' in last and '적힌 글자: "금요일 저녁 메뉴"' in last
+    assert '칸 구석의 네모난 설명 상자: "시계는 5시 59분"' in text[cells[0]:cells[1]] and "만두가 살금살금" in text
+    assert "각각 한 번씩" in text and "그 밖의 글자와 칸 번호는 넣지 않는다" in text
+
+    blank = one_image_prompt(script, with_text=False)
+    assert "고기냐 회냐" not in blank and "금요일 저녁 메뉴" not in blank and "문 앞 3초 전" not in blank
+    assert "비어 있는 흰 말풍선 1개" in blank and "[제목 띠] 제목을 얹을 자리다" in blank and "[글자 없이 빈 자리]" in blank
+
+    three = cast_script(cast)
+    three["panels"] = three["panels"][:3]
+    column = one_image_prompt(three)
+    assert "위에서 아래로 3칸을 똑같이 나눈 3컷 만화다" in column and "[위에서 3번째 칸]" in column
+
+    doc = to_text(script, one_image=True)
+    assert doc.startswith("# 그림 지시문(한 장에 4컷)") and "## 0. 캐릭터 시트 (계정에서 한 번만)" in doc
+    assert "## 한 장에 그리기" in doc and "## 1컷" not in doc
+    assert "## 나중에 얹을 글자" in to_text(script, one_image=True, with_text=False)
+
+
 def test_image_prompts_need_a_cast_script():
     with pytest.raises(ValueError, match="캐릭터를 입힌 대본"):
         image_prompts(clean_plot(plot()))
+    with pytest.raises(ValueError, match="캐릭터를 입힌 대본"):
+        to_text(clean_plot(plot()), one_image=True)
 
 
 def test_script_document_names_the_characters_but_a_plot_keeps_its_roles(cast):
@@ -823,6 +853,9 @@ def test_chat_workflow_from_prompt_to_script_file(cfg, tmp_path, capsys):
     prompt_file = tmp_path / "prompts.md"
     assert main.main(["--config", cfg, "script", "prompts", "1", "--no-text", "--output", str(prompt_file)]) == 0
     assert "## 나중에 얹을 글자" in prompt_file.read_text(encoding="utf-8")
+    assert main.main(["--config", cfg, "script", "prompts", "1", "--one-image"]) == 0
+    one = capsys.readouterr().out
+    assert "## 한 장에 그리기" in one and "[오른쪽 아래 칸]" in one and "가로 2칸, 세로 2칸" in one
     with pytest.raises(SystemExit, match="대본 #9"):
         main.main(["--config", cfg, "script", "prompts", "9"])
 

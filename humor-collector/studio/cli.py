@@ -278,7 +278,7 @@ def cmd_script(args, settings, db: Database) -> int:
                 for line in failed:
                     print(f"오류: {line}", file=sys.stderr)
                 raise SystemExit(f"대본 #{args.id}은(는) 자동 검사를 통과하지 못했습니다. 고친 대본으로 다시 만들거나 --force를 쓰세요.")
-            text = image_prompt_text(script, with_text=not args.no_text)
+            text = image_prompt_text(script, with_text=not args.no_text, one_image=args.one_image)
         elif args.json:
             text = json.dumps(script, ensure_ascii=False, indent=2)
         else:
@@ -387,6 +387,8 @@ def add_parsers(sub) -> None:
     sp = ss.add_parser("prompts", help="image-generation prompts for one script: character sheet + one per panel")
     sp.add_argument("id", type=int)
     sp.add_argument("--no-text", action="store_true", help="ask for pictures without lettering (empty speech bubbles)")
+    sp.add_argument("--one-image", action="store_true",
+                    help="one prompt that draws the whole strip in a single picture (characters match; lettering is smaller)")
     sp.add_argument("--force", action="store_true", help="make prompts from a script that failed its checks")
     sp.add_argument("--output", help="write to this file instead of the screen")
     s.set_defaults(func=cmd_script)
