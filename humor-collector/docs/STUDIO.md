@@ -88,14 +88,16 @@ API는 `config/settings.toml`의 `[studio.llm] enabled = true`로 켜기 전에�
 .venv/bin/python main.py script cast 3 --cast config/casts/example.toml               # LLM 없이: 역할 배정만
 .venv/bin/python main.py script cast 3 --cast config/casts/example.toml --as A=mandu,B=ramen
 .venv/bin/python main.py script cast 3 --cast config/casts/example.toml --prompt-only  # 말투까지 다듬는 지시문
-.venv/bin/python main.py script import 3 --cast config/casts/example.toml 답.json
+.venv/bin/python main.py script import 3 --cast config/casts/example.toml 답.json    # --as A=mandu 처럼 배정을 고정할 수 있음
 .venv/bin/python main.py script cast 3 --cast config/casts/example.toml --polish       # (API) 말투까지 다듬기
 
 .venv/bin/python main.py script list
 .venv/bin/python main.py script show 1 --output 대본.md
 ```
 
-- **LLM 없이**: 역할의 성격과 캐릭터의 성격이 가장 겹치는 쪽으로 배정하고, 대사는 플롯 그대로 둡니다.
+- **LLM 없이**: 역할의 성격과 캐릭터의 성격이 전체로 가장 잘 겹치게 배정하고, 대사는 플롯 그대로 둡니다.
+- **`--as`로 정한 배정**은 다듬는 경로(`--polish`, `--prompt-only`, `script import --as ...`)에서도 그대로 지켜집니다.
+  LLM은 남은 역할만 고릅니다. 없는 역할이나 캐릭터를 적으면 오류로 멈춥니다.
 - **다듬기**: 대사를 각 캐릭터의 말투로 고치고, 장소와 소품을 세계관에 맞게 바꾸고, 그림 메모를 씁니다.
   이야기와 컷 수는 바꾸지 않습니다. 결과는 같은 자동 검사를 다시 거칩니다.
 
