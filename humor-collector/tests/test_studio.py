@@ -706,6 +706,15 @@ def test_a_gag_named_by_a_short_form_is_stored_under_its_dictionary_name():
     second = check_plot(plot(classics=[{"name": target.name, "panel": 4, "how": "환호"}]), book=BOOK, limits=LIMITS,
                         recent_classics=[alias])                    # an old row that still holds the alias
     assert any("최근 플롯에서 이미 썼습니다" in w for w in second.warnings) and full
+    shared = "복불복"                                               # a short form that two entries share
+    if sum(1 for g in BOOK.classics if "복불복" in g.keys()) > 1:
+        kept = writer().accept(plot(classics=[{"name": shared, "panel": 4, "how": "게임"}]), POST)
+        assert [c["name"] for c in kept.plot["classics"]] == [shared]
+
+
+def test_internal_notes_must_not_quote_the_source_either():
+    quoted = plot(changes_from_source="원문의 '가방까지 다 쌌는데 다시 풀었다'를 뺐다")
+    assert any("원문과" in e for e in errors(quoted))
 
 
 def test_the_upload_checklist_follows_the_production_settings(cast):
@@ -717,6 +726,8 @@ def test_the_upload_checklist_follows_the_production_settings(cast):
     by_hand = to_markdown(script, book=BOOK, checks=report.as_dict(), source=POST)
     assert "그림은 사람이 그림, 글은 사람이 씀" in by_hand
     assert "제작 방식 표시" not in by_hand and "메타데이터" not in by_hand and "대체 텍스트에" in by_hand
+    script["production"]["disclosure"] = "손으로 그리고 직접 썼습니다."          # the owner's own sentence stays
+    assert "손으로 그리고 직접 썼습니다." in to_markdown(script, book=BOOK, checks=report.as_dict(), source=POST)
 
 
 def test_candidates_need_text_and_respect_flags(tmp_path):

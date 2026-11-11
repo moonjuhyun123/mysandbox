@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from typing import Any, Mapping
 
+from settings import DEFAULTS
 from studio.gags import GagBook
 from studio.wording import with_names
 
@@ -45,7 +46,8 @@ def _upload_lines(production: Mapping[str, Any]) -> list[str]:
     ai_art, ai_any = art != "human", art != "human" or "llm" in script
     out = ["## 올릴 때 확인", "",
            f"- 만드는 방식(설정값): 그림은 {_ART.get(art, art)}, 글은 {_SCRIPT.get(script, script)}."]
-    if production.get("disclosure") and ai_any:
+    shipped = DEFAULTS["studio"]["production"]["disclosure"]          # the default sentence is about AI
+    if production.get("disclosure") and (ai_any or production["disclosure"] != shipped):
         out.append(f"- 제작 방식 표시(본문 끝에 붙이는 문구. 붙일지는 운영자가 정합니다): {production['disclosure']}")
     if ai_art:
         out += ["- 그림 속 한글이 대본과 같은지 사람이 직접 읽어 확인합니다. 그림 생성 도구는 글자를 틀릴 수 있습니다.",

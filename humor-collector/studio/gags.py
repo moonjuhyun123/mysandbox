@@ -136,12 +136,25 @@ class GagBook:
     def classic(self, name: str) -> Gag | None:
         return self._lookup(name, self.classics)
 
+    def one_classic(self, name: str) -> Gag | None:
+        """The entry a name points to, when it points to exactly one. A few short forms belong to
+        two entries (복불복); those are left as written rather than renamed to the wrong one."""
+        wanted = normalize_text(name)
+        if not wanted:
+            return None
+        exact = [g for g in self.classics if normalize_text(g.name) == wanted]
+        if exact:
+            return exact[0]
+        keys = _keys(name)
+        hits = [g for g in self.classics if wanted in g.keys() or keys & g.keys()]
+        return hits[0] if len(hits) == 1 else None
+
     def canonical(self, names) -> list[str]:
         """Dictionary names for whatever spelling was used ("상상도 못한 정체" -> "상상도 못한 정체 (ㄴㅇㄱ)"),
         so that the same gag is recognised when it is used again. Unknown names stay as they are."""
         out: list[str] = []
         for name in names:
-            gag = self.classic(str(name))
+            gag = self.one_classic(str(name))
             fixed = gag.name if gag is not None else str(name)
             if fixed and fixed not in out:
                 out.append(fixed)

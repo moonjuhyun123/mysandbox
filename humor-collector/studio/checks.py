@@ -142,7 +142,10 @@ def similarity(plot: Mapping[str, Any], source_text: str, limits: Limits) -> dic
     matcher = SequenceMatcher(None, autojunk=False)
     matcher.set_seq2(src)
     run, run_text, worst, worst_line, short = 0, "", 0.0, "", []
-    for text in text_fields(plot):
+    # Not published, but stored and shown: these notes must not quote the post either, or its
+    # sentences would outlive the post when the author asks for removal. Only the run rule applies.
+    notes = [str(plot.get(k) or "") for k in ("changes_from_source", "why_funny", "share_target")]
+    for text in text_fields(plot) + [n for n in notes if n]:
         norm = normalize_text(text)
         if len(norm) < 4:
             continue
@@ -150,7 +153,7 @@ def similarity(plot: Mapping[str, Any], source_text: str, limits: Limits) -> dic
         match = matcher.find_longest_match(0, len(norm), 0, len(src))
         if match.size > run:
             run, run_text = match.size, norm[match.a : match.a + match.size]
-        if text in hashtags:                      # a hashtag is a topic word; only the run rule applies
+        if text in hashtags or text in notes:     # topic words and internal notes: only the run rule applies
             continue
         if len(norm) >= limits.min_line_len_for_ratio:
             ratio = fuzz.partial_ratio(norm, src)

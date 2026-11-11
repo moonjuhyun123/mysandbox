@@ -79,7 +79,7 @@ def canonical_classics(plot: dict[str, Any], book: GagBook) -> dict[str, Any]:
     """Write each used gag under its dictionary name, whatever short form or alias the LLM used.
     The cooldown list is built from these names."""
     for item in plot.get("classics") or []:
-        gag = book.classic(str(item.get("name", "")))
+        gag = book.one_classic(str(item.get("name", "")))
         if gag is not None:
             item["name"] = gag.name
     return plot
